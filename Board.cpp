@@ -1,13 +1,10 @@
 //
-// Created by squig on 18/2/22.
+// Created by Matthew Abbott on 18/2/22.
 //
 #include <string>
 #include "Board.h"
 
-
-
 Board::Board(){}
-
 
 Board::~Board(){}
 
