@@ -126,6 +126,7 @@ void Game::printBoardToTerminal() {
 
         std::cout << "\e[49m\e[39m" << std::endl;
 
+
         if (e == 1) {
             a++;
             b++;
