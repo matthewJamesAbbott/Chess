@@ -186,9 +186,7 @@ bool Game::movePiece(int ia, char ca, int ib, char cb) {
         ya = 7;
     int xa;
 
-    if(ia == 0)
-        xa = 8;
-    else if(ia == 1)
+    if(ia == 1)
         xa = 7;
     else if(ia == 2)
         xa = 6;
@@ -202,6 +200,8 @@ bool Game::movePiece(int ia, char ca, int ib, char cb) {
         xa = 2;
     else if(ia == 7)
         xa = 1;
+    else if(ia == 8)
+        xa = 0;
     int yb;
     if(cb == 'A' || cb == 'a')
         yb = 0;
@@ -220,9 +220,7 @@ bool Game::movePiece(int ia, char ca, int ib, char cb) {
     else if(cb == 'H' || cb == 'h')
         yb = 7;
     int xb;
-    if(ib == 0)
-        xb = 8;
-    else if(ib == 1)
+    if(ib == 1)
         xb = 7;
     else if(ib == 2)
         xb = 6;
@@ -236,6 +234,8 @@ bool Game::movePiece(int ia, char ca, int ib, char cb) {
         xb = 2;
     else if(ib == 7)
         xb = 1;
+    else if(ib == 8)
+        xb = 0;
 
     
     MoveCalculator calc;
