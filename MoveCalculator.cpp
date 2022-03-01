@@ -23,17 +23,6 @@ void LinkedList::addNode(int x, int y) {
     }
 }
 
-void LinkedList::display() {
-    if (head == NULL) {}
-    else {
-        Node* temp = head;
-
-        while (temp != NULL) {
-            temp = temp->next;
-        }
-    }
-}
-
 std::vector<int> LinkedList::returnVector() {
 
     Node* temp = head;
@@ -859,7 +848,6 @@ bool MoveCalculator::checkCalculator(int x, int y, Board moveBoard) {
     for (int e = 0; e < 8; e++) {
         for (int i = 0; i < 8; i++) {
             temp = possibleSquares2DArray(e, i, moveBoard);
-            temp->display();
             returnedVector = temp->returnVector();
             moveVector.insert(moveVector.end(), returnedVector.begin(), returnedVector.end());
         }

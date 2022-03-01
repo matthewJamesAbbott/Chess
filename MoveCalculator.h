@@ -29,9 +29,8 @@ public:
 
     virtual ~LinkedList();; // destructor
     void addNode(int x, int y);
-    int getCount(Node* head);
     std::vector<int> returnVector();
-    void display();
+
 };
 
 
