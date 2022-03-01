@@ -104,27 +104,27 @@ void Game::printBoardToTerminal() {
             if(i == 0){
 
                 if(e == 0)
-                    std::cout << "\e[40m   ";
+                    std::cout << "\e[49m   \e[49m\e[39m";
                 if(e == 1)
-                    std::cout << "\e[43m \e[30m8 ";
+                    std::cout << "\e[43m \e[30m8 \e[49m\e[39m";
                 if(e == 2)
-                    std::cout << "\e[40m \e[33m7 \e[30m";
+                    std::cout << "\e[49m \e[33m7 \e[49m\e[39m";
                 if(e == 3)
-                    std::cout << "\e[43m \e[30m6 ";
+                    std::cout << "\e[43m \e[30m6 \e[49m\e[39m";
                 if(e == 4)
-                    std::cout << "\e[40m \e[33m5 \e[30m";
+                    std::cout << "\e[49m \e[33m5 \e[49m\e[39m";
                 if(e == 5)
-                    std::cout << "\e[43m \e[30m4 ";
+                    std::cout << "\e[43m \e[30m4 \e[49m\e[39m";
                 if(e == 6)
-                    std::cout << "\e[40m \e[33m3 \e[30m";
+                    std::cout << "\e[49m \e[33m3 \e[49m\e[39m";
                 if(e == 7)
-                    std::cout << "\e[43m \e[30m2 ";
+                    std::cout << "\e[43m \e[30m2 \e[49m\e[39m";
                 if(e == 8)
-                    std::cout << "\e[40m \e[33m1 \e[30m";
+                    std::cout << "\e[49m\e[33m 1 \e[49m\e[39m";
             }
         }
 
-        std::cout << "\e[40m" << std::endl;
+        std::cout << "\e[49m\e[39m" << std::endl;
 
         if (e == 1) {
             a++;
@@ -163,7 +163,7 @@ void Game::printBoardToTerminal() {
             d++;
         }
     }
-    std::cout << "\e[43m   " << "\e[40m \e[33mA " << "\e[43m \e[30mB " << "\e[40m \e[33mC " << "\e[43m \e[30mD " << "\e[40m \e[33mE " << "\e[43m \e[30mF " << "\e[40m \e[33mG " << "\e[43m \e[30mH " << "\e[40m\e[97m" << std::endl;
+    std::cout << "\e[43m   " << "\e[49m \e[33mA " << "\e[43m \e[30mB " << "\e[49m \e[33mC " << "\e[43m \e[30mD " << "\e[49m \e[33mE " << "\e[43m \e[30mF " << "\e[49m \e[33mG " << "\e[43m \e[30mH " << "\e[49m\e[39m" << std::endl;
 }
 
 bool Game::movePiece(int ia, char ca, int ib, char cb) {
