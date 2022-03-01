@@ -237,7 +237,6 @@ bool Game::movePiece(int ia, char ca, int ib, char cb) {
     else if(ib == 8)
         xb = 0;
 
-    
     MoveCalculator calc;
     LinkedList *list;
     list = calc.possibleSquares2DArray(xa, ya, gameBoard);
