@@ -260,14 +260,14 @@ bool Game::movePiece(int ia, char ca, int ib, char cb) {
 
 bool Game::startServer(int port){
     server.start("127.0.0.1", port);
-    server.closeConnection();
+
     return false;
 }
 
 bool Game::connectToServer(std::string ipAddress, int port){
     const char *cstring = ipAddress.c_str();
     NetClient client(cstring, port);
-    client.closeConnection();
+
 
     return false;
 }

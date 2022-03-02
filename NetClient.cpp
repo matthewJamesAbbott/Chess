@@ -27,7 +27,7 @@ NetClient::NetClient(const char *ipAddress, int port) {
     struct sockaddr_in server_address;
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(port);
-    server_address.sin_addr.s_addr = inet_addr("81.4.106.68");
+    server_address.sin_addr.s_addr = inet_addr(ipAddress);
 
     int connection_status = connect(network_socket, (struct sockaddr *) &server_address, sizeof(server_address));
 
@@ -35,7 +35,9 @@ NetClient::NetClient(const char *ipAddress, int port) {
     if (connection_status == -1){
         printf("There was a problem with the connection");
     }
-    std::cout << "we are connected" << std::endl;
+    else{
+        printf("Game is now running as client and is connected\n");
+    }
 
 }
 

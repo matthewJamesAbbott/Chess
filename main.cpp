@@ -12,10 +12,10 @@ int main(int argc, char *argv[]) {
     else {
         for (int i = 0; i < argc; i++) {
             if(!std::strcmp(argv[i], "-s")){
-                std::cout << "Game is now running as server and waiting for a client too connect" << std::endl;
+
 
                 test.startServer(9002);
-
+                std::cout << "Game is now running as server and waiting for a client too connect" << std::endl;
             }
             if(!std::strcmp(argv[i], "-c")) {
 
