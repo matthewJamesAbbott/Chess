@@ -7,12 +7,23 @@
 
 #include <string>
 
+
 class NetClient {
 
+private:
+    int network_socket;
+    int server_socket;
+    std::string client_message;
+
 public:
-    NetClient(char *ip_address, int port);
-    bool Send();
-    std::string Receive();
+    NetClient(const char *ipAddress, int port);
+
+    bool sendMove(std::string message);
+    std::string receivedMove();
+    void closeConnection();
+    char *ipAddress;
+
+
 
 };
 

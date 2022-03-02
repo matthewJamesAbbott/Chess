@@ -1,12 +1,36 @@
 #include <iostream>
 #include "Game.h"
+#include<cstring>
 
-
-int main() {
-
+int main(int argc, char *argv[]) {
     Game test;
     test.initialiseBoard();
     test.printBoardToTerminal();
+
+    if(argc == 1){
+    }
+    else {
+        for (int i = 0; i < argc; i++) {
+            if(!std::strcmp(argv[i], "-s")){
+                std::cout << "Game is now running as server and waiting for a client too connect" << std::endl;
+
+                test.startServer(9002);
+
+            }
+            if(!std::strcmp(argv[i], "-c")) {
+
+                test.connectToServer(argv[i + 1], 9002);
+
+
+
+            }
+            if(!strcmp(argv[i], "--help")){
+
+            }
+
+
+        }
+    }
 
     int x, xa;
     char y, ya;

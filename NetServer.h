@@ -6,10 +6,19 @@
 #define CHESS_NETSERVER_H
 #include <string>
 
+
 class NetServer {
-    NetServer(char *ip_address, int port);
-    bool Send();
-    std::string Receive();
+private:
+    int network_socket;
+    int client_socket;
+    std::string server_message;
+
+public:
+    NetServer();
+    void start(const char *ip_address, int port);
+    bool sendMove(std::string message);
+    std::string receivedMove();
+    void closeConnection();
 
 
 };
