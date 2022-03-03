@@ -2,10 +2,12 @@
 #include "Game.h"
 #include<cstring>
 
+
 int main(int argc, char *argv[]) {
     Game test;
     test.initialiseBoard();
     test.printBoardToTerminal();
+    test.clientServerToggle = 0;
 
     if(argc == 1){
     }
@@ -16,13 +18,15 @@ int main(int argc, char *argv[]) {
 
                 test.startServer(9002);
                 std::cout << "Game is now running as server and waiting for a client too connect" << std::endl;
+                test.clientServerToggle = 1;
+
             }
             if(!std::strcmp(argv[i], "-c")) {
 
-                test.connectToServer(argv[i + 1], 9002);
-
-
-
+                if(test.connectToServer(argv[i + 1], 9002))
+                    test.clientServerToggle = 2;
+                else
+                    test.clientServerToggle = 0;
             }
             if(!strcmp(argv[i], "--help")){
 

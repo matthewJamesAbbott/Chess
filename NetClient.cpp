@@ -13,6 +13,8 @@
 #include <unistd.h>
 #include <string>
 
+
+
 NetClient::NetClient(const char *ipAddress, int port) {
 
 
@@ -50,7 +52,8 @@ bool NetClient::sendMove(std::string message){
 
 std::string NetClient::receivedMove(){
     std::string server_response;
-    recv(network_socket, &server_response, server_response.size(), 0);
+    if(!recv(network_socket, &server_response, server_response.size(), 0));
+        server_response = "";
     return server_response;
 }
 

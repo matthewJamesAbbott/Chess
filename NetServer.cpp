@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include <string>
 
-NetServer::NetServer(){}
+NetServer::NetServer(){    NetClient *client;}
 
 void NetServer::start(const char *ip_address, int port){
 
@@ -53,6 +53,7 @@ void NetServer::closeConnection(){
 std::string NetServer::receivedMove(){
 
     std::string server_response;
-    recv(network_socket, &server_response, server_response.size(), 0);
+    if(!recv(network_socket, &server_response, server_response.size(), 0))
+        server_response = "";
     return server_response;
 }
