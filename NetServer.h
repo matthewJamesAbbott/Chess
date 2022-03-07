@@ -12,12 +12,13 @@ private:
     int network_socket;
     int client_socket;
     std::string server_message;
+    std::string client_message;
 
 public:
     NetServer();
     void start(const char *ip_address, int port);
-    bool sendMove(std::string message);
-    std::string receivedMove();
+    bool sendMove(char* message);
+    void receiveMove();
     void closeConnection();
 
 

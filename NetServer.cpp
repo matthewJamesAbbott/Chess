@@ -13,20 +13,27 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string>
+#include <string.h>
+#include <cstring>
 
-NetServer::NetServer(){    NetClient *client;}
+#define MAX 80
+#define PORT 9006
+
+
+NetServer::NetServer(){    }
 
 void NetServer::start(const char *ip_address, int port){
-
-
+    char buff[MAX];
+    struct sockaddr_in server_address;
     // create a socket
 
     network_socket = socket(AF_INET, SOCK_STREAM, 0);
 
     // specify an address for the socket
-    struct sockaddr_in server_address;
+    bzero(&server_address, sizeof(server_address));
+
     server_address.sin_family = AF_INET;
-    server_address.sin_port = htons(port);
+    server_address.sin_port = htons(PORT);
     server_address.sin_addr.s_addr = htonl(INADDR_ANY);
 
     // bind the socket to our specified IP and port
@@ -36,13 +43,18 @@ void NetServer::start(const char *ip_address, int port){
     std::cout << "listening" << std::endl;
     client_socket = accept(network_socket, NULL, NULL);
 
+
+
 }
 
-bool NetServer::sendMove(std::string message){
+bool NetServer::sendMove(char* message){
 
-    if(send(client_socket, message.c_str(), message.size(), 0))
-        return true;
-    else
+//    for(int i = 0; i < 4; i++)
+//    {
+//        std::cout << message[i] << std::endl;
+//    }
+    message = "this is a test";
+    send(client_socket , message , 5 , 0);
         return false;
 }
 
@@ -50,10 +62,27 @@ void NetServer::closeConnection(){
     close(network_socket);
 }
 
-std::string NetServer::receivedMove(){
+void NetServer::receiveMove(){
 
-    std::string server_response;
-    if(!recv(network_socket, &server_response, server_response.size(), 0))
-        server_response = "";
-    return server_response;
+    char buff[500];
+
+
+            int rMsgSize = recv(client_socket, buff, 500, 0);
+            std::cout << buff << std::endl;
+            if (rMsgSize > 0)
+                std::cout << rMsgSize << std::endl;
+            if (rMsgSize < 0)
+                std::cout << "error" << std::endl;
+            std::cout << buff << std::endl;
+
+            if (rMsgSize == 0)
+            std::cout << "connection failure" << std::endl;
+//
+//    int returnArray[4];
+//    std::cout << returnArray << std::endl;
+//    for (int i = 0; i < 4; i++) {
+//        returnArray[i] = buff[i] - 48;
+//    }
+//
+//    return returnArray;
 }

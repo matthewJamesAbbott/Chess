@@ -255,18 +255,48 @@ bool Game::movePiece(int ia, char ca, int ib, char cb) {
             std::string originalSquare = gameBoard.returnSquare(xa, ya);
             gameBoard.setSquare(xb, yb, originalSquare);
             gameBoard.setSquare(xa, ya, "Empty");
-            if(clientServerToggle == 1){
-                char moveSendArray[3];
-                moveSendArray[0] = xb + 48;
+            std::cout << clientServerToggle << std::endl;
+            if(clientServerToggle == 2){
+                std::cout << "client was not null" << std::endl;
+                int moveSendArray[3];
+                std::cout << "x " << xb << " y " << yb << " x " << xa << " y " << ya << std::endl;
+                moveSendArray[0] = xb;
                 moveSendArray[1] = yb;
-                moveSendArray[2] = xa + 48;
+                moveSendArray[2] = xa;
                 moveSendArray[3] = ya;
-                std::string moveSendString = "";
-                int size = sizeof(moveSendArray) / sizeof(char);
-                for (int i = 0; i < size; i++) {
-                    moveSendString = moveSendString + moveSendArray[i];
+                std::cout << moveSendArray[1];
+                char output[4];
+                for(int i = 0; i < 4; i++)
+                {
+                    output[i] = moveSendArray[i];
+                    std::cout << moveSendArray[i] << std::endl;
+
                 }
-                server.sendMove(moveSendString);
+                output[4] = '\0';
+                //std::cout << moveSendArray << std::endl;
+                std::cout << "about to call sendMove" << std::endl;
+                client->sendMove(output);
+            }
+            if(clientServerToggle == 1){
+                std::cout << "client was not null" << std::endl;
+                int moveSendArray[3];
+                std::cout << "x " << xb << " y " << yb << " x " << xa << " y " << ya << std::endl;
+                moveSendArray[0] = xb;
+                moveSendArray[1] = yb;
+                moveSendArray[2] = xa;
+                moveSendArray[3] = ya;
+                std::cout << moveSendArray[1];
+                char output[4];
+                for(int i = 0; i < 4; i++)
+                {
+                    output[i] = moveSendArray[i];
+                    std::cout << moveSendArray[i] << std::endl;
+
+                }
+                output[4] = '\0';
+                //std::cout << moveSendArray << std::endl;
+                std::cout << "about to call sendMove" << std::endl;
+                server->sendMove(output);
             }
             return true;
         }
@@ -275,67 +305,40 @@ bool Game::movePiece(int ia, char ca, int ib, char cb) {
 }
 
 bool Game::startServer(int port){
-    server.start("127.0.0.1", port);
-    std::thread t;
-    t = std::thread(&Game::receiveThread, this);
+
+    server->start("127.0.0.1", port);
+    clientServerToggle = 1;
     return false;
+}
+
+void Game::receiveMove(){
+
+    std::cout << "testing receive Move" << std::endl;
+//
+//    if(clientServerToggle == 1) {
+//        int *moveArray = server->receiveMove();
+//        std::string piece = gameBoard.returnSquare(moveArray[0], moveArray[1]);
+//        gameBoard.setSquare(moveArray[2], moveArray[3], piece);
+//    }
+//
+//    else if(clientServerToggle == 2) {
+//        int *moveArray = client->receiveMove();
+//        std::string piece = gameBoard.returnSquare(moveArray[0], moveArray[1]);
+//        gameBoard.setSquare(moveArray[2], moveArray[3], piece);
+//    }
+
 }
 
 bool Game::connectToServer(std::string ipAddress, int port){
     const char *cstring = ipAddress.c_str();
-    NetClient* client = new NetClient("127.0.0.1", 9002);
-    std::thread t;
-    t = std::thread(&Game::receiveThread, this);
+    NetClient client(cstring, 9002);
+    std::cout << "client executed" << std::endl;
+    clientServerToggle = 2;
     return false;
 }
 
-void Game::receiveThread(){
-    std::string moveReceived;
-    if(clientServerToggle == 1) {
-        while (true) {
-
-            moveReceived = server.receivedMove();
-            if(moveReceived != "") {
-                char moveArray[moveReceived.size()];
-                std::strcpy(moveArray, moveReceived.c_str());
-                int x = moveArray[0] - 48;
-                char y = moveArray[1];
-                int xa = moveArray[2] - 48;
-                char ya = moveArray[3];
-                this->movePiece(x,y,xa,ya);
-                this->printBoardToTerminal();
-
-            }
-            if(moveReceived == "close connection")
-            {
-                break;
-            }
 
 
-        }
-    }
-    else if(clientServerToggle ==2){
-
-        while (true) {
-
-            moveReceived = client->receivedMove();
-            if(moveReceived != "") {
-                char moveArray[moveReceived.size()];
-                std::strcpy(moveArray, moveReceived.c_str());
-                int x = moveArray[0] - 48;
-                char y = moveArray[1];
-                int xa = moveArray[2] - 48;
-                char ya = moveArray[3];
-                this->movePiece(x,y,xa,ya);
-                this->printBoardToTerminal();
-
-            }
-            if(moveReceived == "close connection")
-            {
-                break;
-            }
-
-        }
-
-    }
+void Game::closePort(){
+    server->closeConnection();
 }

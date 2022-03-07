@@ -13,22 +13,24 @@
 #include <unistd.h>
 #include <string>
 
+#include <string.h>
+
+#define MAX 80
+#define PORT 9006
 
 
 NetClient::NetClient(const char *ipAddress, int port) {
 
 
- //   char ipAddress[16] = "81.4.106.68";
-  //  scanf("%15s", ipAddress);
 
-  //  int port = 9002;
     // create a socket
+    char buff[MAX];
     network_socket = socket(AF_INET, SOCK_STREAM, 0);
 
     // specify an address for the socket
     struct sockaddr_in server_address;
     server_address.sin_family = AF_INET;
-    server_address.sin_port = htons(port);
+    server_address.sin_port = htons(PORT);
     server_address.sin_addr.s_addr = inet_addr(ipAddress);
 
     int connection_status = connect(network_socket, (struct sockaddr *) &server_address, sizeof(server_address));
@@ -43,18 +45,40 @@ NetClient::NetClient(const char *ipAddress, int port) {
 
 }
 
-bool NetClient::sendMove(std::string message){
-    if(send(server_socket, message.c_str(), message.size(), 0))
-        return true;
-    else
+bool NetClient::sendMove(char *message){
+
+//    for(int i = 0; i < 4; i++)
+//    {
+//        std::cout << message[i] << std::endl;
+//    }
+
+    message = "this is a test";
+    send(server_socket , message , 5 , 0);
+
         return false;
 }
 
-std::string NetClient::receivedMove(){
-    std::string server_response;
-    if(!recv(network_socket, &server_response, server_response.size(), 0));
-        server_response = "";
-    return server_response;
+void NetClient::receiveMove(){
+    char buff[500];
+
+
+        int rMsgSize = recv(server_socket, buff, 500, 0);
+        std::cout << buff << std::endl;
+        if(rMsgSize > 0)
+            std::cout << rMsgSize << std::endl;
+        if(rMsgSize < 0)
+            std::cout << "error" << std::endl;
+        if(rMsgSize == 0)
+            std::cout << "connection failure" << std::endl;
+
+        std::cout << buff << std::endl;
+//
+//    int returnArray[4];
+//    for (int i = 0; i < 4; i++) {
+//        returnArray[i] = buff[i] - 48;
+//    }
+//
+//    return returnArray;
 }
 
 void NetClient::closeConnection(){

@@ -15,8 +15,9 @@ private:
     std::string playerOne;
     std::string playerTwo;
     Board gameBoard;
-    NetServer server;
+    NetServer *server;
     NetClient *client;
+
 
 
 
@@ -31,8 +32,10 @@ public:
     void printBoardToTerminal();
     bool startServer(int port);
     bool connectToServer(std::string ipAddress, int port);
-    void receiveThread();
+    void receiveMove();
     int clientServerToggle;
+    void closePort();
+
 
 
 

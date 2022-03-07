@@ -18,8 +18,8 @@ private:
 public:
     NetClient(const char *ipAddress, int port);
 
-    bool sendMove(std::string message);
-    std::string receivedMove();
+    bool sendMove(char* message);
+    void receiveMove();
     void closeConnection();
     char *ipAddress;
 
