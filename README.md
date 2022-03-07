@@ -1,4 +1,7 @@
 # Chess
+
+A Chess game that can be played solo or between two linux boxes as server and client.
+
 ![This is an image](https://github.com/matthewJamesAbbott/Chess/blob/master/chess%20logo.png)
 
 executable can be found in cmake-build-debug directory
