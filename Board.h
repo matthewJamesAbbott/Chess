@@ -4,7 +4,7 @@
 
 #ifndef CHESS_BOARD_H
 #define CHESS_BOARD_H
-
+#include<string>
 class Board {
 
 private:
