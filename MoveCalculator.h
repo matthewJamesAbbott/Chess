@@ -1,5 +1,5 @@
 //
-// Created by squig on 19/2/22.
+// Created by Matthew Abbott on 19/2/22.
 //
 
 #ifndef CHESS_MOVECALCULATOR_H

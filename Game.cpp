@@ -1,13 +1,11 @@
 //
-// Created by squig on 18/2/22.
+// Created by Matthew Abbott on 18/2/22.
 //
+
 #include <iostream>
 #include "Game.h"
 #include "MoveCalculator.h"
-#include "NetServer.h"
-#include "NetClient.h"
-#include <cstring>
-#include <thread>
+
 
 
 Game::Game() {
@@ -255,90 +253,50 @@ bool Game::movePiece(int ia, char ca, int ib, char cb) {
             std::string originalSquare = gameBoard.returnSquare(xa, ya);
             gameBoard.setSquare(xb, yb, originalSquare);
             gameBoard.setSquare(xa, ya, "Empty");
-            std::cout << clientServerToggle << std::endl;
-            if(clientServerToggle == 2){
-                std::cout << "client was not null" << std::endl;
-                int moveSendArray[3];
-                std::cout << "x " << xb << " y " << yb << " x " << xa << " y " << ya << std::endl;
-                moveSendArray[0] = xb;
-                moveSendArray[1] = yb;
-                moveSendArray[2] = xa;
-                moveSendArray[3] = ya;
-                std::cout << moveSendArray[1];
-                char output[4];
-                for(int i = 0; i < 4; i++)
-                {
-                    output[i] = moveSendArray[i];
-                    std::cout << moveSendArray[i] << std::endl;
 
-                }
-                output[4] = '\0';
-                //std::cout << moveSendArray << std::endl;
-                std::cout << "about to call sendMove" << std::endl;
-                client->sendMove(output);
-            }
-            if(clientServerToggle == 1){
-                std::cout << "client was not null" << std::endl;
-                int moveSendArray[3];
-                std::cout << "x " << xb << " y " << yb << " x " << xa << " y " << ya << std::endl;
-                moveSendArray[0] = xb;
-                moveSendArray[1] = yb;
-                moveSendArray[2] = xa;
-                moveSendArray[3] = ya;
-                std::cout << moveSendArray[1];
-                char output[4];
-                for(int i = 0; i < 4; i++)
-                {
-                    output[i] = moveSendArray[i];
-                    std::cout << moveSendArray[i] << std::endl;
 
-                }
-                output[4] = '\0';
-                //std::cout << moveSendArray << std::endl;
-                std::cout << "about to call sendMove" << std::endl;
-                server->sendMove(output);
-            }
+}
+
             return true;
         }
-    }
-    return false;
-}
 
-bool Game::startServer(int port){
-
-    server->start("127.0.0.1", port);
-    clientServerToggle = 1;
-    return false;
-}
-
-void Game::receiveMove(){
-
-    std::cout << "testing receive Move" << std::endl;
-//
-//    if(clientServerToggle == 1) {
-//        int *moveArray = server->receiveMove();
-//        std::string piece = gameBoard.returnSquare(moveArray[0], moveArray[1]);
-//        gameBoard.setSquare(moveArray[2], moveArray[3], piece);
-//    }
-//
-//    else if(clientServerToggle == 2) {
-//        int *moveArray = client->receiveMove();
-//        std::string piece = gameBoard.returnSquare(moveArray[0], moveArray[1]);
-//        gameBoard.setSquare(moveArray[2], moveArray[3], piece);
-//    }
-
-}
-
-bool Game::connectToServer(std::string ipAddress, int port){
-    const char *cstring = ipAddress.c_str();
-    NetClient client(cstring, 9002);
-    std::cout << "client executed" << std::endl;
-    clientServerToggle = 2;
     return false;
 }
 
 
 
-void Game::closePort(){
-    server->closeConnection();
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

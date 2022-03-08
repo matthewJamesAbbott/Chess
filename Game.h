@@ -1,13 +1,11 @@
 //
-// Created by squig on 18/2/22.
+// Created by Matthew Abbott on 18/2/22.
 //
 
 #ifndef CHESS_GAME_H
 #define CHESS_GAME_H
 #include <string>
 #include "Board.h"
-#include "NetServer.h"
-#include "NetClient.h"
 
 class Game{
 
@@ -15,13 +13,6 @@ private:
     std::string playerOne;
     std::string playerTwo;
     Board gameBoard;
-    NetServer *server;
-    NetClient *client;
-
-
-
-
-
 
 public:
     Game();
@@ -30,15 +21,7 @@ public:
     void initialiseBoard();
     bool movePiece(int xa, char ca, int xb, char cb);
     void printBoardToTerminal();
-    bool startServer(int port);
-    bool connectToServer(std::string ipAddress, int port);
-    void receiveMove();
     int clientServerToggle;
-    void closePort();
-
-
-
-
 };
 
 

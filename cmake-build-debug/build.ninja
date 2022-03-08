@@ -96,18 +96,6 @@ build CMakeFiles/Chess.dir/Game.cpp.o: CXX_COMPILER__Chess_Debug /home/squig/CLi
   OBJECT_DIR = CMakeFiles/Chess.dir
   OBJECT_FILE_DIR = CMakeFiles/Chess.dir
 
-build CMakeFiles/Chess.dir/NetClient.cpp.o: CXX_COMPILER__Chess_Debug /home/squig/CLionProjects/Chess/NetClient.cpp || cmake_object_order_depends_target_Chess
-  DEP_FILE = CMakeFiles/Chess.dir/NetClient.cpp.o.d
-  FLAGS = -pthread -g -std=gnu++14
-  OBJECT_DIR = CMakeFiles/Chess.dir
-  OBJECT_FILE_DIR = CMakeFiles/Chess.dir
-
-build CMakeFiles/Chess.dir/NetServer.cpp.o: CXX_COMPILER__Chess_Debug /home/squig/CLionProjects/Chess/NetServer.cpp || cmake_object_order_depends_target_Chess
-  DEP_FILE = CMakeFiles/Chess.dir/NetServer.cpp.o.d
-  FLAGS = -pthread -g -std=gnu++14
-  OBJECT_DIR = CMakeFiles/Chess.dir
-  OBJECT_FILE_DIR = CMakeFiles/Chess.dir
-
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Chess
@@ -116,7 +104,7 @@ build CMakeFiles/Chess.dir/NetServer.cpp.o: CXX_COMPILER__Chess_Debug /home/squi
 #############################################
 # Link the executable Chess
 
-build Chess: CXX_EXECUTABLE_LINKER__Chess_Debug CMakeFiles/Chess.dir/main.cpp.o CMakeFiles/Chess.dir/MoveCalculator.cpp.o CMakeFiles/Chess.dir/Board.cpp.o CMakeFiles/Chess.dir/Game.cpp.o CMakeFiles/Chess.dir/NetClient.cpp.o CMakeFiles/Chess.dir/NetServer.cpp.o
+build Chess: CXX_EXECUTABLE_LINKER__Chess_Debug CMakeFiles/Chess.dir/main.cpp.o CMakeFiles/Chess.dir/MoveCalculator.cpp.o CMakeFiles/Chess.dir/Board.cpp.o CMakeFiles/Chess.dir/Game.cpp.o
   FLAGS = -pthread -g
   OBJECT_DIR = CMakeFiles/Chess.dir
   POST_BUILD = :
