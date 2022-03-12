@@ -245,20 +245,21 @@ bool Game::movePiece(int ia, char ca, int ib, char cb) {
     list = calc.possibleSquares2DArray(xa, ya, gameBoard);
     std::vector<int> moveVector;
     moveVector = list->returnVector();
-    for(int i = 0; i < moveVector.size(); i){
+    for(int i = 0; i < moveVector.size();) {
         int a = moveVector[i];
-        int b = moveVector[i+1];
-        i = i+2;
-        if(xb == a && yb == b) {
+        int b = moveVector[i + 1];
+        std::cout << a << " " << b << " " << std::endl;
+        std::cout << xb << " " << yb << " " << std::endl;
+        std::cout << xa << " " << ya << " " << std::endl;
+        i = i + 2;
+        if (xb == a && yb == b) {
             std::string originalSquare = gameBoard.returnSquare(xa, ya);
             gameBoard.setSquare(xb, yb, originalSquare);
             gameBoard.setSquare(xa, ya, "Empty");
 
-
-}
-
             return true;
         }
+    }
 
     return false;
 }
