@@ -1,6 +1,6 @@
 # Chess
 
-A terminal Chess game that can be played solo or between two devices as server and client.
+A terminal Chess game that can be played solo against the computer or between two devices as server and client.
 
 ![This is an image](https://github.com/matthewJamesAbbott/Chess/blob/master/chess%20logo.png)
 
