@@ -888,8 +888,6 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
 }
 
 bool MoveCalculator::checkCalculator(int x, int y, Board moveBoard) {
-//    std::cout << "x " << x << " y " << y << std::endl;
-//    std::cout << moveBoard.returnSquare(x,y) << std::endl;
     LinkedList *temp;
     std::vector<int> moveVector;
     std::vector<int> returnedVector;
@@ -899,29 +897,18 @@ bool MoveCalculator::checkCalculator(int x, int y, Board moveBoard) {
 
             temp = possibleSquares2DArray(e, i, moveBoard);
             returnedVector = temp->returnVector();
-//            std::cout << "for loop " << e << " " << i << std::endl;
             moveVector.insert(moveVector.end(), returnedVector.begin(), returnedVector.end());
-//            std::cout << "for loop " << e << " " << i << std::endl;
         }
     }
 
     for(int k = 0; k < moveVector.size()/2; k++){
-  //      std::cout << moveVector.size() << std::endl;
-  //      std::cout << k << std::endl;
-
         int a = moveVector[k];
         int b = moveVector[k+1];
         k = k+1;
- //       std::cout << "x " << a << " y " << b << std::endl;
         if(x == a && y == b) {
             return true;
-            std::cout << "check found" << std::endl;
         }
-
-//    std::cout << "test" << std::endl;
-
     }
-    std::cout << "return" << std::endl;
     return false;
 }
 

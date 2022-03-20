@@ -16,16 +16,13 @@ void Tree::addTreeNode(int rank, int x, int y, int xa, int ya){
     newTreeNode->ya = ya;
     if(head==nullptr) {
         head = newTreeNode;
-        std::cout << "root null " << std::endl;
     }
     else{
-        std::cout << "traversing tree to insert" << std::endl;
         TreeNode *current = head;
         TreeNode *parent;
         while(true){
             parent = current;
             if(rank < current->rank){
-                std::cout << "left path taken" << std::endl;
                 current = current->leftTreeNode;
                 if(current == nullptr){
                     parent->leftTreeNode = newTreeNode;
@@ -33,7 +30,6 @@ void Tree::addTreeNode(int rank, int x, int y, int xa, int ya){
                 }
             }
             else{
-                std::cout << "right path taken" << std::endl;
                 current = current->rightTreeNode;
                 if(current == nullptr)
                 {
@@ -53,7 +49,6 @@ void Tree::addTreeNode(int rank, int x, int y, int xa, int ya){
     if(localHead != nullptr){
         moveBoard.setSquare(localHead->xa,localHead->ya,gameBoard.returnSquare(localHead->x,localHead->y));
         moveBoard.setSquare(localHead->x,localHead->y,"Empty");
-        std::cout << "we are about to check for check baby" << std::endl;
         int counter = 0;
         int weight = 0;
         for (int e = 0; e < 8; e++) {
@@ -85,7 +80,6 @@ void Tree::addTreeNode(int rank, int x, int y, int xa, int ya){
                     }
                 }
             }
-            std::cout << "we are about to check for check" << std::endl;
             if (weight / counter > 0)
                 returnTree->addTreeNode((weight + localHead->rank) / (counter + 1), localHead->x, localHead->y,
                                         localHead->xa, localHead->ya);
@@ -120,16 +114,9 @@ int *Engine::resolveMove(Board gameBoard){
     for(int e = 0; e < 8; e++){
         for(int i = 0; i < 8; i++){
             if(gameBoard.returnSquare(e,i).find("Black")) {
-
-
-
-                list = calc.possibleSquares2DArray(e, i, gameBoard);
-                std::cout << "after check" << std::endl;
-
+            list = calc.possibleSquares2DArray(e, i, gameBoard);
                 moveVector = list->returnWeightedVector();
                 for(int j = 0; j < moveVector.size()/3;) {
-                    std::cout << "we are about" << std::endl;
-
                      int a = moveVector[j];
                      int b = moveVector[j + 1];
                      int c = moveVector[j + 2];
@@ -147,11 +134,8 @@ int *Engine::resolveMove(Board gameBoard){
                         else if(gameBoard.returnSquare(e,i).find("King"))
                             c = c - KING;
                     }
-
-                    std::cout << "Rank " << c << std::endl;
                     if(c >= MIN && c <= 10) {
                         moveTree->addTreeNode(c, e, i, a, b);
-                        std::cout << "adding Node " << std::endl;
                     }
                     j = j + 3;
                 }
@@ -160,7 +144,6 @@ int *Engine::resolveMove(Board gameBoard){
             }
         }
     }
-    std::cout << "out of loop" << std::endl;
 /*
     Tree *returnTree = new Tree();
 
@@ -169,7 +152,6 @@ int *Engine::resolveMove(Board gameBoard){
 */
     TreeNode *stepper;
     stepper = moveTree->head;
-    std::cout << "on the road again " << std::endl;
     while(stepper->rightTreeNode != nullptr){
         stepper = stepper->rightTreeNode;
 
@@ -191,11 +173,6 @@ int *Engine::resolveMove(Board gameBoard){
     delete [] moveTree;
 
     int *returnPointer = move;
-
-
-    for(int r = 0; r < 4; r++) {
-        std::cout << move[r] << std::endl;
-    }
     return returnPointer;
 }
 

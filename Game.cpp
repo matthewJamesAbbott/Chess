@@ -60,9 +60,10 @@ void Game::engineMove(){
     Engine *moveEngine = new Engine();
     int *moveArray;
     moveArray = moveEngine->resolveMove(gameBoard);
-    std::cout << "returned to game " << moveArray[3] << std::endl;
     gameBoard.setSquare(moveArray[2], moveArray[3], gameBoard.returnSquare(moveArray[0], moveArray[1]));
     gameBoard.setSquare(moveArray[0], moveArray[1], "Empty");
+
+    //delete [] moveEngine;
 }
 
 void Game::printBoardToTerminal() {
