@@ -5,6 +5,7 @@
 #include "Engine.h"
 #include "MoveCalculator.h"
 #include <iostream>
+#include <vector>
 
 void Tree::addTreeNode(int rank, int x, int y, int xa, int ya){
     TreeNode *newTreeNode = new TreeNode();
@@ -86,15 +87,30 @@ void Tree::addTreeNode(int rank, int x, int y, int xa, int ya){
             }
             std::cout << "we are about to check for check" << std::endl;
             if (weight / counter > 0)
-                returnTree->addTreeNode((weight + localHead->rank) / (counter + 1), localHead->x, localHead->y,localHead->xa, localHead->ya);
-            moveAhead(returnTree, localHead->leftTreeNode, gameBoard);
-            moveAhead(returnTree, localHead->rightTreeNode, gameBoard);
+                returnTree->addTreeNode((weight + localHead->rank) / (counter + 1), localHead->x, localHead->y,
+                                        localHead->xa, localHead->ya);
         }
+        moveAhead(returnTree, localHead->leftTreeNode, gameBoard);
+        moveAhead(returnTree, localHead->rightTreeNode, gameBoard);
+
     }
     return returnTree->head;
 }
 
-
+void Engine::moveVector(TreeNode *localRoot, int base)
+{
+    if(localRoot != nullptr)
+    {
+        moveVector(localRoot->leftTreeNode, base);
+        if(localRoot->rank == base) {
+            returnVector.push_back(localRoot->x);
+            returnVector.push_back(localRoot->y);
+            returnVector.push_back(localRoot->xa);
+            returnVector.push_back(localRoot->ya);
+        }
+        moveVector(localRoot->rightTreeNode, base);
+    }
+}
 
 int *Engine::resolveMove(Board gameBoard){
     Tree *moveTree = new Tree();
@@ -159,11 +175,19 @@ int *Engine::resolveMove(Board gameBoard){
 
 
     }
+    int base = stepper->rank;
+    stepper = moveTree->head;
+    this->moveVector(stepper, base);
+    int test = returnVector.size()/4;
+    int choice = rand() % test;
+    choice = choice * 4;
+
+
     int move[4];
-    move[0] = stepper->x;
-    move[1] = stepper->y;
-    move[2] = stepper->xa;
-    move[3] = stepper->ya;
+    move[0] = returnVector[choice];
+    move[1] = returnVector[choice + 1];
+    move[2] = returnVector[choice + 2];
+    move[3] = returnVector[choice + 3];
     delete [] moveTree;
 
     int *returnPointer = move;

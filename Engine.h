@@ -6,6 +6,7 @@
 #define CHESS_ENGINE_H
 
 #include "Board.h"
+#include <vector>
 
 
 #define SIDE "White"
@@ -41,7 +42,8 @@ class Engine {
 public:
     int *resolveMove(Board gameBoard);
     TreeNode *moveAhead(Tree *returnTree, TreeNode *localHead, Board gameBoard);
-
+    std::vector<int> returnVector;
+    void moveVector(TreeNode *localRoot, int base);
 
 };
 
