@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Game.h"
 #include "MoveCalculator.h"
+#include "Engine.h"
 
 
 
@@ -53,6 +54,15 @@ void Game::initialiseBoard(){
     gameBoard.setSquare(7,5,"Black Right Bishop");
     gameBoard.setSquare(7,6,"Black Right Knight");
     gameBoard.setSquare(7,7,"Black Right Rook");
+}
+
+void Game::engineMove(){
+    Engine *moveEngine = new Engine();
+    int *moveArray;
+    moveArray = moveEngine->resolveMove(gameBoard);
+    std::cout << "returned to game " << moveArray[3] << std::endl;
+    gameBoard.setSquare(moveArray[2], moveArray[3], gameBoard.returnSquare(moveArray[0], moveArray[1]));
+    gameBoard.setSquare(moveArray[0], moveArray[1], "Empty");
 }
 
 void Game::printBoardToTerminal() {
@@ -248,9 +258,6 @@ bool Game::movePiece(int ia, char ca, int ib, char cb) {
     for(int i = 0; i < moveVector.size();) {
         int a = moveVector[i];
         int b = moveVector[i + 1];
-        std::cout << a << " " << b << " " << std::endl;
-        std::cout << xb << " " << yb << " " << std::endl;
-        std::cout << xa << " " << ya << " " << std::endl;
         i = i + 2;
         if (xb == a && yb == b) {
             std::string originalSquare = gameBoard.returnSquare(xa, ya);

@@ -13,6 +13,7 @@ public:
 
     int x;
     int y;
+    int squareRank;
     Node *next;
 
 };
@@ -27,9 +28,10 @@ public:
     }
 
 
-    virtual ~LinkedList();; // destructor
-    void addNode(int x, int y);
+    virtual ~LinkedList(); // destructor
+    void addNode(int x, int y, int takenSquare);
     std::vector<int> returnVector();
+    std::vector<int> returnWeightedVector();
 
 };
 
@@ -47,6 +49,7 @@ public:
     MoveCalculator();
     LinkedList *possibleSquares2DArray(int x, int y,Board moveBoard);
     bool checkCalculator(int x,int y,Board moveBoard);
+    int evaluatePiece(int x, int y, Board moveBoard);
 
 };
 

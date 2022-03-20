@@ -358,6 +358,8 @@ int main(int argc, char *argv[]) {
             }
             chess.movePiece(x, y, xa, ya);
             chess.printBoardToTerminal();
+            chess.engineMove();
+            chess.printBoardToTerminal();
         }
     }
     return 0;

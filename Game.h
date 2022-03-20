@@ -20,6 +20,7 @@ public:
     void setPlayerTwo(std::string name);
     void initialiseBoard();
     bool movePiece(int xa, char ca, int xb, char cb);
+    void engineMove();
     void printBoardToTerminal();
     int clientServerToggle;
 };
