@@ -161,6 +161,7 @@ int *Engine::resolveMove(Board gameBoard){
     stepper = moveTree->head;
     this->moveVector(stepper, base);
     int test = returnVector.size()/4;
+    srand(time(NULL));
     int choice = rand() % test;
     choice = choice * 4;
 
