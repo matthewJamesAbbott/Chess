@@ -63,7 +63,7 @@ void Game::engineMove(){
     gameBoard.setSquare(moveArray[2], moveArray[3], gameBoard.returnSquare(moveArray[0], moveArray[1]));
     gameBoard.setSquare(moveArray[0], moveArray[1], "Empty");
 
-    //delete [] moveEngine;
+
 }
 
 void Game::printBoardToTerminal() {

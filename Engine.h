@@ -41,7 +41,6 @@ public:
 class Engine {
 public:
     int *resolveMove(Board gameBoard);
-    TreeNode *moveAhead(Tree *returnTree, TreeNode *localHead, Board gameBoard);
     std::vector<int> returnVector;
     void moveVector(TreeNode *localRoot, int base);
 
