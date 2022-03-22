@@ -75,8 +75,6 @@ int *Engine::resolveMove(Board gameBoard){
                     }
                     j = j + 3;
                 }
-
-
             }
         }
     }
@@ -90,11 +88,13 @@ int *Engine::resolveMove(Board gameBoard){
     int base = stepper->rank;
     stepper = moveTree->head;
     this->moveVector(stepper, base);
-    int test = returnVector.size()/4;
-    srand(time(NULL));
-    int choice = rand() % test;
-    choice = choice * 4;
-
+    int choice = 1;
+    if(returnVector.size() >= 4) {
+        int test = returnVector.size() / 4;
+        srand(time(NULL));
+        choice = rand() % test;
+        choice = choice * 4;
+    }
 
     int move[4];
     move[0] = returnVector[choice];
