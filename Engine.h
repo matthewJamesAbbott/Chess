@@ -18,7 +18,7 @@
 #define KING 10
 #define EMPTY 0
 #define MIN  0
-#define MAX  5
+#define MAX  10
 
 
 class TreeNode {

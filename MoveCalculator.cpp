@@ -72,20 +72,27 @@ LinkedList::~LinkedList() {}
 MoveCalculator::MoveCalculator() {}
 
 int MoveCalculator::evaluatePiece(int x, int y, Board moveBoard) {
-    if(moveBoard.returnSquare(x,y).find("Pawn"))
-        return PAWN;
-    else if(moveBoard.returnSquare(x,y).find("Knight"))
-        return KNIGHT;
-    else if(moveBoard.returnSquare(x,y).find("Bishop"))
-        return BISHOP;
-    else if(moveBoard.returnSquare(x,y).find("Rook"))
-        return ROOK;
-    else if(moveBoard.returnSquare(x,y).find("Queen"))
-        return QUEEN;
-    else if(moveBoard.returnSquare(x,y).find("King"))
-        return KING;
-    else if(moveBoard.returnSquare(x,y).find("Empty"))
-        return EMPTY;
+
+    if(moveBoard.returnSquare(x,y) == "Black Pawn") {
+        return 1;
+    }
+    else if(moveBoard.returnSquare(x,y) == "Black Left Knight" || moveBoard.returnSquare(x,y) == "Black Right Knight") {
+        return 3;
+    }
+    else if(moveBoard.returnSquare(x,y) == "Black Left Bishop" || moveBoard.returnSquare(x,y) == "Black Right Bishop") {
+        return 4;
+    }
+    else if(moveBoard.returnSquare(x,y) == "Black Left Rook" || moveBoard.returnSquare(x,y) == "Black Right Rook"){
+        return 5;}
+    else if(moveBoard.returnSquare(x,y) == "Black Queen") {
+        return 9;
+    }
+    else if(moveBoard.returnSquare(x,y) == "Black King") {
+        return 10;
+    }
+    else if(moveBoard.returnSquare(x,y) == "Empty") {
+        return 0;
+    }
 }
 
 LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard) {
@@ -141,7 +148,6 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                 if(moveBoard.returnSquare(i,y) == "Empty")
                     list->addNode(i,y, this->evaluatePiece(i,y, moveBoard));
                 else if((x < 8) && (!moveBoard.returnSquare(i,y).find("Black"))) {
-                    std::cout << "you have taken " << moveBoard.returnSquare(i,y) << std::endl;
                     list->addNode(i, y, this->evaluatePiece(i,y, moveBoard));
                     break;
                 }
@@ -152,7 +158,6 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                 if(moveBoard.returnSquare(i,y) == "Empty")
                     list->addNode(i,y, this->evaluatePiece(i,y, moveBoard));
                 else if((x >= 0 ) && (!moveBoard.returnSquare(i,y).find("Black"))) {
-                    std::cout << "you have taken " << moveBoard.returnSquare(i,y) << std::endl;
                     list->addNode(i, y,this->evaluatePiece(i,y, moveBoard));
                     break;
                 }
@@ -505,10 +510,12 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                 list->addNode(x+1,y, this->evaluatePiece(x+1,y, moveBoard));
             if(x == 1 && moveBoard.returnSquare(x+1,y) == "Empty" && moveBoard.returnSquare(x+2,y) == "Empty")
                 list->addNode(x+2,y, this->evaluatePiece(x+2,y, moveBoard));
-            if(x != 7 && y != 7 && (!moveBoard.returnSquare(x+1,y+1).find("Black")))
-                list->addNode(x+1,y+1, this->evaluatePiece(x+1,y+1, moveBoard));
-            if(x != 7 && y != 0 && (!moveBoard.returnSquare(x+1,y-1).find("Black")))
-                list->addNode(x+1,y-1, this->evaluatePiece(x+1,y-1, moveBoard));
+            if(x != 7 && y != 7 && (!moveBoard.returnSquare(x+1,y+1).find("Black"))) {
+                list->addNode(x + 1, y + 1, this->evaluatePiece(x + 1, y + 1, moveBoard));
+            }
+            if(x != 7 && y != 0 && (!moveBoard.returnSquare(x+1,y-1).find("Black"))) {
+                list->addNode(x + 1, y - 1, this->evaluatePiece(x + 1, y - 1, moveBoard));
+            }
             return list;
 
         case 10: // Black Left Rook Moves
@@ -894,14 +901,16 @@ bool MoveCalculator::checkCalculator(int x, int y, Board moveBoard) {
 
     for (int e = 0; e < 8; e++) {
         for (int i = 0; i < 8; i++) {
-
-            temp = possibleSquares2DArray(e, i, moveBoard);
-            returnedVector = temp->returnVector();
-            moveVector.insert(moveVector.end(), returnedVector.begin(), returnedVector.end());
+            if(moveBoard.returnSquare(e,i).find("Black")) {
+                temp = possibleSquares2DArray(e, i, moveBoard);
+                returnedVector = temp->returnVector();
+                moveVector.insert(moveVector.end(), returnedVector.begin(), returnedVector.end());
+            }
         }
     }
 
     for(int k = 0; k < moveVector.size()/2; k++){
+
         int a = moveVector[k];
         int b = moveVector[k+1];
         k = k+1;

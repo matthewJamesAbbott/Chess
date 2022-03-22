@@ -6,6 +6,7 @@
 #include "MoveCalculator.h"
 #include <vector>
 
+
 void Tree::addTreeNode(int rank, int x, int y, int xa, int ya){
     TreeNode *newTreeNode = new TreeNode();
     newTreeNode->rank = rank;
@@ -69,44 +70,7 @@ int *Engine::resolveMove(Board gameBoard){
                      int a = moveVector[j];
                      int b = moveVector[j + 1];
                      int c = moveVector[j + 2];
-                     if(!calc.checkCalculator(a,b, gameBoard)){
-                        if(gameBoard.returnSquare(a,b).find("Pawn"))
-                            c = c - PAWN;
-                        else if(gameBoard.returnSquare(a,b).find("Knight"))
-                            c = c - KNIGHT;
-                        else if(gameBoard.returnSquare(a,b).find("Bishop"))
-                            c = c - BISHOP;
-                        else if(gameBoard.returnSquare(a,b).find("Rook"))
-                            c = c - ROOK;
-                        else if(gameBoard.returnSquare(a,b).find("Queen"))
-                            c = c - QUEEN;
-                        else if(gameBoard.returnSquare(a,b).find("King"))
-                            c = c - KING;
-                    }
-                     else{
-                         if(!gameBoard.returnSquare(a,b).find("Pawn")) {
-                             c = c + PAWN;
-                         }
-                         else if(!gameBoard.returnSquare(a,b).find("Knight")) {
-                             c = c + KNIGHT;
-                         }
-                         else if(!gameBoard.returnSquare(a,b).find("Bishop")) {
-                             c = c + BISHOP;
-                         }
-                         else if(!gameBoard.returnSquare(a,b).find("Rook")) {
-                             c = c + ROOK;
-                         }
-                         else if(!gameBoard.returnSquare(a,b).find("Queen")) {
-                             c = c + QUEEN;
-                         }
-                         else if(!gameBoard.returnSquare(a,b).find("King")) {
-                             c = c + KING;
-                         }
-                         else if(!gameBoard.returnSquare(a,b).find("Empty")) {
-                             c = 0;
-                         }
-                     }
-                    if(c >= MIN && c <= 10) {
+                    if(c >= MIN && c <= MAX) {
                         moveTree->addTreeNode(c, e, i, a, b);
                     }
                     j = j + 3;
