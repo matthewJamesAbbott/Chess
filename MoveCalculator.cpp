@@ -74,7 +74,7 @@ MoveCalculator::MoveCalculator() {}
 int MoveCalculator::evaluatePiece(int x, int y, Board moveBoard) {
 
     if(moveBoard.returnSquare(x,y) == "Black Pawn") {
-        return 1;
+        return 2;
     }
     else if(moveBoard.returnSquare(x,y) == "Black Left Knight" || moveBoard.returnSquare(x,y) == "Black Right Knight") {
         return 3;
@@ -83,7 +83,8 @@ int MoveCalculator::evaluatePiece(int x, int y, Board moveBoard) {
         return 4;
     }
     else if(moveBoard.returnSquare(x,y) == "Black Left Rook" || moveBoard.returnSquare(x,y) == "Black Right Rook"){
-        return 5;}
+        return 5;
+    }
     else if(moveBoard.returnSquare(x,y) == "Black Queen") {
         return 9;
     }
