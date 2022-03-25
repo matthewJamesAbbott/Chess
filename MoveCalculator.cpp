@@ -25,11 +25,11 @@ void LinkedList::addNode(int x, int y, int squareRank) {
         head = newnode;
     }
     else {
-        Node* temp = head; // head is not NULL
+        Node* temp = head;
         while (temp->next != NULL) {
-            temp = temp->next; // go to end of list
+            temp = temp->next;
         }
-        temp->next = newnode; // linking to newnode
+        temp->next = newnode;
     }
 }
 

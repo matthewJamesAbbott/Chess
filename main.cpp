@@ -33,6 +33,7 @@ int main(int argc, char *argv[]) {
     }
     int x, xa;
     char y, ya;
+
     if(chess.clientServerToggle == 2) {
         chess.initialiseBoard();
         chess.printBoardToTerminal();
@@ -131,7 +132,7 @@ int main(int argc, char *argv[]) {
 
             if(rMsgSize < 0)
             {
-                cout << "Packet recieve failed." << endl;
+                cout << "Packet receive failed." << endl;
                 return 0;
             }
             else if(rMsgSize == 0)
@@ -292,6 +293,7 @@ int main(int argc, char *argv[]) {
 
     if(chess.clientServerToggle == 0) {
         chess.initialiseBoard();
+        std::system("clear");
         chess.printBoardToTerminal();
         while (true) {
             while (true) {
@@ -357,8 +359,10 @@ int main(int argc, char *argv[]) {
                 }
             }
             chess.movePiece(x, y, xa, ya);
+            std::system("clear");
             chess.printBoardToTerminal();
             chess.engineMove();
+            std::system("clear");
             chess.printBoardToTerminal();
         }
     }

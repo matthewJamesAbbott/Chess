@@ -5,6 +5,7 @@
 #include "Engine.h"
 #include "MoveCalculator.h"
 #include <vector>
+#include <iostream>
 
 
 void Tree::addTreeNode(int rank, int x, int y, int xa, int ya){
@@ -61,15 +62,18 @@ int *Engine::resolveMove(Board gameBoard){
     MoveCalculator calc;
     LinkedList *list;
     std::vector<int> moveVector;
+    int base = 0;
     for(int e = 0; e < 8; e++){
         for(int i = 0; i < 8; i++){
             if(gameBoard.returnSquare(e,i).find("Black")) {
-            list = calc.possibleSquares2DArray(e, i, gameBoard);
+                list = calc.possibleSquares2DArray(e, i, gameBoard);
                 moveVector = list->returnWeightedVector();
                 for(int j = 0; j < moveVector.size()/3;) {
-                     int a = moveVector[j];
-                     int b = moveVector[j + 1];
-                     int c = moveVector[j + 2];
+                    int a = moveVector[j];
+                    int b = moveVector[j + 1];
+                    int c = moveVector[j + 2];
+                    if (c > base)
+                        base = c;
                     if(c >= MIN && c <= MAX) {
                         moveTree->addTreeNode(c, e, i, a, b);
                     }
@@ -81,14 +85,8 @@ int *Engine::resolveMove(Board gameBoard){
 
     TreeNode *stepper;
     stepper = moveTree->head;
-    while(stepper->rightTreeNode != nullptr){
-        stepper = stepper->rightTreeNode;
-
-    }
-    int base = stepper->rank;
-    stepper = moveTree->head;
     this->moveVector(stepper, base);
-    int choice = 1;
+    int choice = 0;
     if(returnVector.size() >= 4) {
         int test = returnVector.size() / 4;
         srand(time(NULL));
