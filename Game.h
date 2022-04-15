@@ -6,10 +6,12 @@
 #define CHESS_GAME_H
 #include <string>
 #include "Board.h"
+#include "MoveRecorder.h"
 
 class Game{
 
 private:
+    MoveRecorder rec;
     std::string playerOne;
     std::string playerTwo;
     Board gameBoard;

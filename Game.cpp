@@ -6,7 +6,7 @@
 #include "Game.h"
 #include "MoveCalculator.h"
 #include "Engine.h"
-
+#include "MoveRecorder.h"
 
 
 Game::Game() {
@@ -26,8 +26,8 @@ void Game::initialiseBoard(){
     gameBoard.setSquare(0,0,"White Left Rook");
     gameBoard.setSquare(0,1,"White Left Knight");
     gameBoard.setSquare(0,2,"White Left Bishop");
-    gameBoard.setSquare(0,3,"White Queen");
-    gameBoard.setSquare(0,4,"White King");
+    gameBoard.setSquare(0,3,"White King");
+    gameBoard.setSquare(0,4,"White Queen");
     gameBoard.setSquare(0,5,"White Right Bishop");
     gameBoard.setSquare(0,6,"White Right Knight");
     gameBoard.setSquare(0,7,"White Right Rook");
@@ -49,8 +49,8 @@ void Game::initialiseBoard(){
     gameBoard.setSquare(7,0,"Black Left Rook");
     gameBoard.setSquare(7,1,"Black Left Knight");
     gameBoard.setSquare(7,2,"Black Left Bishop");
-    gameBoard.setSquare(7,3,"Black Queen");
-    gameBoard.setSquare(7,4,"Black King");
+    gameBoard.setSquare(7,3,"Black King");
+    gameBoard.setSquare(7,4,"Black Queen");
     gameBoard.setSquare(7,5,"Black Right Bishop");
     gameBoard.setSquare(7,6,"Black Right Knight");
     gameBoard.setSquare(7,7,"Black Right Rook");
@@ -62,6 +62,7 @@ void Game::engineMove(){
     moveArray = moveEngine->resolveMove(gameBoard);
     gameBoard.setSquare(moveArray[2], moveArray[3], gameBoard.returnSquare(moveArray[0], moveArray[1]));
     gameBoard.setSquare(moveArray[0], moveArray[1], "Empty");
+    rec.recordMove(moveArray[0],moveArray[1],moveArray[2],moveArray[3],gameBoard);
 
 
 }
@@ -253,6 +254,7 @@ bool Game::movePiece(int ia, char ca, int ib, char cb) {
 
     MoveCalculator calc;
     LinkedList *list;
+
     list = calc.possibleSquares2DArray(xa, ya, gameBoard);
     std::vector<int> moveVector;
     moveVector = list->returnVector();
@@ -262,9 +264,18 @@ bool Game::movePiece(int ia, char ca, int ib, char cb) {
         i = i + 2;
         if (xb == a && yb == b) {
             std::string originalSquare = gameBoard.returnSquare(xa, ya);
-            gameBoard.setSquare(xb, yb, originalSquare);
-            gameBoard.setSquare(xa, ya, "Empty");
+            if(b == 1 && ya == 3 && gameBoard.returnSquare(xa, ya).find("King")){
+                gameBoard.setSquare(xb,yb,originalSquare);
+                gameBoard.setSquare(xb,2, gameBoard.returnSquare(xa,0));
+                gameBoard.setSquare(xb,0, "Empty");
+                gameBoard.setSquare(xb,ya, "Empty");
+            }
 
+            else{
+                gameBoard.setSquare(xb, yb, originalSquare);
+                gameBoard.setSquare(xa, ya, "Empty");
+            }
+            rec.recordMove(xa,ya,xb,yb,gameBoard);
             return true;
         }
     }

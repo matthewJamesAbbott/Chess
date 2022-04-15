@@ -6,6 +6,9 @@
 #include "MoveCalculator.h"
 #include "Board.h"
 #include <iostream>
+#include <fstream>
+#include <string>
+
 
 #define PAWN 1
 #define KNIGHT 3
@@ -95,6 +98,60 @@ int MoveCalculator::evaluatePiece(int x, int y, Board moveBoard) {
         return 0;
     }
 }
+
+bool MoveCalculator::castleCheck(int side) {
+    std::ifstream fileHandle;
+    std::string line;
+    fileHandle.open("Chess.txt");
+    while(std::getline(fileHandle, line)){
+        if(side == 1) {
+            if(line.find("(0,3") || line.find("(0,0")) {
+                fileHandle.close();
+                return false;
+            }
+        }
+        else if(side == 0) {
+
+            if(!line.find("(7,3") || !line.find("(7,0")) {
+                fileHandle.close();
+                return false;
+            }
+        }
+    }
+    fileHandle.close();
+    return true;
+}
+
+int MoveCalculator::enPassantCheck(int side){
+    std::ifstream fileHandle;
+    std::string line;
+    int turn = 0;
+    fileHandle.open("Chess.txt");
+    while(std::getline(fileHandle, line)){
+        if(line.find("[")){
+            turn = line.at(1) + '0';
+        }
+    }
+    while(std::getline(fileHandle, line)){
+        if(line.find(turn - '0')){
+            std::getline(fileHandle,line);
+            break;
+        }
+    }
+    int x = line.at(1) + '0';
+    int y = line.at(3) + '0';
+    int xa = line.at(5) + '0';
+    int ya = line.at(7) + '0';
+
+    if(side == 0 && x == 6 && xa == 4 && y == ya){
+        return y;
+    }
+    if(side == 1 && x == 1 && xa == 3 && y == ya){
+        return y;
+    }
+    return 10;
+}
+
 
 LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard) {
 
@@ -382,6 +439,8 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                 list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard));
             else if(x > 0 && y > 0 && (!moveBoard.returnSquare(x-1,y-1).find("Black")))
                 list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard));
+            else if(this->castleCheck(1) && moveBoard.returnSquare(1,1) == "Empty" && moveBoard.returnSquare(1,2) == "Empty")
+                list->addNode(x,y-2,1);
             return list;
 
         case 6: // White Right Bishop Moves
@@ -514,6 +573,7 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
             if(x != 7 && y != 7 && (!moveBoard.returnSquare(x+1,y+1).find("Black"))) {
                 list->addNode(x + 1, y + 1, this->evaluatePiece(x + 1, y + 1, moveBoard));
             }
+
             if(x != 7 && y != 0 && (!moveBoard.returnSquare(x+1,y-1).find("Black"))) {
                 list->addNode(x + 1, y - 1, this->evaluatePiece(x + 1, y - 1, moveBoard));
             }
@@ -583,7 +643,7 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                 list->addNode(x-2,y+1, this->evaluatePiece(x-2,y+1, moveBoard));
             else if(x > 1 && y < 7 && (!moveBoard.returnSquare(x-2,y+1).find("White")))
                 list->addNode(x-2,y+1, this->evaluatePiece(x-2,y+1, moveBoard));
-            if(x > 1 && y < 0 && moveBoard.returnSquare(x-2, y-1) == "Empty")
+            if(x > 1 && y > 0 && moveBoard.returnSquare(x-2, y-1) == "Empty")
                 list->addNode(x-2,y-1, this->evaluatePiece(x-2,y-1, moveBoard));
             else if(x > 1 && y > 0 && (!moveBoard.returnSquare(x-2,y-1).find("White")))
                 list->addNode(x-2,y-1, this->evaluatePiece(x-2,y-1, moveBoard));
@@ -756,6 +816,8 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                 list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard));
             else if(x > 0 && y > 0 && (!moveBoard.returnSquare(x-1,y-1).find("White")))
                 list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard));
+            else if(this->castleCheck(0) && moveBoard.returnSquare(7,1) == "Empty" && moveBoard.returnSquare(7,2) == "Empty")
+                list->addNode(x, y - 2, 1);
             return list;
 
         case 15: // Black Right Bishop Moves

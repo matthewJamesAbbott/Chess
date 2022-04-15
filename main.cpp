@@ -4,6 +4,8 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <fstream>
+#include <string>
 
 #define MAX 80
 #define PORT 9008
@@ -12,6 +14,10 @@ using namespace std;
 int main(int argc, char *argv[]) {
     
     Game chess;
+    std::cout << "Please Enter Name for Player" << std::endl;
+    std::string name;
+    std::cin >> name;
+    chess.setPlayerOne(name);
     
     if(argc == 1){chess.clientServerToggle = 0;
     }
@@ -292,6 +298,7 @@ int main(int argc, char *argv[]) {
     }
 
     if(chess.clientServerToggle == 0) {
+        std::remove("Chess.txt");
         chess.initialiseBoard();
         std::system("clear");
         chess.printBoardToTerminal();
@@ -358,12 +365,13 @@ int main(int argc, char *argv[]) {
                     ya = 0;
                 }
             }
-            chess.movePiece(x, y, xa, ya);
-            std::system("clear");
-            chess.printBoardToTerminal();
-            chess.engineMove();
-            std::system("clear");
-            chess.printBoardToTerminal();
+            if(chess.movePiece(x, y, xa, ya)) {
+                std::system("clear");
+                chess.printBoardToTerminal();
+                chess.engineMove();
+                std::system("clear");
+                chess.printBoardToTerminal();
+            }
         }
     }
     return 0;

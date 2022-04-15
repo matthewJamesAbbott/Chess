@@ -45,7 +45,8 @@ private:
     int blackKingY = 0;
 
 public:
-
+    static bool castleCheck(int side);
+    static int enPassantCheck(int side);
     MoveCalculator();
     LinkedList *possibleSquares2DArray(int x, int y,Board moveBoard);
     bool checkCalculator(int x,int y,Board moveBoard);
