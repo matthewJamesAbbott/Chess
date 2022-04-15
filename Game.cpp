@@ -270,6 +270,15 @@ bool Game::movePiece(int ia, char ca, int ib, char cb) {
                 gameBoard.setSquare(xb,0, "Empty");
                 gameBoard.setSquare(xb,ya, "Empty");
             }
+            else if(a == 2 || a == 5 && originalSquare.find("Pawn") && gameBoard.returnSquare(a,b) == "Empty"){
+                gameBoard.setSquare(xb,yb, originalSquare);
+                gameBoard.setSquare(xa,ya, "Empty");
+                if(a == 2){
+                     gameBoard.setSquare(xb+1,yb, "Empty");
+                }
+                if(a == 5)
+                    gameBoard.setSquare(xb-1,yb, "Empty");
+            }
 
             else{
                 gameBoard.setSquare(xb, yb, originalSquare);

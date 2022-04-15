@@ -128,25 +128,25 @@ int MoveCalculator::enPassantCheck(int side){
     int turn = 0;
     fileHandle.open("Chess.txt");
     while(std::getline(fileHandle, line)){
-        if(line.find("[")){
-            turn = line.at(1) + '0';
-        }
+        if(!line.find("["))
+            turn = line.at(1) - 48;
     }
+    fileHandle.close();
+    fileHandle.open("Chess.txt");
     while(std::getline(fileHandle, line)){
-        if(line.find(turn - '0')){
-            std::getline(fileHandle,line);
+        if(line.find("[" + std::to_string(turn))){
             break;
         }
     }
-    int x = line.at(1) + '0';
-    int y = line.at(3) + '0';
-    int xa = line.at(5) + '0';
-    int ya = line.at(7) + '0';
+    int x = line.at(1) - 48;
+    int y = line.at(3) - 48;
+    int xa = line.at(5) - 48;
+    int ya = line.at(7) - 48;
 
-    if(side == 0 && x == 6 && xa == 4 && y == ya){
+    if(side == 0 && x == 1 && xa == 3 && y == ya){
         return y;
     }
-    if(side == 1 && x == 1 && xa == 3 && y == ya){
+    if(side == 1 && x == 6 && xa == 4 && y == ya){
         return y;
     }
     return 10;
@@ -950,6 +950,8 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                 list->addNode(x-1,y+1, this->evaluatePiece(x-1,y+1, moveBoard));
             if(x != 0 && y != 0 && moveBoard.returnSquare(x-1,y-1) != "Empty")
                 list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard));
+            if(x == 3 && this->enPassantCheck(0) != 10)
+                list->addNode(x-1,this->enPassantCheck(0),2);
             return list;
 
         case 19: // Empty Square
