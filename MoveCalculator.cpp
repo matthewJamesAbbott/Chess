@@ -19,7 +19,6 @@
 #define EMPTY 0
 
 void LinkedList::addNode(int x, int y, int squareRank) {
-    std::cout << "insert to list x " << x << " y " << y << " rank " << squareRank << std::endl;
     Node* newnode = new Node();
     newnode->x = x;
     newnode->y = y;
@@ -64,7 +63,6 @@ std::vector<int> LinkedList::returnWeightedVector(){
         moveVector.push_back(temp->x);
         moveVector.push_back(temp->y);
         moveVector.push_back(temp->squareRank);
-        std::cout << "moveVector x " << temp->x << " y " << temp->y << " rank " << temp->squareRank << std::endl;
         temp = temp->next;
     }
     return moveVector;
@@ -143,8 +141,6 @@ int MoveCalculator::enPassantCheck(int side){
         }
     }
     if(line.empty() == 0) {
-        std::cout << line << std::endl;
-        std::cout << turn << std::endl;
         int x = line.at(1) - 48;
         int y = line.at(3) - 48;
         int xa = line.at(5) - 48;
@@ -583,10 +579,10 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
 
 
 
-            if(x != 7 && y != 7 && moveBoard.returnSquare(x+1,y+1) != "Empty")
+            if(x != 7 && y != 7 && (!moveBoard.returnSquare(x+1,y+1).find("Black")))
                 list->addNode(x+1,y+1, this->evaluatePiece(x+1,y+1, moveBoard));
 
-            if(x != 7 && y != 0 && moveBoard.returnSquare(x+1,y-1) != "Empty")
+            if(x != 7 && y != 0 && (!moveBoard.returnSquare(x+1,y-1).find("Black")))
                 list->addNode(x+1,y-1, this->evaluatePiece(x+1,y-1, moveBoard));
 
 
