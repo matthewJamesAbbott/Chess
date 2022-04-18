@@ -4,9 +4,10 @@
 
 #include <iostream>
 #include "Game.h"
+#include "Board.h"
 #include "MoveCalculator.h"
 #include "Engine.h"
-#include "MoveRecorder.h"
+
 
 
 Game::Game() {
@@ -17,9 +18,11 @@ void Game::setPlayerOne(std::string name){
     playerOne = name;
 }
 
+
 void Game::setPlayerTwo(std::string name){
     playerTwo = name;
 }
+
 
 void Game::initialiseBoard(){
 
@@ -57,7 +60,7 @@ void Game::initialiseBoard(){
 }
 
 void Game::engineMove(){
-    Engine *moveEngine = new Engine();
+
     int *moveArray;
     moveArray = moveEngine->resolveMove(gameBoard);
     gameBoard.setSquare(moveArray[2], moveArray[3], gameBoard.returnSquare(moveArray[0], moveArray[1]));
@@ -254,6 +257,13 @@ bool Game::movePiece(int ia, char ca, int ib, char cb) {
 
     MoveCalculator calc;
     LinkedList *list;
+    Board checkBoard = gameBoard;
+    if(calc.checkMateTest(gameBoard,0)){
+        std::cout << "Check Mate Computer Wins" << std::endl;
+        return false;
+    }
+
+    
 
     list = calc.possibleSquares2DArray(xa, ya, gameBoard);
     std::vector<int> moveVector;
@@ -263,31 +273,52 @@ bool Game::movePiece(int ia, char ca, int ib, char cb) {
         int b = moveVector[i + 1];
         i = i + 2;
         if (xb == a && yb == b) {
-            std::string originalSquare = gameBoard.returnSquare(xa, ya);
-            if(b == 1 && ya == 3 && gameBoard.returnSquare(xa, ya).find("King")){
-                gameBoard.setSquare(xb,yb,originalSquare);
-                gameBoard.setSquare(xb,2, gameBoard.returnSquare(xa,0));
-                gameBoard.setSquare(xb,0, "Empty");
-                gameBoard.setSquare(xb,ya, "Empty");
+            std::string originalSquare = checkBoard.returnSquare(xa, ya);
+            if(b == 1 && ya == 3 && checkBoard.returnSquare(xa, ya).find("King")){
+                checkBoard.setSquare(xb,yb,originalSquare);
+                checkBoard.setSquare(xb,2, checkBoard.returnSquare(xa,0));
+                checkBoard.setSquare(xb,0, "Empty");
+                checkBoard.setSquare(xb,ya, "Empty");
             }
-            else if(a == 2 && originalSquare == "Black Pawn" && gameBoard.returnSquare(a,b) == "Empty" || a == 5 &&
-            originalSquare == "White Pawn" && gameBoard.returnSquare(a,b) == "Empty"){
-                gameBoard.setSquare(xb,yb, originalSquare);
-                gameBoard.setSquare(xa,ya, "Empty");
+            else if(a == 2 && originalSquare == "Black Pawn" && checkBoard.returnSquare(a,b) == "Empty" || a == 5 &&
+            originalSquare == "White Pawn" && checkBoard.returnSquare(a,b) == "Empty"){
+                checkBoard.setSquare(xb,yb, originalSquare);
+                checkBoard.setSquare(xa,ya, "Empty");
                 if(a == 2){
-                     gameBoard.setSquare(xb+1,yb, "Empty");
+                     checkBoard.setSquare(xb+1,yb, "Empty");
                 }
                 if(a == 5)
-                    gameBoard.setSquare(xb-1,yb, "Empty");
+                    checkBoard.setSquare(xb-1,yb, "Empty");
             }
 
             else{
-                gameBoard.setSquare(xb, yb, originalSquare);
-                gameBoard.setSquare(xa, ya, "Empty");
+                checkBoard.setSquare(xb, yb, originalSquare);
+                checkBoard.setSquare(xa, ya, "Empty");
             }
-            rec.recordMove(xa,ya,xb,yb,gameBoard);
-            return true;
+           
         }
+    }
+    int kingX;
+    int kingY;
+
+    for(int e = 0; e < 8; e++){
+        for(int i = 0; i < 8; i++)
+        {
+            if(checkBoard.returnSquare(e,i) == "Black King") {
+                kingX = e;
+                kingY = i;
+            }
+        }
+    }
+
+    if(!calc.checkCalculator(kingX,kingY, checkBoard, 0)){
+        for(int e = 0; e < 8; e++){
+            for(int i = 0; i < 8; i++){
+                gameBoard.setSquare(e,i, checkBoard.returnSquare(e,i));
+            }
+        }
+        rec.recordMove(xa,ya,xb,yb,gameBoard);
+        return true;
     }
 
     return false;

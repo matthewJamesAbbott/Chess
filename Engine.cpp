@@ -67,26 +67,35 @@ int *Engine::resolveMove(Board gameBoard){
         for(int i = 0; i < 8; i++){
             if(gameBoard.returnSquare(e,i).find("Black")) {
                 list = calc.possibleSquares2DArray(e, i, gameBoard);
+
                 moveVector = list->returnWeightedVector();
-                for(int j = 0; j < moveVector.size()/3;) {
+                for(int i = 0; i < moveVector.size(); i++){
+                    std::cout << moveVector[i] << " ";
+                }
+                std::cout << std::endl;
+                for(int j = 0; j < moveVector.size();j++) {
                     int a = moveVector[j];
                     int b = moveVector[j + 1];
                     int c = moveVector[j + 2];
                     if (c > base)
                         base = c;
-                    if(c >= MIN && c <= MAX) {
+                    if(c >= 0 && c <= 10) {
                         moveTree->addTreeNode(c, e, i, a, b);
+                        std::cout << "engine moveVector after pruning x " << a << " y " << b << " rank " << c << std::endl;
                     }
-                    j = j + 3;
+                    std::cout << "engine moveVector no pruning x " << a << " y " << b << " rank " << c << std::endl;
+                    j = j + 2;
                 }
             }
         }
     }
-
+    std::cout << "BASE " << base << std::endl;
     TreeNode *stepper;
     stepper = moveTree->head;
     this->moveVector(stepper, base);
     int choice = 0;
+
+
     if(returnVector.size() >= 4) {
         int test = returnVector.size() / 4;
         srand(time(NULL));
@@ -94,13 +103,18 @@ int *Engine::resolveMove(Board gameBoard){
         choice = choice * 4;
     }
 
+    for(int i = 0; i < returnVector.size(); i++){
+        std::cout << returnVector[i] << " ";
+    }
+    std::cout << std::endl;
     int move[4];
     move[0] = returnVector[choice];
     move[1] = returnVector[choice + 1];
     move[2] = returnVector[choice + 2];
     move[3] = returnVector[choice + 3];
-    delete [] moveTree;
-
+    std::cout << "move from returnVector x " << move[2] << " y " << move[3] << std::endl;
+    delete moveTree;
+    returnVector.clear();
     int *returnPointer = move;
     return returnPointer;
 }

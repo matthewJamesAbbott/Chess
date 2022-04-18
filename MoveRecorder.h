@@ -16,6 +16,16 @@ private:
 
 public:
     MoveRecorder();
+
+
+    /**
+     *
+     * @param x
+     * @param y
+     * @param xa
+     * @param ya
+     * @param moveBoard
+     */
     void recordMove(int x, int y, int xa, int ya, Board moveBoard);
 };
 

@@ -372,6 +372,7 @@ int main(int argc, char *argv[]) {
                 std::system("clear");
                 chess.printBoardToTerminal();
             }
+
         }
     }
     return 0;

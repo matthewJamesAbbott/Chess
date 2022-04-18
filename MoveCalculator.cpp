@@ -19,6 +19,7 @@
 #define EMPTY 0
 
 void LinkedList::addNode(int x, int y, int squareRank) {
+    std::cout << "insert to list x " << x << " y " << y << " rank " << squareRank << std::endl;
     Node* newnode = new Node();
     newnode->x = x;
     newnode->y = y;
@@ -59,9 +60,11 @@ std::vector<int> LinkedList::returnWeightedVector(){
     std::vector<int> moveVector;
 
     while (temp != NULL) {
+
         moveVector.push_back(temp->x);
         moveVector.push_back(temp->y);
         moveVector.push_back(temp->squareRank);
+        std::cout << "moveVector x " << temp->x << " y " << temp->y << " rank " << temp->squareRank << std::endl;
         temp = temp->next;
     }
     return moveVector;
@@ -134,20 +137,26 @@ int MoveCalculator::enPassantCheck(int side){
     fileHandle.close();
     fileHandle.open("Chess.txt");
     while(std::getline(fileHandle, line)){
-        if(line.find("[" + std::to_string(turn))){
+        if(!line.find("[" + std::to_string(turn))){
+            std::getline(fileHandle, line);
             break;
         }
     }
-    int x = line.at(1) - 48;
-    int y = line.at(3) - 48;
-    int xa = line.at(5) - 48;
-    int ya = line.at(7) - 48;
+    if(line.empty() == 0) {
+        std::cout << line << std::endl;
+        std::cout << turn << std::endl;
+        int x = line.at(1) - 48;
+        int y = line.at(3) - 48;
+        int xa = line.at(5) - 48;
+        int ya = line.at(7) - 48;
 
-    if(side == 0 && x == 1 && xa == 3 && y == ya){
-        return y;
-    }
-    if(side == 1 && x == 6 && xa == 4 && y == ya){
-        return y;
+        if (side == 0 && x == 1 && xa == 3 && y == ya) {
+            return y;
+
+        }
+        if (side == 1 && x == 6 && xa == 4 && y == ya) {
+            return y;
+        }
     }
     return 10;
 }
@@ -570,13 +579,17 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                 list->addNode(x+1,y, this->evaluatePiece(x+1,y, moveBoard));
             if(x == 1 && moveBoard.returnSquare(x+1,y) == "Empty" && moveBoard.returnSquare(x+2,y) == "Empty")
                 list->addNode(x+2,y, this->evaluatePiece(x+2,y, moveBoard));
-            if(x != 7 && y != 7 && (!moveBoard.returnSquare(x+1,y+1).find("Black"))) {
-                list->addNode(x + 1, y + 1, this->evaluatePiece(x + 1, y + 1, moveBoard));
-            }
 
-            if(x != 7 && y != 0 && (!moveBoard.returnSquare(x+1,y-1).find("Black"))) {
-                list->addNode(x + 1, y - 1, this->evaluatePiece(x + 1, y - 1, moveBoard));
-            }
+
+
+
+            if(x != 7 && y != 7 && moveBoard.returnSquare(x+1,y+1) != "Empty")
+                list->addNode(x+1,y+1, this->evaluatePiece(x+1,y+1, moveBoard));
+
+            if(x != 7 && y != 0 && moveBoard.returnSquare(x+1,y-1) != "Empty")
+                list->addNode(x+1,y-1, this->evaluatePiece(x+1,y-1, moveBoard));
+
+
             return list;
 
         case 10: // Black Left Rook Moves
@@ -959,27 +972,113 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
     }
 }
 
-bool MoveCalculator::checkCalculator(int x, int y, Board moveBoard) {
+bool MoveCalculator::checkMateTest(Board gameBoard, int side){
+    Board testBoard = gameBoard;
+    MoveCalculator calc;
     LinkedList *temp;
     std::vector<int> moveVector;
     std::vector<int> returnedVector;
+    std::string piece;
+    int kingX;
+    int kingY;
+    if(side == 0) {
+        for (int e = 0; e < 8; e++) {
+            for (int i = 0; i < 8; i++) {
+                if (!gameBoard.returnSquare(e, i).find("Black")) {
+                    temp = possibleSquares2DArray(e, i, gameBoard);
+                    returnedVector = temp->returnVector();
+                    for (int k = 0; k < returnedVector.size() / 2; k++) {
+                        int a = returnedVector[k];
+                        int b = returnedVector[k + 1];
+                        piece = testBoard.returnSquare(e, i);
+                        testBoard.setSquare(e, i, "Empty");
+                        testBoard.setSquare(a, b, piece);
+                        for (int e2 = 0; e2 < 8; e2++) {
+                            for (int i2 = 0; i2 < 8; i2++) {
+                                if (testBoard.returnSquare(e2, i2) == "Black King") {
+                                    kingX = e2;
+                                    kingY = i2;
+                                }
+                            }
+                        }
+                        if (!this->checkCalculator(kingX, kingY, testBoard, side)) {
+                            return false;
+                        }
+                        k = k + 1;
 
-    for (int e = 0; e < 8; e++) {
-        for (int i = 0; i < 8; i++) {
-            if(moveBoard.returnSquare(e,i).find("Black")) {
-                temp = possibleSquares2DArray(e, i, moveBoard);
-                returnedVector = temp->returnVector();
-                moveVector.insert(moveVector.end(), returnedVector.begin(), returnedVector.end());
+                    }
+                }
+            }
+        }
+    }
+    else{
+        for (int e = 0; e < 8; e++) {
+            for (int i = 0; i < 8; i++) {
+
+                if (gameBoard.returnSquare(e, i).find("White")) {
+                    temp = possibleSquares2DArray(e, i, gameBoard);
+                    returnedVector = temp->returnVector();
+                    for (int k = 0; k < moveVector.size() / 2; k++) {
+                        int a = moveVector[k];
+                        int b = moveVector[k + 1];
+                        piece = testBoard.returnSquare(e, i);
+                        testBoard.setSquare(e, i, "Empty");
+                        testBoard.setSquare(a, b, piece);
+                        for (int e2 = 0; e < 8; e++) {
+                            for (int i2 = 0; i < 8; i++) {
+                                if (testBoard.returnSquare(e2, i2) == "Black King") {
+                                    kingX = e2;
+                                    kingY = i2;
+                                }
+                            }
+                        }
+                        if (!this->checkCalculator(kingX, kingY, testBoard, side))
+                            return false;
+                        k = k + 1;
+
+                    }
+                }
+            }
+        }
+    }
+    return true;
+}
+
+bool MoveCalculator::checkCalculator(int x, int y, Board moveBoard, int side) {
+    LinkedList *temp;
+    std::vector<int> moveVector;
+    std::vector<int> returnedVector;
+    if(side == 0) {
+        for (int e = 0; e < 8; e++) {
+            for (int i = 0; i < 8; i++) {
+                if (!moveBoard.returnSquare(e, i).find("White")) {
+                    temp = possibleSquares2DArray(e, i, moveBoard);
+
+                    returnedVector = temp->returnVector();
+
+                    moveVector.insert(moveVector.end(), returnedVector.begin(), returnedVector.end());
+                }
             }
         }
     }
 
+    else{
+        for (int e = 0; e < 8; e++) {
+            for (int i = 0; i < 8; i++) {
+                if (moveBoard.returnSquare(e, i).find("Black")) {
+                    temp = possibleSquares2DArray(e, i, moveBoard);
+                    returnedVector = temp->returnVector();
+                    moveVector.insert(moveVector.end(), returnedVector.begin(), returnedVector.end());
+                }
+            }
+        }
+    }
     for(int k = 0; k < moveVector.size()/2; k++){
-
         int a = moveVector[k];
         int b = moveVector[k+1];
         k = k+1;
         if(x == a && y == b) {
+            std::cout << "check baby" << std::endl;
             return true;
         }
     }

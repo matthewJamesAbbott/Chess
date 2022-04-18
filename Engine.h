@@ -10,7 +10,7 @@
 
 
 #define SIDE "White"
-#define PAWN 1
+#define PAWN 2
 #define KNIGHT 3
 #define BISHOP 4
 #define ROOK 5
@@ -33,6 +33,15 @@ public:
 class Tree {
 public:
     TreeNode* head;
+
+    /**
+     *
+     * @param rank
+     * @param x
+     * @param y
+     * @param xa
+     * @param ya
+     */
     void addTreeNode(int rank, int x, int y, int xa, int ya);
 
 
@@ -40,9 +49,22 @@ public:
 
 class Engine {
 public:
+
+    /**
+     *
+     * @param gameBoard
+     * @return
+     */
     int *resolveMove(Board gameBoard);
-    std::vector<int> returnVector;
+
+    /**
+     *
+     * @param localRoot
+     * @param base
+     */
     void moveVector(TreeNode *localRoot, int base);
+
+    std::vector<int> returnVector;
 
 };
 

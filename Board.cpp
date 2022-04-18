@@ -6,6 +6,14 @@
 
 Board::Board(){}
 
+Board::Board(Board const &copy){
+    for(int e = 0; e < 8; e++){
+        for(int i = 0; i < 8; i++){
+            board[e][i] = copy.board[e][i];
+        }
+    }
+
+}
 Board::~Board(){}
 
 std::string Board::returnSquare(int x, int y){
