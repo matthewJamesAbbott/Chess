@@ -6,7 +6,6 @@
 #include "MoveCalculator.h"
 #include <vector>
 
-
 void Tree::addTreeNode(int rank, int x, int y, int xa, int ya){
     auto *newTreeNode = new TreeNode();
     newTreeNode->rank = rank;
@@ -14,7 +13,7 @@ void Tree::addTreeNode(int rank, int x, int y, int xa, int ya){
     newTreeNode->y = y;
     newTreeNode->xa = xa;
     newTreeNode->ya = ya;
-    if(head==nullptr) {
+    if(head==nullptr){
         head = newTreeNode;
     }
     else{
@@ -31,8 +30,7 @@ void Tree::addTreeNode(int rank, int x, int y, int xa, int ya){
             }
             else{
                 current = current->rightTreeNode;
-                if(current == nullptr)
-                {
+                if(current == nullptr){
                     parent->rightTreeNode = newTreeNode;
                     break;
                 }
@@ -43,8 +41,7 @@ void Tree::addTreeNode(int rank, int x, int y, int xa, int ya){
 
 void Engine::moveVector(TreeNode *localRoot, int base)
 {
-    if(localRoot != nullptr)
-    {
+    if(localRoot != nullptr){
         moveVector(localRoot->leftTreeNode, base);
         if(localRoot->rank == base) {
             returnVector.push_back(localRoot->x);
@@ -64,17 +61,16 @@ int *Engine::resolveMove(Board gameBoard){
     int base = 0;
     for(int e = 0; e < 8; e++){
         for(int i = 0; i < 8; i++){
-            if(gameBoard.returnSquare(e,i).find("Black")) {
+            if(gameBoard.returnSquare(e,i).find("Black")){
                 list = calc.possibleSquares2DArray(e, i, gameBoard);
-
                 moveVector = list->returnWeightedVector();
-                for(int j = 0; j < moveVector.size();j++) {
+                for(int j = 0; j < moveVector.size();j++){
                     int a = moveVector[j];
                     int b = moveVector[j + 1];
                     int c = moveVector[j + 2];
                     if (c > base)
                         base = c;
-                    if(c >= 0 && c <= 10) {
+                    if(c >= 0 && c <= 10){
                         moveTree->addTreeNode(c, e, i, a, b);
                     }
                     j = j + 2;
@@ -86,15 +82,12 @@ int *Engine::resolveMove(Board gameBoard){
     stepper = moveTree->head;
     this->moveVector(stepper, base);
     int choice = 0;
-
-
-    if(returnVector.size() >= 4) {
+    if(returnVector.size() >= 4){
         int test = returnVector.size() / 4;
         srand(time(NULL));
         choice = rand() % test;
         choice = choice * 4;
     }
-
     int move[4];
     move[0] = returnVector[choice];
     move[1] = returnVector[choice + 1];

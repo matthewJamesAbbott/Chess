@@ -9,14 +9,11 @@
 #include <fstream>
 #include <string>
 
+MoveRecorder::MoveRecorder() = default;
 
-MoveRecorder::MoveRecorder() {
-
-}
-
-void MoveRecorder::recordMove(int x, int y, int xa, int ya, Board moveBoard) {
+void MoveRecorder::recordMove(int x, int y, int xa, int ya, Board moveBoard){
     move++;
-    time_t current = time(0);
+    time_t current = time(nullptr);
     std::string dateTime = ctime(&current);
     std::string piece;
     std::ofstream fileHandle;
@@ -24,10 +21,7 @@ void MoveRecorder::recordMove(int x, int y, int xa, int ya, Board moveBoard) {
     fileHandle << "[" << move << "]" << "\n";
     fileHandle << "(" << x << "," << y << ":" << xa << "," << ya << ")" <<"\n" << "<" << moveBoard.returnSquare(xa,ya) << ">" << "\n" ;
     fileHandle << "*****" << "\n";
-
-
-
-    for(int e = 0; e < 8; e++) {
+    for(int e = 0; e < 8; e++){
         for(int i = 0; i < 8; i++){
             piece = moveBoard.returnSquare(e,i);
             if(piece == "White Left Rook")
@@ -73,8 +67,4 @@ void MoveRecorder::recordMove(int x, int y, int xa, int ya, Board moveBoard) {
     }
     fileHandle << "+++++" << "\n";
     fileHandle.close();
-
 }
-
-
-

@@ -21,52 +21,50 @@
 #define MAX  10
 
 
-class TreeNode {
+class TreeNode{
 public:
     int rank, x, y, xa, ya;
     TreeNode *leftTreeNode;
     TreeNode *rightTreeNode;
-
-
 };
 
-class Tree {
+class Tree{
 public:
     TreeNode* head;
 
     /**
+     * Add new node to tree using parameters rank, x, y, xa and ya
      *
-     * @param rank
-     * @param x
-     * @param y
-     * @param xa
-     * @param ya
+     * @param rank of square being taken 0 being empty and 10 a king <int>
+     * @param x Vertical or numeric co ordinate move origin <int>
+     * @param y Horizontal or alpha co ordinate move origin <int>
+     * @param xa Vertical or numeric co ordinate move destination <int>
+     * @param ya Horizontal or alpha co ordinate move destianation <int>
      */
     void addTreeNode(int rank, int x, int y, int xa, int ya);
-
-
 };
 
-class Engine {
+class Engine{
 public:
 
     /**
+     * Main method for Computer Player 
      *
-     * @param gameBoard
-     * @return
+     * @param gameBoard complete Board for computer to generate move from
+     * @return pointer to array of integers x, y, xa and ya
      */
     int *resolveMove(Board gameBoard);
 
     /**
+     * Recursive function to read nodes from the tree
      *
-     * @param localRoot
-     * @param base
+     * @param localRoot the starthing node of the tree to traverse
+     * @param base the delimiter to place on square rank which is set to max found for now
+     *        making it hungry
      */
     void moveVector(TreeNode *localRoot, int base);
 
     std::vector<int> returnVector;
-
 };
-
 
 #endif //CHESS_ENGINE_H

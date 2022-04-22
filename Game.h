@@ -14,14 +14,12 @@ class Game{
 public:
     Game();
 
-
     /**
      * Set players name
      *
      * @param name <std::string>
      */
     void setPlayerOne(std::string name);
-
 
     /**
      * Set Network players name
@@ -30,12 +28,10 @@ public:
      */
     void setPlayerTwo(std::string name);
 
-
     /**
      * Insert String representations of pieces and empty squares into board array
      */
     void initialiseBoard();
-
 
     /**
      * Move piece on the board
@@ -48,12 +44,10 @@ public:
      */
     bool movePiece(int xa, char ca, int xb, char cb);
 
-
     /**
      * Calculate Computers Move
      */
     void engineMove();
-
 
     /**
      * Print ISO character representation of board and pieces to terminal

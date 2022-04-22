@@ -8,23 +8,20 @@
 #include <vector>
 #include "Board.h"
 
-class Node {
+class Node{
 public:
-
     int x;
     int y;
     int squareRank;
     Node *next;
-
 };
 
 class LinkedList{
 
 public:
-    LinkedList() {
+    LinkedList(){
         head = nullptr;
     }
-
 
     virtual ~LinkedList();
 
@@ -53,16 +50,12 @@ public:
 
 private:
     Node* head;
-
 };
-
 
 class MoveCalculator{
 
 public:
-
     MoveCalculator();
-
 
     /**
      * Check if king or left rook have been moved
@@ -76,54 +69,53 @@ public:
      * Check if conditions are correct for enPassant move
      *
      * @param side Choose side to check 0 = Black 1 = White <int>
-     * @return returns horizontal axis or alpha value for pawns destination
+     * @return returns horizontal axis or alpha value for pawns destination <int>
      */
     static int enPassantCheck(int side);
 
-
-
     /**
+     * Return a list of possible moves for piece found at x and y co ordinates on the board
      *
-     * @param x
-     * @param y
-     * @param moveBoard
-     * @return
+     * @param x Vertical or numeric axis of piece <int>
+     * @param y Horizontal or alpha axis of piece <int>
+     * @param moveBoard complete board for function to work on <Board>
+     * @return returns pointer to list containing x, y positions and square rank <LinkedList*>
      */
     LinkedList *possibleSquares2DArray(int x, int y,Board moveBoard);
 
     /**
+     * Checks if piece found at co ordinates x and y given as parameters is under Check/Attack by another piece
      *
-     * @param x
-     * @param y
-     * @param moveBoard
-     * @param side
-     * @return
+     * @param x Vertical or numeric axis of piece <int>
+     * @param y Horizontal or alpha axis of piece <int>
+     * @param moveBoard complete board for function to work on <Board>
+     * @param side choose between black 0  and white 1 <int> 
+     * @return true if location is under attack false if it is not <bool>
      */
     bool checkCalculator(int x,int y,Board moveBoard, int side);
 
     /**
+     * Test if king is under attack or in check and then if by any move possible by the kings side can this be stopped
      *
-     * @param moveBoard
-     * @param side
-     * @return
+     * @param moveBoard complete board for function to work on <Board>
+     * @param side choose between black 0 and white 1 <int>
+     * @return true if king is under attack and no possible move by his pieces will change this false otherwise <bool>
      */
     bool checkMateTest(Board moveBoard, int side);
 
     /**
+     * Evaluate the piece found at input parameters x and y on Board moveBoard then return integer rank
      *
-     * @param x
-     * @param y
-     * @param moveBoard
-     * @return
+     * @param x Vertical of numeric axis of piece <int>
+     * @param y Horizontal or alpha axis of piece <int>
+     * @param moveBoard complete board for function to work on <Board>
+     * @return square rank is returned as an integer from 0 to 10, 0 being empty and 10 containing a king <int>
      */
     static int evaluatePiece(int x, int y, Board moveBoard);
 
 private:
     int whiteKingX = 0;
     int blackKingY = 0;
-
-
 };
-
 
 #endif //CHESS_MOVECALCULATOR_H

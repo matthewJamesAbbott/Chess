@@ -8,23 +8,17 @@
 #include "MoveCalculator.h"
 #include "Engine.h"
 
-
-
 Game::Game() = default;
-
 
 void Game::setPlayerOne(std::string name){
     playerOne = name;
 }
 
-
 void Game::setPlayerTwo(std::string name){
     playerTwo = name;
 }
 
-
 void Game::initialiseBoard(){
-
     gameBoard.setSquare(0,0,"White Left Rook");
     gameBoard.setSquare(0,1,"White Left Knight");
     gameBoard.setSquare(0,2,"White Left Bishop");
@@ -33,21 +27,17 @@ void Game::initialiseBoard(){
     gameBoard.setSquare(0,5,"White Right Bishop");
     gameBoard.setSquare(0,6,"White Right Knight");
     gameBoard.setSquare(0,7,"White Right Rook");
-
     for(int i = 0; i < 8; i++){
         gameBoard.setSquare(1,i,"White Pawn");
     }
-
     for(int e = 2; e < 6; e++){
         for(int i = 0; i < 8; i++){
             gameBoard.setSquare(e,i,"Empty");
         }
     }
-
     for(int i = 0; i < 8; i++){
         gameBoard.setSquare(6,i,"Black Pawn");
     }
-
     gameBoard.setSquare(7,0,"Black Left Rook");
     gameBoard.setSquare(7,1,"Black Left Knight");
     gameBoard.setSquare(7,2,"Black Left Bishop");
@@ -59,26 +49,22 @@ void Game::initialiseBoard(){
 }
 
 void Game::engineMove(){
-
     int *moveArray;
     moveArray = moveEngine->resolveMove(gameBoard);
     gameBoard.setSquare(moveArray[2], moveArray[3], gameBoard.returnSquare(moveArray[0], moveArray[1]));
     gameBoard.setSquare(moveArray[0], moveArray[1], "Empty");
     rec.recordMove(moveArray[0],moveArray[1],moveArray[2],moveArray[3],gameBoard);
-
-
 }
 
-void Game::printBoardToTerminal() {
-
+void Game::printBoardToTerminal(){
     int a = 1;
     int b = 3;
     int c = 5;
     int d = 7;
     std::string piece;
-    for(int e = 0; e < 9; e++) {
-        for (int i = 0; i < 9; i++) {
-            if (e > 0 && i > 0) {
+    for(int e = 0; e < 9; e++){
+        for (int i = 0; i < 9; i++){
+            if (e > 0 && i > 0){
                 if (gameBoard.returnSquare(e - 1, i - 1) == "White Left Rook" ||
                     gameBoard.returnSquare(e - 1, i - 1) == "White Right Rook")
                     piece = "\e[97m\u265C";
@@ -117,7 +103,6 @@ void Game::printBoardToTerminal() {
                     std::cout << "\e[101m " << piece << " ";
             }
             if(i == 0){
-
                 if(e == 0)
                     std::cout << "\e[49m   \e[49m\e[39m";
                 if(e == 1)
@@ -138,40 +123,44 @@ void Game::printBoardToTerminal() {
                     std::cout << "\e[49m\e[33m 1 \e[49m\e[39m";
             }
         }
-
         std::cout << "\e[49m\e[39m" << std::endl;
-
-        if (e == 1) {
+        if (e == 1){
             a++;
             b++;
             c++;
             d++;
-        } else if (e == 2) {
+        } 
+        else if (e == 2){
             a--;
             b--;
             c--;
             d--;
-        } else if (e == 3) {
+        } 
+        else if (e == 3){
             a++;
             b++;
             c++;
             d++;
-        } else if (e == 4) {
+        } 
+        else if (e == 4){
             a--;
             b--;
             c--;
             d--;
-        } else if (e == 5) {
+        } 
+        else if (e == 5){
             a++;
             b++;
             c++;
             d++;
-        } else if (e == 6) {
+        } 
+        else if (e == 6){
             a--;
             b--;
             c--;
             d--;
-        } else if (e == 7) {
+        } 
+        else if (e == 7){
             a++;
             b++;
             c++;
@@ -181,7 +170,7 @@ void Game::printBoardToTerminal() {
     std::cout << "\e[43m   " << "\e[49m \e[33mA " << "\e[43m \e[30mB " << "\e[49m \e[33mC " << "\e[43m \e[30mD " << "\e[49m \e[33mE " << "\e[43m \e[30mF " << "\e[49m \e[33mG " << "\e[43m \e[30mH " << "\e[49m\e[39m" << std::endl;
 }
 
-bool Game::movePiece(int ia, char ca, int ib, char cb) {
+bool Game::movePiece(int ia, char ca, int ib, char cb){
     int ya;
     if(ca == 'A' || ca == 'a')
         ya = 0;
@@ -200,7 +189,6 @@ bool Game::movePiece(int ia, char ca, int ib, char cb) {
     else if(ca == 'H' || ca == 'h')
         ya = 7;
     int xa;
-
     if(ia == 1)
         xa = 7;
     else if(ia == 2)
@@ -251,9 +239,6 @@ bool Game::movePiece(int ia, char ca, int ib, char cb) {
         xb = 1;
     else if(ib == 8)
         xb = 0;
-
-
-
     MoveCalculator calc;
     LinkedList *list;
     Board checkBoard = gameBoard;
@@ -261,17 +246,14 @@ bool Game::movePiece(int ia, char ca, int ib, char cb) {
         std::cout << "Check Mate Computer Wins" << std::endl;
         return false;
     }
-
-    
-
     list = calc.possibleSquares2DArray(xa, ya, gameBoard);
     std::vector<int> moveVector;
     moveVector = list->returnVector();
-    for(int i = 0; i < moveVector.size();) {
+    for(int i = 0; i < moveVector.size();){
         int a = moveVector[i];
         int b = moveVector[i + 1];
         i = i + 2;
-        if (xb == a && yb == b) {
+        if (xb == a && yb == b){
             std::string originalSquare = checkBoard.returnSquare(xa, ya);
             if(b == 1 && ya == 3 && checkBoard.returnSquare(xa, ya).find("King")){
                 checkBoard.setSquare(xb,yb,originalSquare);
@@ -289,27 +271,22 @@ bool Game::movePiece(int ia, char ca, int ib, char cb) {
                 if(a == 5)
                     checkBoard.setSquare(xb-1,yb, "Empty");
             }
-
             else{
                 checkBoard.setSquare(xb, yb, originalSquare);
                 checkBoard.setSquare(xa, ya, "Empty");
             }
-           
         }
     }
     int kingX;
     int kingY;
-
     for(int e = 0; e < 8; e++){
-        for(int i = 0; i < 8; i++)
-        {
-            if(checkBoard.returnSquare(e,i) == "Black King") {
+        for(int i = 0; i < 8; i++){
+            if(checkBoard.returnSquare(e,i) == "Black King"){
                 kingX = e;
                 kingY = i;
             }
         }
     }
-
     if(!calc.checkCalculator(kingX,kingY, checkBoard, 0)){
         for(int e = 0; e < 8; e++){
             for(int i = 0; i < 8; i++){
@@ -319,44 +296,5 @@ bool Game::movePiece(int ia, char ca, int ib, char cb) {
         rec.recordMove(xa,ya,xb,yb,gameBoard);
         return true;
     }
-
     return false;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
