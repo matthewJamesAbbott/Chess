@@ -7,7 +7,6 @@
 #include <fstream>
 #include <string>
 
-#define MAX 80
 #define PORT 9008
 using namespace std;
 

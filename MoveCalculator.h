@@ -22,7 +22,7 @@ class LinkedList{
 
 public:
     LinkedList() {
-        head = NULL;
+        head = nullptr;
     }
 
 
@@ -116,12 +116,10 @@ public:
      * @param moveBoard
      * @return
      */
-    int evaluatePiece(int x, int y, Board moveBoard);
+    static int evaluatePiece(int x, int y, Board moveBoard);
 
 private:
     int whiteKingX = 0;
-    int whiteKingY = 0;
-    int blackKingX = 0;
     int blackKingY = 0;
 
 

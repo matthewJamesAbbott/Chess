@@ -8,7 +8,7 @@
 
 
 void Tree::addTreeNode(int rank, int x, int y, int xa, int ya){
-    TreeNode *newTreeNode = new TreeNode();
+    auto *newTreeNode = new TreeNode();
     newTreeNode->rank = rank;
     newTreeNode->x = x;
     newTreeNode->y = y;

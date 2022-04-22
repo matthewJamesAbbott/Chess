@@ -10,7 +10,7 @@
 #include <string>
 
 
-#define PAWN 1
+#define PAWN 2
 #define KNIGHT 3
 #define BISHOP 4
 #define ROOK 5
@@ -19,17 +19,17 @@
 #define EMPTY 0
 
 void LinkedList::addNode(int x, int y, int squareRank) {
-    Node* newnode = new Node();
+    auto* newnode = new Node();
     newnode->x = x;
     newnode->y = y;
     newnode->squareRank= squareRank;
-    newnode->next = NULL;
-    if (head == NULL) {
+    newnode->next = nullptr;
+    if (head == nullptr) {
         head = newnode;
     }
     else {
         Node* temp = head;
-        while (temp->next != NULL) {
+        while (temp->next != nullptr) {
             temp = temp->next;
         }
         temp->next = newnode;
@@ -42,7 +42,7 @@ std::vector<int> LinkedList::returnVector() {
 
     std::vector<int> moveVector;
 
-    while (temp != NULL) {
+    while (temp != nullptr) {
         moveVector.push_back(temp->x);
         moveVector.push_back(temp->y);
         temp = temp->next;
@@ -58,7 +58,7 @@ std::vector<int> LinkedList::returnWeightedVector(){
 
     std::vector<int> moveVector;
 
-    while (temp != NULL) {
+    while (temp != nullptr) {
 
         moveVector.push_back(temp->x);
         moveVector.push_back(temp->y);
@@ -71,32 +71,32 @@ std::vector<int> LinkedList::returnWeightedVector(){
 
 
 
-LinkedList::~LinkedList() {}
+LinkedList::~LinkedList() = default;
 
-MoveCalculator::MoveCalculator() {}
+MoveCalculator::MoveCalculator() = default;
 
 int MoveCalculator::evaluatePiece(int x, int y, Board moveBoard) {
 
     if(moveBoard.returnSquare(x,y) == "Black Pawn") {
-        return 2;
+        return PAWN;
     }
     else if(moveBoard.returnSquare(x,y) == "Black Left Knight" || moveBoard.returnSquare(x,y) == "Black Right Knight") {
-        return 3;
+        return KNIGHT;
     }
     else if(moveBoard.returnSquare(x,y) == "Black Left Bishop" || moveBoard.returnSquare(x,y) == "Black Right Bishop") {
-        return 4;
+        return BISHOP;
     }
     else if(moveBoard.returnSquare(x,y) == "Black Left Rook" || moveBoard.returnSquare(x,y) == "Black Right Rook"){
-        return 5;
+        return ROOK;
     }
     else if(moveBoard.returnSquare(x,y) == "Black Queen") {
-        return 9;
+        return QUEEN;
     }
     else if(moveBoard.returnSquare(x,y) == "Black King") {
-        return 10;
+        return KING;
     }
     else if(moveBoard.returnSquare(x,y) == "Empty") {
-        return 0;
+        return EMPTY;
     }
 }
 
@@ -203,7 +203,7 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
     if(piece == "Empty")
         switchedPiece = 19;
 
-    LinkedList* list = new LinkedList();
+    auto* list = new LinkedList();
 
     switch(switchedPiece) {
         case 1: // White Left Rook Moves
@@ -1061,7 +1061,7 @@ bool MoveCalculator::checkCalculator(int x, int y, Board moveBoard, int side) {
     else{
         for (int e = 0; e < 8; e++) {
             for (int i = 0; i < 8; i++) {
-                if (moveBoard.returnSquare(e, i).find("Black")) {
+                if (!moveBoard.returnSquare(e, i).find("Black")) {
                     temp = possibleSquares2DArray(e, i, moveBoard);
                     returnedVector = temp->returnVector();
                     moveVector.insert(moveVector.end(), returnedVector.begin(), returnedVector.end());
@@ -1069,10 +1069,11 @@ bool MoveCalculator::checkCalculator(int x, int y, Board moveBoard, int side) {
             }
         }
     }
-    for(int k = 0; k < moveVector.size()/2; k++){
+    for(int k = 0; k < moveVector.size(); k++){
         int a = moveVector[k];
         int b = moveVector[k+1];
         k = k+1;
+
         if(x == a && y == b) {
             std::cout << "check baby" << std::endl;
             return true;

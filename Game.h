@@ -60,7 +60,7 @@ public:
      */
     void printBoardToTerminal();
 
-    int clientServerToggle;
+    int clientServerToggle{};
 
 private:
     MoveRecorder rec;

@@ -10,8 +10,7 @@
 
 
 
-Game::Game() {
-}
+Game::Game() = default;
 
 
 void Game::setPlayerOne(std::string name){
@@ -76,7 +75,7 @@ void Game::printBoardToTerminal() {
     int b = 3;
     int c = 5;
     int d = 7;
-    std::string piece = "";
+    std::string piece;
     for(int e = 0; e < 9; e++) {
         for (int i = 0; i < 9; i++) {
             if (e > 0 && i > 0) {
