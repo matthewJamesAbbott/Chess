@@ -77,8 +77,6 @@ void Game::loadGame(std::string fileName){
             std::getline(inFileHandle, line);
             std::getline(inFileHandle, line);
             std::getline(inFileHandle, line);
-
-
             break;
         }
     }
@@ -150,6 +148,7 @@ void Game::loadGame(std::string fileName){
             }
         }
     }
+    inFileHandle.close();
 }
 
 void Game::engineMove(){
