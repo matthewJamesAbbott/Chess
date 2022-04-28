@@ -52,7 +52,7 @@ public:
     void engineMove();
 
     /**
-     * Print ISO character representation of board and pieces to terminal
+     * Print unicode representation of board and pieces to terminal
      */
     void printBoardToTerminal();
 
