@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <fstream>
 #include "Game.h"
 #include "Board.h"
 #include "MoveCalculator.h"
@@ -46,6 +47,109 @@ void Game::initialiseBoard(){
     gameBoard.setSquare(7,5,"Black Right Bishop");
     gameBoard.setSquare(7,6,"Black Right Knight");
     gameBoard.setSquare(7,7,"Black Right Rook");
+}
+
+void Game::loadGame(std::string fileName){
+    std::ofstream outFileHandle;
+
+    std::remove("Chess.txt");
+    std::string saveFile = "Chess.txt";
+    outFileHandle.open(saveFile ,std::ios_base::app);
+
+
+    std::ifstream inFileHandle;
+    std::string line;
+    inFileHandle.open(fileName);
+    int turn;
+    while(std::getline(inFileHandle, line)){
+        outFileHandle << line << "\n";
+        if(!line.find("["))
+            turn = line.at(1) - 48;
+    }
+    inFileHandle.close();
+    outFileHandle.close();
+
+    rec.setMove(turn);
+
+    inFileHandle.open("Chess.txt");
+    while(std::getline(inFileHandle, line)){
+        if(!line.find("[" + std::to_string(turn))){
+            std::getline(inFileHandle, line);
+            std::getline(inFileHandle, line);
+            std::getline(inFileHandle, line);
+
+
+            break;
+        }
+    }
+    for(int e = 0; e < 8; e++){
+        int pos = 0;
+        int start = 0;
+        std::getline(inFileHandle, line);
+        for(int i = 0; i < 8; i++){
+            pos = line.find(",", pos + 1);
+            int length = pos - start;
+            std::string piece = line.substr(start, length);
+            start = pos + 1;
+            if(piece == "wlR"){
+                gameBoard.setSquare(e,i, "White Left Rook");
+            }
+            else if(piece == "wlN"){
+                gameBoard.setSquare(e,i, "White Left Knight");
+            }
+            else if(piece == "wlB"){
+                gameBoard.setSquare(e,i, "White Left Bishop");
+            }
+            else if(piece == "wK"){
+                gameBoard.setSquare(e,i, "White King");
+            }
+            else if(piece == "wQ"){
+                gameBoard.setSquare(e,i, "White Queen");
+            }
+            else if(piece == "wrB"){
+                gameBoard.setSquare(e,i, "White Right Bishop");
+            }
+            else if(piece == "wrN"){
+                gameBoard.setSquare(e,i, "White Right Knight");
+            }
+            else if(piece == "wrR"){
+                gameBoard.setSquare(e,i, "White Right Rook");
+            }
+            else if(piece == "wP"){
+                gameBoard.setSquare(e,i, "White Pawn");
+            }
+            else if(piece == "blR"){
+                gameBoard.setSquare(e,i, "Black Left Rook");
+            }
+            else if(piece == "blN"){
+                gameBoard.setSquare(e,i, "Black Left Knight");
+            }
+            else if(piece == "blB"){
+                gameBoard.setSquare(e,i, "Black Left Bishop");
+            }
+            else if(piece == "bK"){
+                gameBoard.setSquare(e,i, "Black King");
+            }
+            else if(piece == "bQ"){
+                gameBoard.setSquare(e,i, "Black Queen");
+            }
+            else if(piece == "brB"){
+                gameBoard.setSquare(e,i, "Black Right Bishop");
+            }
+            else if(piece == "brN"){
+                gameBoard.setSquare(e,i, "Black Right Knight");
+            }
+            else if(piece == "brR"){
+                gameBoard.setSquare(e,i, "Black Right Rook");
+            }
+            else if(piece == "bP"){
+                gameBoard.setSquare(e,i, "Black Pawn");
+            }
+            else if(piece == "X"){
+                gameBoard.setSquare(e,i, "Empty");
+            }
+        }
+    }
 }
 
 void Game::engineMove(){

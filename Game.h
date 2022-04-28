@@ -33,6 +33,8 @@ public:
      */
     void initialiseBoard();
 
+    void loadGame(std::string fileName);
+
     /**
      * Move piece on the board
      *

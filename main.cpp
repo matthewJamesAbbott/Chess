@@ -6,12 +6,21 @@
 #include <arpa/inet.h>
 #include <fstream>
 #include <string>
+#include <time.h>
+#include <experimental/filesystem>
+
+#include <algorithm>
+#include <iomanip>
+#include <sstream>
+#include <ctime>
 
 #define PORT 9008
 using namespace std;
+using std::experimental::filesystem::directory_iterator;
 
 int main(int argc, char *argv[]){
     Game chess;
+    std::experimental::filesystem::create_directory("gamesave");
     std::cout << "Please Enter Name for Player" << std::endl;
     std::string name;
     std::cin >> name;
@@ -290,7 +299,57 @@ int main(int argc, char *argv[]){
                 else if (x == 9)
                     return 0;
                 else if (x == 11){
+
+                    //char dateTime[80];
+                    time_t current = time(nullptr);
+                    std::string dateTime = ctime(&current);
+                    std::replace(dateTime.begin(), dateTime.end(), ' ', '-');
+                    std::replace(dateTime.begin(),dateTime.end(), ':', ',');
+                    std::replace(dateTime.begin(),dateTime.end(), '\n', '.');
+
+
+                    std::ofstream outFileHandle;
+
+                    std::string saveFile = "gamesave/" + dateTime;
+                    outFileHandle.open(saveFile ,std::ios_base::app);
+
+
+                    std::ifstream inFileHandle;
+                    std::string line;
+                    inFileHandle.open("Chess.txt");
+                    while(std::getline(inFileHandle, line)){
+                        outFileHandle << line << "\n";
+                    }
+                    inFileHandle.close();
+                    outFileHandle.close();
                     
+                }
+                else if (x == 12){
+                    std::string path = "gamesave/";
+                    std::vector<std::string> dir;
+                    std::cout << "Please enter the corresponding number to the game you wish to restore" << std::endl;
+                    int i = 1;
+                    for (const auto & entry : directory_iterator(path)){
+                        std::cout << i << " " << entry.path() << std::endl;
+                        dir.push_back(entry.path());
+                        i++;
+                    }
+                    std::string loadInput;
+                    int index;
+                    while(true) {
+                        std::cin >> index;
+                        if (index > 0 && index <= dir.size()) {
+                            loadInput = dir[index - 1];
+                            break;
+                        }
+                        else{
+                            cout << "You have entered an illegal character please try again" << endl;
+                            cin.clear();
+                            cin.ignore(1, '\n');
+                        }
+                    }
+                    chess.loadGame(loadInput);
+                    chess.printBoardToTerminal();
                 }
                 else{
                     cout << "You have entered an illegal character please try again" << endl;

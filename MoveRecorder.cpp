@@ -11,6 +11,10 @@
 
 MoveRecorder::MoveRecorder() = default;
 
+void MoveRecorder::setMove(int input) {
+    this->move = input;
+}
+
 void MoveRecorder::recordMove(int x, int y, int xa, int ya, Board moveBoard){
     move++;
     time_t current = time(nullptr);
