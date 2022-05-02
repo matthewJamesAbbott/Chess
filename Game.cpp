@@ -51,12 +51,9 @@ void Game::initialiseBoard(){
 
 void Game::loadGame(std::string fileName){
     std::ofstream outFileHandle;
-
     std::remove("Chess.txt");
     std::string saveFile = "Chess.txt";
     outFileHandle.open(saveFile ,std::ios_base::app);
-
-
     std::ifstream inFileHandle;
     std::string line;
     inFileHandle.open(fileName);

@@ -8,22 +8,19 @@
 #include <string>
 #include <time.h>
 #include <experimental/filesystem>
-
 #include <algorithm>
-#include <iomanip>
-#include <sstream>
-#include <ctime>
 
 #define PORT 9008
+
 using namespace std;
 using std::experimental::filesystem::directory_iterator;
 
 int main(int argc, char *argv[]){
     Game chess;
-    std::experimental::filesystem::create_directory("gamesave");
-    std::cout << "Please Enter Name for Player" << std::endl;
-    std::string name;
-    std::cin >> name;
+    experimental::filesystem::create_directory("gamesave");
+    cout << "Please Enter Name for Player" << std::endl;
+    string name;
+    cin >> name;
     chess.setPlayerOne(name);
     if(argc == 1){
         chess.clientServerToggle = 0;
@@ -31,7 +28,7 @@ int main(int argc, char *argv[]){
     else{
         for (int i = 0; i < argc; i++){
             if(!strcmp(argv[i], "-s")){
-                cout << "Game is now running as server and waiting for a client too connect" << endl;
+                cout << "Game is now running as server and waiting for a client to connect" << endl;
                 chess.clientServerToggle = 1;
             }
             if(!strcmp(argv[i], "-c")){
@@ -45,6 +42,8 @@ int main(int argc, char *argv[]){
     }
     int x, xa;
     char y, ya;
+    char* ipArray = argv[2];
+    gotoHandle:
     if(chess.clientServerToggle == 2){
         chess.initialiseBoard();
         chess.printBoardToTerminal();
@@ -56,7 +55,7 @@ int main(int argc, char *argv[]){
         }
         struct sockaddr_in serverAddr;
         serverAddr.sin_family = AF_INET;
-        serverAddr.sin_addr.s_addr = inet_addr(argv[2]);
+        serverAddr.sin_addr.s_addr = inet_addr(ipArray);
         serverAddr.sin_port = htons(PORT);
         if(connect(clientSocket ,  (struct sockaddr*) & serverAddr , sizeof(serverAddr)) < 0){
             cout << "Connection Error..." << endl;
@@ -67,7 +66,7 @@ int main(int argc, char *argv[]){
         }
         while (true){
             while (true){
-                cout << "Please enter number for piece you wish to move or 9 too exit" << endl;
+                cout << "Please enter number for piece you wish to move or 9 to exit" << endl;
                 cin >> x;
                 if (x == 1 || x == 2 || x == 3 || x == 4 || x == 5 || x == 6 || x == 7 || x == 8){
                     break;
@@ -82,7 +81,7 @@ int main(int argc, char *argv[]){
                 }
             }
             while (true){
-                cout << "Please enter letter for piece you wish to move or 9 too exit" << endl;
+                cout << "Please enter letter for piece you wish to move or 9 to exit" << endl;
                 cin >> y;
                 if (y == 'a' || y == 'A' || y == 'b' || y == 'B' || y == 'c' || y == 'C' || y == 'd' || y == 'D'
                     || y == 'e' || y == 'E' || y == 'f' || y == 'F' || y == 'g' || y == 'G' || y == 'h' || y == 'H'){
@@ -98,7 +97,7 @@ int main(int argc, char *argv[]){
                 }
             }
             while (true){
-                cout << "Please enter number for were you wish piece to move too or 9 too exit" << endl;
+                cout << "Please enter number for were you wish piece to move to or 9 to exit" << endl;
                 cin >> xa;
                 if (xa == 1 || xa == 2 || xa == 3 || xa == 4 || xa == 5 || xa == 6 || xa == 7 || xa == 8){
                     break;
@@ -113,7 +112,7 @@ int main(int argc, char *argv[]){
                 }
             }
             while (true){
-                cout << "Please enter letter for were you wish piece to move too or 9 too exit" << endl;
+                cout << "Please enter letter for were you wish piece to move to or 9 to exit" << endl;
                 cin >> ya;
                 if (ya == 'a' || ya == 'A' || ya == 'b' || ya == 'B' || ya == 'c' || ya == 'C' || ya == 'd' || ya == 'D'
                     || ya == 'e' || ya == 'E' || ya == 'f' || ya == 'F' || ya == 'g' || ya == 'G' || ya == 'h' ||
@@ -212,7 +211,7 @@ int main(int argc, char *argv[]){
             chess.movePiece(a,receiveMessage[1],b,receiveMessage[3]);
             chess.printBoardToTerminal();
             while (true){
-                cout << "Please enter number for piece you wish to move or 9 too exit" << endl;
+                cout << "Please enter number for piece you wish to move or 9 to exit" << endl;
                 cin >> x;
                 if (x == 1 || x == 2 || x == 3 || x == 4 || x == 5 || x == 6 || x == 7 || x == 8){
                     break;
@@ -227,7 +226,7 @@ int main(int argc, char *argv[]){
                 }
             }
             while (true){
-                cout << "Please enter letter for piece you wish to move or 9 too exit" << endl;
+                cout << "Please enter letter for piece you wish to move or 9 to exit" << endl;
                 cin >> y;
                 if (y == 'a' || y == 'A' || y == 'b' || y == 'B' || y == 'c' || y == 'C' || y == 'd' || y == 'D'
                     || y == 'e' || y == 'E' || y == 'f' || y == 'F' || y == 'g' || y == 'G' || y == 'h' || y == 'H'){
@@ -243,7 +242,7 @@ int main(int argc, char *argv[]){
                 }
             }
             while (true){
-                cout << "Please enter number for were you wish piece to move too or 9 too exit" << endl;
+                cout << "Please enter number for were you wish piece to move to or 9 to exit" << endl;
                 cin >> xa;
                 if (xa == 1 || xa == 2 || xa == 3 || xa == 4 || xa == 5 || xa == 6 || xa == 7 || xa == 8){
                     break;
@@ -258,7 +257,7 @@ int main(int argc, char *argv[]){
                 }
             }
             while (true){
-                cout << "Please enter letter for were you wish piece to move too or 9 too exit" << endl;
+                cout << "Please enter letter for were you wish piece to move to or 9 to exit" << endl;
                 cin >> ya;
                 if (ya == 'a' || ya == 'A' || ya == 'b' || ya == 'B' || ya == 'c' || ya == 'C' || ya == 'd' || ya == 'D'
                     || ya == 'e' || ya == 'E' || ya == 'f' || ya == 'F' || ya == 'g' || ya == 'G' || ya == 'h' ||
@@ -285,39 +284,69 @@ int main(int argc, char *argv[]){
         }
     }
     if(chess.clientServerToggle == 0){
-        std::remove("Chess.txt");
+        remove("Chess.txt");
         chess.initialiseBoard();
-        std::system("clear");
+        system("clear");
         chess.printBoardToTerminal();
         while (true){
             while (true){
-                cout << "Please enter number for piece you wish to move or 9 too exit" << endl;
+                cout << "Please enter number for piece you wish to move or 10 for help" << endl;
                 cin >> x;
                 if (x == 1 || x == 2 || x == 3 || x == 4 || x == 5 || x == 6 || x == 7 || x == 8){
                     break;
                 }
                 else if (x == 9)
                     return 0;
+                else if (x == 10){
+                    cout << "Welcome to Abbotts Chess \n" <<
+                                 "\n" <<
+                                 "Chess allows all regulation moves by asking the user for input of the four co-ordinates in succession\n"
+                                 "required for the move. Numeric and then alpha co-ordinates for the piece player wishes to move and then\n"
+                                 "numeric followed by alpha co-oridnates for square piece is to be moved to.\n" <<
+                                 "\n" <<
+                                 "Castling is accomplished by using the kings starting position followed by the position the king would\n"
+                                 "land after move as co-ordinates. Rook will move to position next to king automatically. Castling is only\n"
+                                 "available if both left rook and king have not been moved over the game.\n" <<
+                                 "\n" <<
+                                 "Enpassant is accomplished when a pawn is in correct position and an apposing pawn one square to the\n" <<
+                                 "left or right in its starting position moves two squares therefor overtaking the player pawns position.\n" <<
+                                 "The square that the apposing pawn moved over will become available as a move for the players pawn\n"
+                                 "allowing enpassant taking of pawns.\n" <<
+                                 "\n" <<
+                                 "10 Help Screen you are seeing now \n" <<
+                                 "11 Save Game State\n" <<
+                                 "12 Restore Game State\n" <<
+                                 "13 Reinitialize Board (new game)\n" <<
+                                 "14 Set Server to wait for Client\n" <<
+                                 "15 Connect to Server as Client\n" <<
+                                 "16 Change sides colour\n" <<
+                                 "17 Clear Screen toggle\n" <<
+                                 "\n" <<
+                                 "22 Move backwards a turn\n" <<
+                                 "33 Move forwards a turn (Note! If a new move is recorded past future moves are lost)\n" <<
+                                 "\n" <<
+                                 "9 Exit game\n" <<
+                                 "" << endl;
+                }
                 else if (x == 11){
 
-                    //char dateTime[80];
                     time_t current = time(nullptr);
-                    std::string dateTime = ctime(&current);
-                    std::replace(dateTime.begin(), dateTime.end(), ' ', '-');
-                    std::replace(dateTime.begin(),dateTime.end(), ':', ',');
-                    std::replace(dateTime.begin(),dateTime.end(), '\n', '.');
+                    string dateTime = ctime(&current);
+                    replace(dateTime.begin(), dateTime.end(), ' ', '-');
+                    replace(dateTime.begin(),dateTime.end(), ':', ',');
+                    replace(dateTime.begin(),dateTime.end(), '\n', '.');
 
 
-                    std::ofstream outFileHandle;
+                    ofstream outFileHandle;
 
-                    std::string saveFile = "gamesave/" + dateTime;
-                    outFileHandle.open(saveFile ,std::ios_base::app);
+                    string saveFile = "gamesave/" + dateTime;
+                    outFileHandle.open(saveFile ,ios_base::app);
 
 
-                    std::ifstream inFileHandle;
-                    std::string line;
+                    ifstream inFileHandle;
+                    string line;
                     inFileHandle.open("Chess.txt");
-                    while(std::getline(inFileHandle, line)){
+                    while(getline(inFileHandle, line)){
                         outFileHandle << line << "\n";
                     }
                     inFileHandle.close();
@@ -325,19 +354,19 @@ int main(int argc, char *argv[]){
                     
                 }
                 else if (x == 12){
-                    std::string path = "gamesave/";
-                    std::vector<std::string> dir;
-                    std::cout << "Please enter the corresponding number to the game you wish to restore" << std::endl;
+                    string path = "gamesave/";
+                    vector<string> dir;
+                    cout << "Please enter the corresponding number to the game you wish to restore" << endl;
                     int i = 1;
                     for (const auto & entry : directory_iterator(path)){
-                        std::cout << i << " " << entry.path() << std::endl;
+                        cout << i << " " << entry.path() << endl;
                         dir.push_back(entry.path());
                         i++;
                     }
-                    std::string loadInput;
+                    string loadInput;
                     int index;
                     while(true) {
-                        std::cin >> index;
+                        cin >> index;
                         if (index > 0 && index <= dir.size()) {
                             loadInput = dir[index - 1];
                             break;
@@ -351,15 +380,34 @@ int main(int argc, char *argv[]){
                     chess.loadGame(loadInput);
                     chess.printBoardToTerminal();
                 }
+                else if (x == 13){
+                    chess.initialiseBoard();
+                    chess.printBoardToTerminal();
+                }
+                else if (x == 14){
+                    chess.clientServerToggle = 1;
+                    goto gotoHandle;
+                }
+                else if (x == 15){
+                    chess.clientServerToggle = 2;
+                    cout << "Please enter ip address of server" << endl;
+                    string ip_address;
+                    cin >> ip_address;
+                    char ipAddress[16];
+                    strcpy(ipAddress, ip_address.c_str());
+                    ipArray = ipAddress;
+                    goto gotoHandle;
+                }
                 else{
                     cout << "You have entered an illegal character please try again" << endl;
                     cin.clear();
                     cin.ignore(1, '\n');
                     x = 0;
                 }
+
             }
             while (true){
-                cout << "Please enter letter for piece you wish to move or 9 too exit" << endl;
+                cout << "Please enter letter for piece you wish to move or 9 to exit" << endl;
                 cin >> y;
                 if (y == 'a' || y == 'A' || y == 'b' || y == 'B' || y == 'c' || y == 'C' || y == 'd' || y == 'D'
                     || y == 'e' || y == 'E' || y == 'f' || y == 'F' || y == 'g' || y == 'G' || y == 'h' || y == 'H'){
@@ -375,7 +423,7 @@ int main(int argc, char *argv[]){
                 }
             }
             while(true){
-                cout << "Please enter number for were you wish piece to move too or 9 too exit" << endl;
+                cout << "Please enter number for were you wish piece to move to or 9 to exit" << endl;
                 cin >> xa;
                 if (xa == 1 || xa == 2 || xa == 3 || xa == 4 || xa == 5 || xa == 6 || xa == 7 || xa == 8){
                     break;
@@ -390,7 +438,7 @@ int main(int argc, char *argv[]){
                 }
             }
             while(true){
-                cout << "Please enter letter for were you wish piece to move too or 9 too exit" << endl;
+                cout << "Please enter letter for were you wish piece to move to or 9 to exit" << endl;
                 cin >> ya;
                 if (ya == 'a' || ya == 'A' || ya == 'b' || ya == 'B' || ya == 'c' || ya == 'C' || ya == 'd' || ya == 'D'
                     || ya == 'e' || ya == 'E' || ya == 'f' || ya == 'F' || ya == 'g' || ya == 'G' || ya == 'h' || ya == 'H'){
@@ -406,10 +454,10 @@ int main(int argc, char *argv[]){
                 }
             }
             if(chess.movePiece(x, y, xa, ya)){
-                std::system("clear");
+                system("clear");
                 chess.printBoardToTerminal();
                 chess.engineMove();
-                std::system("clear");
+                system("clear");
                 chess.printBoardToTerminal();
             }
         }
