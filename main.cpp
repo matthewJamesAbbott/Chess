@@ -73,6 +73,106 @@ int main(int argc, char *argv[]){
                 } 
                 else if (x == 9)
                     return 0;
+                else if (x == 10){
+                    cout << "Welcome to Abbotts Chess \n" <<
+                         "\n" <<
+                         "Chess allows all regulation moves by asking the user for input of the four co-ordinates in succession\n"
+                         "required for the move. Numeric and then alpha co-ordinates for the piece player wishes to move and then\n"
+                         "numeric followed by alpha co-oridnates for square piece is to be moved to.\n" <<
+                         "\n" <<
+                         "Castling is accomplished by using the kings starting position followed by the position the king would\n"
+                         "land after move as co-ordinates. Rook will move to position next to king automatically. Castling is only\n"
+                         "available if both left rook and king have not been moved over the game.\n" <<
+                         "\n" <<
+                         "Enpassant is accomplished when a pawn is in correct position and an opposing pawn one square to the\n" <<
+                         "left or right in its starting position moves two squares therefor overtaking the player pawns position.\n" <<
+                         "The square that the opposing pawn moved over will become available as a move for the players pawn\n"
+                         "allowing enpassant taking of pawns.\n" <<
+                         "\n" <<
+                         "10 Help Screen you are seeing now \n" <<
+                         "11 Save Game State\n" <<
+                         "12 Restore Game State\n" <<
+                         "13 Reinitialize Board (new game)\n" <<
+                         "14 Set Server to wait for Client\n" <<
+                         "15 Connect to Server as Client\n" <<
+                         "16 Change sides colour\n" <<
+                         "17 Clear Screen toggle\n" <<
+                         "\n" <<
+                         "22 Take move Back\n" <<
+                         "\n" <<
+                         "9 Exit game\n" <<
+                         "" << endl;
+                }
+                else if (x == 11){
+
+                    time_t current = time(nullptr);
+                    string dateTime = ctime(&current);
+                    replace(dateTime.begin(), dateTime.end(), ' ', '-');
+                    replace(dateTime.begin(),dateTime.end(), ':', ',');
+                    replace(dateTime.begin(),dateTime.end(), '\n', '.');
+
+
+                    ofstream outFileHandle;
+
+                    string saveFile = "gamesave/" + dateTime;
+                    outFileHandle.open(saveFile ,ios_base::app);
+
+
+                    ifstream inFileHandle;
+                    string line;
+                    inFileHandle.open("Chess.txt");
+                    while(getline(inFileHandle, line)){
+                        outFileHandle << line << "\n";
+                    }
+                    inFileHandle.close();
+                    outFileHandle.close();
+
+                }
+                else if (x == 12){
+                    string path = "gamesave/";
+                    vector<string> dir;
+                    cout << "Please enter the corresponding number to the game you wish to restore" << endl;
+                    int i = 1;
+                    for (const auto & entry : directory_iterator(path)){
+                        cout << i << " " << entry.path() << endl;
+                        dir.push_back(entry.path());
+                        i++;
+                    }
+                    string loadInput;
+                    int index;
+                    while(true) {
+                        cin >> index;
+                        if (index > 0 && index <= dir.size()) {
+                            loadInput = dir[index - 1];
+                            break;
+                        }
+                        else{
+                            cout << "You have entered an illegal character please try again" << endl;
+                            cin.clear();
+                            cin.ignore(1, '\n');
+                        }
+                    }
+                    chess.loadGame(loadInput);
+                    chess.printBoardToTerminal();
+                }
+                else if (x == 13){
+                    chess.initialiseBoard();
+                    chess.printBoardToTerminal();
+                }
+                else if (x == 14){
+                    chess.clientServerToggle = 1;
+                    goto gotoHandle;
+                }
+                else if (x == 15){
+                    chess.clientServerToggle = 2;
+                    cout << "Please enter ip address of server" << endl;
+                    string ip_address;
+                    cin >> ip_address;
+                    char ipAddress[16];
+                    strcpy(ipAddress, ip_address.c_str());
+                    ipArray = ipAddress;
+                    goto gotoHandle;
+                }
                 else{
                     cout << "You have entered an illegal character please try again" << endl;
                     cin.clear();
@@ -218,6 +318,106 @@ int main(int argc, char *argv[]){
                 } 
                 else if (x == 9)
                     return 0;
+                else if (x == 10){
+                    cout << "Welcome to Abbotts Chess \n" <<
+                         "\n" <<
+                         "Chess allows all regulation moves by asking the user for input of the four co-ordinates in succession\n"
+                         "required for the move. Numeric and then alpha co-ordinates for the piece player wishes to move and then\n"
+                         "numeric followed by alpha co-oridnates for square piece is to be moved to.\n" <<
+                         "\n" <<
+                         "Castling is accomplished by using the kings starting position followed by the position the king would\n"
+                         "land after move as co-ordinates. Rook will move to position next to king automatically. Castling is only\n"
+                         "available if both left rook and king have not been moved over the game.\n" <<
+                         "\n" <<
+                         "Enpassant is accomplished when a pawn is in correct position and an opposing pawn one square to the\n" <<
+                         "left or right in its starting position moves two squares therefor overtaking the player pawns position.\n" <<
+                         "The square that the opposing pawn moved over will become available as a move for the players pawn\n"
+                         "allowing enpassant taking of pawns.\n" <<
+                         "\n" <<
+                         "10 Help Screen you are seeing now \n" <<
+                         "11 Save Game State\n" <<
+                         "12 Restore Game State\n" <<
+                         "13 Reinitialize Board (new game)\n" <<
+                         "14 Set Server to wait for Client\n" <<
+                         "15 Connect to Server as Client\n" <<
+                         "16 Change sides colour\n" <<
+                         "17 Clear Screen toggle\n" <<
+                         "\n" <<
+                         "22 Take move back\n" <<
+                         "\n" <<
+                         "9 Exit game\n" <<
+                         "" << endl;
+                }
+                else if (x == 11){
+
+                    time_t current = time(nullptr);
+                    string dateTime = ctime(&current);
+                    replace(dateTime.begin(), dateTime.end(), ' ', '-');
+                    replace(dateTime.begin(),dateTime.end(), ':', ',');
+                    replace(dateTime.begin(),dateTime.end(), '\n', '.');
+
+
+                    ofstream outFileHandle;
+
+                    string saveFile = "gamesave/" + dateTime;
+                    outFileHandle.open(saveFile ,ios_base::app);
+
+
+                    ifstream inFileHandle;
+                    string line;
+                    inFileHandle.open("Chess.txt");
+                    while(getline(inFileHandle, line)){
+                        outFileHandle << line << "\n";
+                    }
+                    inFileHandle.close();
+                    outFileHandle.close();
+
+                }
+                else if (x == 12){
+                    string path = "gamesave/";
+                    vector<string> dir;
+                    cout << "Please enter the corresponding number to the game you wish to restore" << endl;
+                    int i = 1;
+                    for (const auto & entry : directory_iterator(path)){
+                        cout << i << " " << entry.path() << endl;
+                        dir.push_back(entry.path());
+                        i++;
+                    }
+                    string loadInput;
+                    int index;
+                    while(true) {
+                        cin >> index;
+                        if (index > 0 && index <= dir.size()) {
+                            loadInput = dir[index - 1];
+                            break;
+                        }
+                        else{
+                            cout << "You have entered an illegal character please try again" << endl;
+                            cin.clear();
+                            cin.ignore(1, '\n');
+                        }
+                    }
+                    chess.loadGame(loadInput);
+                    chess.printBoardToTerminal();
+                }
+                else if (x == 13){
+                    chess.initialiseBoard();
+                    chess.printBoardToTerminal();
+                }
+                else if (x == 14){
+                    chess.clientServerToggle = 1;
+                    goto gotoHandle;
+                }
+                else if (x == 15){
+                    chess.clientServerToggle = 2;
+                    cout << "Please enter ip address of server" << endl;
+                    string ip_address;
+                    cin >> ip_address;
+                    char ipAddress[16];
+                    strcpy(ipAddress, ip_address.c_str());
+                    ipArray = ipAddress;
+                    goto gotoHandle;
+                }
                 else {
                     cout << "You have entered an illegal character please try again" << endl;
                     cin.clear();
@@ -308,9 +508,9 @@ int main(int argc, char *argv[]){
                                  "land after move as co-ordinates. Rook will move to position next to king automatically. Castling is only\n"
                                  "available if both left rook and king have not been moved over the game.\n" <<
                                  "\n" <<
-                                 "Enpassant is accomplished when a pawn is in correct position and an apposing pawn one square to the\n" <<
+                                 "Enpassant is accomplished when a pawn is in correct position and an opposing pawn one square to the\n" <<
                                  "left or right in its starting position moves two squares therefor overtaking the player pawns position.\n" <<
-                                 "The square that the apposing pawn moved over will become available as a move for the players pawn\n"
+                                 "The square that the opposing pawn moved over will become available as a move for the players pawn\n"
                                  "allowing enpassant taking of pawns.\n" <<
                                  "\n" <<
                                  "10 Help Screen you are seeing now \n" <<
@@ -322,8 +522,7 @@ int main(int argc, char *argv[]){
                                  "16 Change sides colour\n" <<
                                  "17 Clear Screen toggle\n" <<
                                  "\n" <<
-                                 "22 Move backwards a turn\n" <<
-                                 "33 Move forwards a turn (Note! If a new move is recorded past future moves are lost)\n" <<
+                                 "22 Take move back\n" <<
                                  "\n" <<
                                  "9 Exit game\n" <<
                                  "" << endl;
@@ -397,6 +596,12 @@ int main(int argc, char *argv[]){
                     strcpy(ipAddress, ip_address.c_str());
                     ipArray = ipAddress;
                     goto gotoHandle;
+                }
+                else if (x == 22){
+                    if(chess.recallMove())
+                        chess.printBoardToTerminal();
+                    else
+                        cout << "There are no move moves to recall." << endl;
                 }
                 else{
                     cout << "You have entered an illegal character please try again" << endl;

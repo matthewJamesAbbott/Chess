@@ -33,6 +33,8 @@ public:
      */
     void initialiseBoard();
 
+    bool recallMove();
+
     void loadGame(std::string fileName);
 
     /**

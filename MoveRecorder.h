@@ -14,6 +14,7 @@ private:
 public:
     MoveRecorder();
     void setMove(int input);
+    int getMove();
 
     /**
      * Record move to temperary log file Chess.txt
