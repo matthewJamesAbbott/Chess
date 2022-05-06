@@ -17,6 +17,7 @@ using std::experimental::filesystem::directory_iterator;
 
 int main(int argc, char *argv[]){
     Game chess;
+    bool clearSwitch = true;
     experimental::filesystem::create_directory("gamesave");
     cout << "Please Enter Name for Player" << std::endl;
     string name;
@@ -597,6 +598,12 @@ int main(int argc, char *argv[]){
                     ipArray = ipAddress;
                     goto gotoHandle;
                 }
+                else if (x == 17){
+                    if (clearSwitch)
+                        clearSwitch = false;
+                    else
+                        clearSwitch = true;
+                }
                 else if (x == 22){
                     if(chess.recallMove())
                         chess.printBoardToTerminal();
@@ -659,10 +666,12 @@ int main(int argc, char *argv[]){
                 }
             }
             if(chess.movePiece(x, y, xa, ya)){
-                system("clear");
+                if(clearSwitch)
+                    system("clear");
                 chess.printBoardToTerminal();
                 chess.engineMove();
-                system("clear");
+                if(clearSwitch)
+                    system("clear");
                 chess.printBoardToTerminal();
             }
         }
