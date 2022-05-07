@@ -96,7 +96,6 @@ int main(int argc, char *argv[]){
                          "13 Reinitialize Board (new game)\n" <<
                          "14 Set Server to wait for Client\n" <<
                          "15 Connect to Server as Client\n" <<
-                         "16 Change sides colour\n" <<
                          "17 Clear Screen toggle\n" <<
                          "\n" <<
                          "22 Take move Back\n" <<
@@ -341,7 +340,6 @@ int main(int argc, char *argv[]){
                          "13 Reinitialize Board (new game)\n" <<
                          "14 Set Server to wait for Client\n" <<
                          "15 Connect to Server as Client\n" <<
-                         "16 Change sides colour\n" <<
                          "17 Clear Screen toggle\n" <<
                          "\n" <<
                          "22 Take move back\n" <<
@@ -520,7 +518,6 @@ int main(int argc, char *argv[]){
                                  "13 Reinitialize Board (new game)\n" <<
                                  "14 Set Server to wait for Client\n" <<
                                  "15 Connect to Server as Client\n" <<
-                                 "16 Change sides colour\n" <<
                                  "17 Clear Screen toggle\n" <<
                                  "\n" <<
                                  "22 Take move back\n" <<

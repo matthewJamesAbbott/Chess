@@ -425,8 +425,8 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                 list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard));
             else if(x > 0 && y > 0 && (!moveBoard.returnSquare(x-1,y-1).find("Black")))
                 list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard));
-            else if(this->castleCheck(1) && moveBoard.returnSquare(1,1) == "Empty" && moveBoard.returnSquare(1,2) == "Empty")
-                list->addNode(x,y-2,1);
+            //else if(this->castleCheck(1) && moveBoard.returnSquare(1,1) == "Empty" && moveBoard.returnSquare(1,2) == "Empty")
+            //    list->addNode(x,y-2,1);
             return list;
 
         case 6: // White Right Bishop Moves
@@ -983,12 +983,12 @@ bool MoveCalculator::checkMateTest(Board gameBoard, int side){
     else{
         for (int e = 0; e < 8; e++){
             for (int i = 0; i < 8; i++){
-                if (gameBoard.returnSquare(e, i).find("White")){
+                if (!gameBoard.returnSquare(e, i).find("White")){
                     temp = possibleSquares2DArray(e, i, gameBoard);
                     returnedVector = temp->returnVector();
-                    for (int k = 0; k < moveVector.size() / 2; k++){
-                        int a = moveVector[k];
-                        int b = moveVector[k + 1];
+                    for (int k = 0; k < returnedVector.size() / 2; k++){
+                        int a = returnedVector[k];
+                        int b = returnedVector[k + 1];
                         piece = testBoard.returnSquare(e, i);
                         testBoard.setSquare(e, i, "Empty");
                         testBoard.setSquare(a, b, piece);

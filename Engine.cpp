@@ -53,6 +53,20 @@ void Engine::moveVector(TreeNode *localRoot, int base)
     }
 }
 
+void Engine::secondGuess(TreeNode *localRoot){
+    if(localRoot != nullptr){
+        secondGuess(localRoot->leftTreeNode);
+        if(localRoot->rank >= 0){
+            returnVector.insert(returnVector.begin(), localRoot->ya);
+            returnVector.insert(returnVector.begin(), localRoot->xa);
+            returnVector.insert(returnVector.begin(), localRoot->y);
+            returnVector.insert(returnVector.begin(), localRoot->x);
+
+        }
+        secondGuess(localRoot->rightTreeNode);
+    }
+}
+
 int *Engine::resolveMove(Board gameBoard){
     Tree *moveTree = new Tree();
     MoveCalculator calc;
@@ -89,13 +103,48 @@ int *Engine::resolveMove(Board gameBoard){
         choice = choice * 4;
     }
     int move[4];
-    move[0] = returnVector[choice];
-    move[1] = returnVector[choice + 1];
-    move[2] = returnVector[choice + 2];
-    move[3] = returnVector[choice + 3];
+    Board testBoard;
+    testBoard = gameBoard;
+    testBoard.setSquare(returnVector[choice+2], returnVector[choice+3],testBoard.returnSquare(returnVector[choice], returnVector[choice+1]));
+    testBoard.setSquare(returnVector[choice], returnVector[choice+1], "Empty");
+    if(!calc.checkCalculator(returnVector[choice + 2], returnVector[choice + 3], testBoard, 1)){
+        move[0] = returnVector[choice];
+        move[1] = returnVector[choice + 1];
+        move[2] = returnVector[choice + 2];
+        move[3] = returnVector[choice + 3];
+    }
+    else{
+
+        stepper = moveTree->head;
+        returnVector.clear();
+        this->secondGuess(stepper);
+        int kingX, kingY;
+        for(int i = 0; i < returnVector.size();){
+            testBoard = gameBoard;
+            testBoard.setSquare(returnVector[i+2], returnVector[i+3],testBoard.returnSquare(returnVector[i], returnVector[i+1]));
+            testBoard.setSquare(returnVector[i], returnVector[i+1], "Empty");
+            for (int e = 0; e < 8; e++){
+                for (int i2 = 0; i2 < 8; i2++){
+                    if (testBoard.returnSquare(e, i2) == "Black King"){
+                        kingX = e;
+                        kingY = i2;
+                    }
+                }
+            }
+            if(!calc.checkCalculator(kingX, kingY, testBoard, 1)){
+                move[0] = returnVector[i];
+                move[1] = returnVector[i + 1];
+                move[2] = returnVector[i + 2];
+                move[3] = returnVector[i + 3];
+                break;
+            }
+            i = i + 4;
+        }
+    }
+    //std::cout << "move " << move[0] << " " << move[1] << " " << move[2] << " " << move[3] << std::endl;
     delete moveTree;
     returnVector.clear();
     int *returnPointer = move;
     return returnPointer;
-}
 
+}

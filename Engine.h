@@ -63,6 +63,7 @@ public:
      *        making it hungry
      */
     void moveVector(TreeNode *localRoot, int base);
+    void secondGuess(TreeNode *localRoot);
 
     std::vector<int> returnVector;
 };

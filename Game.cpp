@@ -230,12 +230,17 @@ void Game::loadGame(std::string fileName){
     inFileHandle.close();
 }
 
-void Game::engineMove(){
+bool Game::engineMove(){
     int *moveArray;
+    if(calc.checkMateTest(gameBoard,1)){
+        std::cout << "Check Mate You Win" << std::endl;
+        return false;
+    }
     moveArray = moveEngine->resolveMove(gameBoard);
     gameBoard.setSquare(moveArray[2], moveArray[3], gameBoard.returnSquare(moveArray[0], moveArray[1]));
     gameBoard.setSquare(moveArray[0], moveArray[1], "Empty");
     rec.recordMove(moveArray[0],moveArray[1],moveArray[2],moveArray[3],gameBoard);
+    return true;
 }
 
 void Game::printBoardToTerminal(){
@@ -421,7 +426,6 @@ bool Game::movePiece(int ia, char ca, int ib, char cb){
         xb = 1;
     else if(ib == 8)
         xb = 0;
-    MoveCalculator calc;
     LinkedList *list;
     Board checkBoard = gameBoard;
     if(calc.checkMateTest(gameBoard,0)){

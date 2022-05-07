@@ -8,6 +8,7 @@
 #include "Board.h"
 #include "MoveRecorder.h"
 #include "Engine.h"
+#include "MoveCalculator.h"
 
 class Game{
 
@@ -51,7 +52,7 @@ public:
     /**
      * Calculate Computers Move
      */
-    void engineMove();
+    bool engineMove();
 
     /**
      * Print unicode representation of board and pieces to terminal
@@ -62,6 +63,7 @@ public:
 
 private:
     MoveRecorder rec;
+    MoveCalculator calc;
     std::string playerOne;
     std::string playerTwo;
     Board gameBoard;
