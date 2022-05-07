@@ -425,8 +425,8 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                 list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard));
             else if(x > 0 && y > 0 && (!moveBoard.returnSquare(x-1,y-1).find("Black")))
                 list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard));
-            //else if(this->castleCheck(1) && moveBoard.returnSquare(1,1) == "Empty" && moveBoard.returnSquare(1,2) == "Empty")
-            //    list->addNode(x,y-2,1);
+            else if(this->castleCheck(1) && moveBoard.returnSquare(1,1) == "Empty" && moveBoard.returnSquare(1,2) == "Empty")
+                list->addNode(x,y-2,1);
             return list;
 
         case 6: // White Right Bishop Moves
