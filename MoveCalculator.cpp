@@ -993,7 +993,6 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
 }
 
 bool MoveCalculator::checkMateTest(Board gameBoard, int side){
-    std::cout << "Side " << side << std::endl;
     Board testBoard = gameBoard;
     MoveCalculator calc;
     LinkedList *temp;
@@ -1091,7 +1090,6 @@ bool MoveCalculator::checkCalculator(int x, int y, Board moveBoard, int side){
     for(int k = 0; k < moveVector.size(); k++){
         int a = moveVector[k];
         int b = moveVector[k+1];
-        std::cout << "a " << a << " b " << b << " side " << side << " vector length " << moveVector.size() << std::endl;
         k = k+1;
         if(x == a && y == b){
             std::cout << "check baby !!!" << std::endl;
