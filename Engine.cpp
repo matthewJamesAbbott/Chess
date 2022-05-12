@@ -67,27 +67,56 @@ void Engine::secondGuess(TreeNode *localRoot){
     }
 }
 
-int *Engine::resolveMove(Board gameBoard){
+int *Engine::resolveMove(Board gameBoard, int computerSide){
     Tree *moveTree = new Tree();
     MoveCalculator calc;
     LinkedList *list;
     std::vector<int> moveVector;
     int base = 0;
-    for(int e = 0; e < 8; e++){
-        for(int i = 0; i < 8; i++){
-            if(gameBoard.returnSquare(e,i).find("Black")){
-                list = calc.possibleSquares2DArray(e, i, gameBoard);
-                moveVector = list->returnWeightedVector();
-                for(int j = 0; j < moveVector.size();j++){
-                    int a = moveVector[j];
-                    int b = moveVector[j + 1];
-                    int c = moveVector[j + 2];
-                    if (c > base)
-                        base = c;
-                    if(c >= 0 && c <= 10){
-                        moveTree->addTreeNode(c, e, i, a, b);
+    int playerSide;
+    if(computerSide == 0)
+        playerSide = 1;
+    else
+        playerSide = 0;
+    if(computerSide == 0) {
+        for (int e = 0; e < 8; e++) {
+            for (int i = 0; i < 8; i++) {
+                if (gameBoard.returnSquare(e, i).find("White")) {
+                    list = calc.possibleSquares2DArray(e, i, gameBoard, playerSide);
+                    moveVector = list->returnWeightedVector();
+                    for (int j = 0; j < moveVector.size(); j++) {
+                        int a = moveVector[j];
+                        int b = moveVector[j + 1];
+                        int c = moveVector[j + 2];
+                        if (c > base)
+                            base = c;
+                        if (c >= 0 && c <= 10) {
+                            moveTree->addTreeNode(c, e, i, a, b);
+                        }
+                        j = j + 2;
                     }
-                    j = j + 2;
+                }
+            }
+        }
+    }
+    else
+    {
+        for (int e = 0; e < 8; e++) {
+            for (int i = 0; i < 8; i++) {
+                if (gameBoard.returnSquare(e, i).find("Black")) {
+                    list = calc.possibleSquares2DArray(e, i, gameBoard, playerSide);
+                    moveVector = list->returnWeightedVector();
+                    for (int j = 0; j < moveVector.size(); j++) {
+                        int a = moveVector[j];
+                        int b = moveVector[j + 1];
+                        int c = moveVector[j + 2];
+                        if (c > base)
+                            base = c;
+                        if (c >= 0 && c <= 10) {
+                            moveTree->addTreeNode(c, e, i, a, b);
+                        }
+                        j = j + 2;
+                    }
                 }
             }
         }
@@ -107,7 +136,7 @@ int *Engine::resolveMove(Board gameBoard){
     testBoard = gameBoard;
     testBoard.setSquare(returnVector[choice+2], returnVector[choice+3],testBoard.returnSquare(returnVector[choice], returnVector[choice+1]));
     testBoard.setSquare(returnVector[choice], returnVector[choice+1], "Empty");
-    if(!calc.checkCalculator(returnVector[choice + 2], returnVector[choice + 3], testBoard, 1)){
+    if(!calc.checkCalculator(returnVector[choice + 2], returnVector[choice + 3], testBoard, computerSide)){
         move[0] = returnVector[choice];
         move[1] = returnVector[choice + 1];
         move[2] = returnVector[choice + 2];
@@ -131,7 +160,7 @@ int *Engine::resolveMove(Board gameBoard){
                     }
                 }
             }
-            if(!calc.checkCalculator(kingX, kingY, testBoard, 1)){
+            if(!calc.checkCalculator(kingX, kingY, testBoard, computerSide)){
                 move[0] = returnVector[i];
                 move[1] = returnVector[i + 1];
                 move[2] = returnVector[i + 2];

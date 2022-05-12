@@ -81,7 +81,7 @@ public:
      * @param moveBoard complete board for function to work on <Board>
      * @return returns pointer to list containing x, y positions and square rank <LinkedList*>
      */
-    LinkedList *possibleSquares2DArray(int x, int y,Board moveBoard);
+    LinkedList *possibleSquares2DArray(int x, int y,Board moveBoard, int side);
 
     /**
      * Checks if piece found at co ordinates x and y given as parameters is under Check/Attack by another piece
@@ -111,7 +111,7 @@ public:
      * @param moveBoard complete board for function to work on <Board>
      * @return square rank is returned as an integer from 0 to 10, 0 being empty and 10 containing a king <int>
      */
-    static int evaluatePiece(int x, int y, Board moveBoard);
+    static int evaluatePiece(int x, int y, Board moveBoard, int side);
 
 private:
     int whiteKingX = 0;

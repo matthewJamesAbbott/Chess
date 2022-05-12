@@ -53,7 +53,7 @@ public:
      * @param gameBoard complete Board for computer to generate move from
      * @return pointer to array of integers x, y, xa and ya
      */
-    int *resolveMove(Board gameBoard);
+    int *resolveMove(Board gameBoard, int computerSide);
 
     /**
      * Recursive function to read nodes from the tree

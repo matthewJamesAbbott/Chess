@@ -518,6 +518,7 @@ int main(int argc, char *argv[]){
                                  "13 Reinitialize Board (new game)\n" <<
                                  "14 Set Server to wait for Client\n" <<
                                  "15 Connect to Server as Client\n" <<
+                                 "16 Reset Game and change side/colour\n" <<
                                  "17 Clear Screen toggle\n" <<
                                  "\n" <<
                                  "22 Take move back\n" <<
@@ -594,6 +595,18 @@ int main(int argc, char *argv[]){
                     strcpy(ipAddress, ip_address.c_str());
                     ipArray = ipAddress;
                     goto gotoHandle;
+                }
+                else if (x == 16){
+                    if(chess.playerSide == 0) {
+                        chess.playerSide = 1;
+                        chess.initialiseBoardReverse();
+                        chess.printBoardToTerminal();
+                    }
+                    else {
+                        chess.playerSide = 0;
+                        chess.initialiseBoard();
+                        chess.printBoardToTerminal();
+                    }
                 }
                 else if (x == 17){
                     if (clearSwitch)

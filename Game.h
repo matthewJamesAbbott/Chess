@@ -13,6 +13,9 @@
 class Game{
 
 public:
+
+    int playerSide = 0;
+
     Game();
 
     /**
@@ -33,6 +36,8 @@ public:
      * Insert String representations of pieces and empty squares into board array
      */
     void initialiseBoard();
+
+    void initialiseBoardReverse();
 
     bool recallMove();
 

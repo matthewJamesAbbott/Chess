@@ -49,6 +49,36 @@ void Game::initialiseBoard(){
     gameBoard.setSquare(7,7,"Black Right Rook");
 }
 
+void Game::initialiseBoardReverse(){
+    gameBoard.setSquare(0,0,"Black Left Rook");
+    gameBoard.setSquare(0,1,"Black Left Knight");
+    gameBoard.setSquare(0,2,"Black Left Bishop");
+    gameBoard.setSquare(0,3,"Black King");
+    gameBoard.setSquare(0,4,"Black Queen");
+    gameBoard.setSquare(0,5,"Black Right Bishop");
+    gameBoard.setSquare(0,6,"Black Right Knight");
+    gameBoard.setSquare(0,7,"Black Right Rook");
+    for(int i = 0; i < 8; i++){
+        gameBoard.setSquare(1,i,"Black Pawn");
+    }
+    for(int e = 2; e < 6; e++){
+        for(int i = 0; i < 8; i++){
+            gameBoard.setSquare(e,i,"Empty");
+        }
+    }
+    for(int i = 0; i < 8; i++){
+        gameBoard.setSquare(6,i,"White Pawn");
+    }
+    gameBoard.setSquare(7,0,"White Left Rook");
+    gameBoard.setSquare(7,1,"White Left Knight");
+    gameBoard.setSquare(7,2,"White Left Bishop");
+    gameBoard.setSquare(7,3,"White King");
+    gameBoard.setSquare(7,4,"White Queen");
+    gameBoard.setSquare(7,5,"White Right Bishop");
+    gameBoard.setSquare(7,6,"White Right Knight");
+    gameBoard.setSquare(7,7,"White Right Rook");
+}
+
 bool Game::recallMove(){
     std::ifstream inFileHandle;
     inFileHandle.open("Chess.txt");
@@ -232,11 +262,14 @@ void Game::loadGame(std::string fileName){
 
 bool Game::engineMove(){
     int *moveArray;
-    if(calc.checkMateTest(gameBoard,1)){
+    int computerSide = 1;
+    if(this->playerSide == 1)
+        computerSide = 0;
+    if(calc.checkMateTest(gameBoard,computerSide)){
         std::cout << "Check Mate You Win" << std::endl;
         return false;
     }
-    moveArray = moveEngine->resolveMove(gameBoard);
+    moveArray = moveEngine->resolveMove(gameBoard, computerSide);
     gameBoard.setSquare(moveArray[2], moveArray[3], gameBoard.returnSquare(moveArray[0], moveArray[1]));
     gameBoard.setSquare(moveArray[0], moveArray[1], "Empty");
     rec.recordMove(moveArray[0],moveArray[1],moveArray[2],moveArray[3],gameBoard);
@@ -428,11 +461,11 @@ bool Game::movePiece(int ia, char ca, int ib, char cb){
         xb = 0;
     LinkedList *list;
     Board checkBoard = gameBoard;
-    if(calc.checkMateTest(gameBoard,0)){
+    if(calc.checkMateTest(gameBoard,this->playerSide)){
         std::cout << "Check Mate Computer Wins" << std::endl;
         return false;
     }
-    list = calc.possibleSquares2DArray(xa, ya, gameBoard);
+    list = calc.possibleSquares2DArray(xa, ya, gameBoard, playerSide);
     std::vector<int> moveVector;
     moveVector = list->returnVector();
     for(int i = 0; i < moveVector.size();){
@@ -473,7 +506,7 @@ bool Game::movePiece(int ia, char ca, int ib, char cb){
             }
         }
     }
-    if(!calc.checkCalculator(kingX,kingY, checkBoard, 0)){
+    if(!calc.checkCalculator(kingX,kingY, checkBoard, this->playerSide)){
         for(int e = 0; e < 8; e++){
             for(int i = 0; i < 8; i++){
                 gameBoard.setSquare(e,i, checkBoard.returnSquare(e,i));
