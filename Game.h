@@ -9,7 +9,8 @@
 #include "MoveRecorder.h"
 #include "Engine.h"
 #include "MoveCalculator.h"
-
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 class Game{
 
 public:
@@ -64,6 +65,12 @@ public:
      */
     void printBoardToTerminal();
 
+    void printBoardToWindow();
+
+    void initSDL();
+
+    void destroySDL();
+
     int clientServerToggle{};
 
 private:
@@ -76,5 +83,9 @@ private:
 
 };
 
+struct {
+	SDL_Renderer *renderer;
+	SDL_Window *window;
+} App;
 
 #endif //CHESS_GAME_H

@@ -8,8 +8,12 @@
 #include "Board.h"
 #include "MoveCalculator.h"
 #include "Engine.h"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
-Game::Game() = default;
+Game::Game(){
+    }
+
 
 void Game::setPlayerOne(std::string name){
     playerOne = name;
@@ -274,6 +278,419 @@ bool Game::engineMove(){
     gameBoard.setSquare(moveArray[0], moveArray[1], "Empty");
     rec.recordMove(moveArray[0],moveArray[1],moveArray[2],moveArray[3],gameBoard);
     return true;
+}
+
+void Game::initSDL(){
+    SDL_Init(SDL_INIT_VIDEO);
+    TTF_Init();
+    App.window = SDL_CreateWindow("Abbott Chess", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 765, 765, SDL_WINDOW_SHOWN);
+    App.renderer = SDL_CreateRenderer(App.window, -1, 0);
+}
+
+void Game::printBoardToWindow(){
+    TTF_Font *font = TTF_OpenFont("font.ttf", 256);
+    SDL_Texture *alphaA, *alphaB, *alphaC, *alphaD, *alphaE, *alphaF, *alphaG, *alphaH, *numeric1, *numeric2, *numeric3, *numeric4, 
+                *numeric5 ,*numeric6, *numeric7, *numeric8;
+    SDL_Rect alphaRecA, alphaRecB, alphaRecC, alphaRecD, alphaRecE, alphaRecF, alphaRecG, alphaRecH, numericRec1, numericRec2, 
+             numericRec3, numericRec4, numericRec5, numericRec6, numericRec7, numericRec8; 
+    SDL_Surface *alphaSurfaceA = NULL;
+    SDL_Surface *alphaSurfaceB = NULL;
+    SDL_Surface *alphaSurfaceC = NULL;
+    SDL_Surface *alphaSurfaceD = NULL;
+    SDL_Surface *alphaSurfaceE = NULL;
+    SDL_Surface *alphaSurfaceF = NULL;
+    SDL_Surface *alphaSurfaceG = NULL;
+    SDL_Surface *alphaSurfaceH = NULL;
+    SDL_Surface *numericSurface1 = NULL;
+    SDL_Surface *numericSurface2 = NULL;
+    SDL_Surface *numericSurface3 = NULL;
+    SDL_Surface *numericSurface4 = NULL;
+    SDL_Surface *numericSurface5 = NULL;
+    SDL_Surface *numericSurface6 = NULL;
+    SDL_Surface *numericSurface7 = NULL;
+    SDL_Surface *numericSurface8 = NULL;
+    alphaRecA.x = 85;
+    alphaRecA.y = 8 * 85;
+    alphaRecA.w = 85;
+    alphaRecA.h = 85;
+    alphaSurfaceA = TTF_RenderText_Solid(font, "A", {157,128,0,255});
+    alphaA = SDL_CreateTextureFromSurface(App.renderer, alphaSurfaceA);
+    alphaRecB.x = 2* 85;
+    alphaRecB.y = 8 * 85;
+    alphaRecB.w = 85;
+    alphaRecB.h = 85;
+    alphaSurfaceB = TTF_RenderText_Solid(font, "B", {0,0,0,255});
+    alphaB = SDL_CreateTextureFromSurface(App.renderer, alphaSurfaceB);
+    alphaRecC.x = 3 * 85;
+    alphaRecC.y = 8 * 85;
+    alphaRecC.w = 85;
+    alphaRecC.h = 85;
+    alphaSurfaceC = TTF_RenderText_Solid(font, "C", {157,128,0,255});
+    alphaC = SDL_CreateTextureFromSurface(App.renderer, alphaSurfaceC);
+    alphaRecD.x = 4 * 85;
+    alphaRecD.y = 8 * 85;
+    alphaRecD.w = 85;
+    alphaRecD.h = 85;
+    alphaSurfaceD = TTF_RenderText_Solid(font, "D", {0,0,0,255});
+    alphaD = SDL_CreateTextureFromSurface(App.renderer, alphaSurfaceD);
+    alphaRecE.x = 5 * 85;
+    alphaRecE.y = 8 * 85;
+    alphaRecE.w = 85;
+    alphaRecE.h = 85;
+    alphaSurfaceE = TTF_RenderText_Solid(font, "E", {157,128,0,255});
+    alphaE = SDL_CreateTextureFromSurface(App.renderer, alphaSurfaceE);
+    alphaRecF.x = 6 * 85;
+    alphaRecF.y = 8 * 85;
+    alphaRecF.w = 85;
+    alphaRecF.h = 85;
+    alphaSurfaceF = TTF_RenderText_Solid(font, "F", {0,0,0,255});
+    alphaF = SDL_CreateTextureFromSurface(App.renderer, alphaSurfaceF);
+    alphaRecG.x = 7 * 85;
+    alphaRecG.y = 8 * 85;
+    alphaRecG.w = 85;
+    alphaRecG.h = 85;
+    alphaSurfaceG = TTF_RenderText_Solid(font, "G", {157,128,0,255});
+    alphaG = SDL_CreateTextureFromSurface(App.renderer, alphaSurfaceG);
+    alphaRecH.x = 8 * 85;
+    alphaRecH.y = 8 * 85;
+    alphaRecH.w = 85;
+    alphaRecH.h = 85;
+    alphaSurfaceH = TTF_RenderText_Solid(font, "H", {0,0,0,255});
+    alphaH = SDL_CreateTextureFromSurface(App.renderer, alphaSurfaceH);
+    numericRec1.x = 0;
+    numericRec1.y = 7 * 85;
+    numericRec1.w = 85;
+    numericRec1.h = 85;
+    numericSurface1 = TTF_RenderText_Solid(font,"1", {157,128,0,255});
+    numeric1 = SDL_CreateTextureFromSurface(App.renderer, numericSurface1);
+    numericRec2.x = 0;
+    numericRec2.y = 6 * 85;
+    numericRec2.w = 85;
+    numericRec2.h = 85;
+    numericSurface2 = TTF_RenderText_Solid(font,"2", {0,0,0,255});
+    numeric2 = SDL_CreateTextureFromSurface(App.renderer, numericSurface2);
+    numericRec3.x = 0;
+    numericRec3.y = 5 * 85;
+    numericRec3.w = 85;
+    numericRec3.h = 85;
+    numericSurface3 = TTF_RenderText_Solid(font,"3", {157,128,0,255});
+    numeric3 = SDL_CreateTextureFromSurface(App.renderer, numericSurface3);
+    numericRec4.x = 0;
+    numericRec4.y = 4 * 85;
+    numericRec4.w = 85;
+    numericRec4.h = 85;
+    numericSurface4 = TTF_RenderText_Solid(font,"4", {0,0,0,255});
+    numeric4 = SDL_CreateTextureFromSurface(App.renderer, numericSurface4);
+    numericRec5.x = 0;
+    numericRec5.y = 3 * 85;
+    numericRec5.w = 85;
+    numericRec5.h = 85;
+    numericSurface5 = TTF_RenderText_Solid(font,"5", {157,128,0,255});
+    numeric5 = SDL_CreateTextureFromSurface(App.renderer, numericSurface5);
+    numericRec6.x = 0;
+    numericRec6.y = 2 * 85;
+    numericRec6.w = 85;
+    numericRec6.h = 85;
+    numericSurface6 = TTF_RenderText_Solid(font,"6", {0,0,0,255});
+    numeric6 = SDL_CreateTextureFromSurface(App.renderer, numericSurface6);
+    numericRec7.x = 0;
+    numericRec7.y = 85;
+    numericRec7.w = 85;
+    numericRec7.h = 85;
+    numericSurface7 = TTF_RenderText_Solid(font,"7", {157,128,0,255});
+    numeric7 = SDL_CreateTextureFromSurface(App.renderer, numericSurface7);
+    numericRec8.x = 0;
+    numericRec8.y = 0;
+    numericRec8.w = 85;
+    numericRec8.h = 85;
+    numericSurface8 = TTF_RenderText_Solid(font,"8", {0,0,0,255});
+    numeric8 = SDL_CreateTextureFromSurface(App.renderer, numericSurface8);
+    int startPos = 1;
+    int startPos2 = 2;
+    for (int y = 0; y < 8; y++) {
+        if(y%2 != 1){
+            SDL_Rect rectOutside;
+            rectOutside.x = 0;
+            rectOutside.y = y * 85;
+            rectOutside.w = 85;
+            rectOutside.h = 85;
+            SDL_SetRenderDrawColor(App.renderer, 157,128,0,255);
+            SDL_RenderFillRect(App.renderer, &rectOutside);
+   
+        }
+        for (int x = startPos2; x < 9; x+=2) {
+            SDL_Rect rect;
+            rect.x = x * 85;
+            rect.y = y * 85;
+            rect.w = 85;
+            rect.h = 85;
+            SDL_SetRenderDrawColor(App.renderer, 191, 32, 32, 255);
+            SDL_RenderFillRect(App.renderer, &rect);
+        }
+        for (int x = startPos; x < 9; x+=2) {
+            SDL_Rect rect;
+            rect.x = x * 85;
+            rect.y = y * 85;
+            rect.w = 85;
+            rect.h = 85;
+            SDL_SetRenderDrawColor(App.renderer, 41, 81, 131, 255);
+            SDL_RenderFillRect(App.renderer, &rect);
+        }
+       
+        if(y%2 == 1){
+            startPos = 1;
+            startPos2 = 2;
+        }
+        else{
+            startPos = 2;
+            startPos2 = 1;
+           
+        }
+    }
+    for (int x = 0; x < 9; x+=2){
+        SDL_Rect bottom;
+        bottom.x = x * 85;
+        bottom.y = 8 * 85;
+        bottom.w = 85;
+        bottom.h = 85;
+        SDL_SetRenderDrawColor(App.renderer, 157,128,0,255);
+        SDL_RenderFillRect(App.renderer, &bottom);
+    }
+    SDL_Texture *whiteRook;
+    SDL_Surface *whiteRookSurface;
+    whiteRookSurface = SDL_LoadBMP("images/whiteRook.bmp");
+    whiteRook = SDL_CreateTextureFromSurface(App.renderer, whiteRookSurface);
+    SDL_Texture *whiteKnight;
+    SDL_Surface *whiteKnightSurface;
+    whiteKnightSurface = SDL_LoadBMP("images/whiteKnight.bmp");
+    whiteKnight = SDL_CreateTextureFromSurface(App.renderer, whiteKnightSurface);
+    SDL_Texture *whiteBishop;
+    SDL_Surface *whiteBishopSurface;
+    whiteBishopSurface = SDL_LoadBMP("images/whiteBishop.bmp");
+    whiteBishop = SDL_CreateTextureFromSurface(App.renderer, whiteBishopSurface);
+    SDL_Texture *whiteQueen;
+    SDL_Surface *whiteQueenSurface;
+    whiteQueenSurface = SDL_LoadBMP("images/whiteQueen.bmp");
+    whiteQueen = SDL_CreateTextureFromSurface(App.renderer, whiteQueenSurface);
+    SDL_Texture *whiteKing;
+    SDL_Surface *whiteKingSurface;
+    whiteKingSurface = SDL_LoadBMP("images/whiteKing.bmp");
+    whiteKing = SDL_CreateTextureFromSurface(App.renderer, whiteKingSurface);
+    SDL_Texture *whitePawn;
+    SDL_Surface *whitePawnSurface;
+    whitePawnSurface = SDL_LoadBMP("images/whitePawn.bmp");
+    whitePawn = SDL_CreateTextureFromSurface(App.renderer, whitePawnSurface);
+    SDL_Texture *blackRook;
+    SDL_Surface *blackRookSurface;
+    blackRookSurface = SDL_LoadBMP("images/blackRook.bmp");
+    blackRook = SDL_CreateTextureFromSurface(App.renderer, blackRookSurface);
+    SDL_Texture *blackKnight;
+    SDL_Surface *blackKnightSurface;
+    blackKnightSurface = SDL_LoadBMP("images/blackKnight.bmp");
+    blackKnight = SDL_CreateTextureFromSurface(App.renderer, blackKnightSurface);
+    SDL_Texture *blackBishop;
+    SDL_Surface *blackBishopSurface;
+    blackBishopSurface = SDL_LoadBMP("images/blackBishop.bmp");
+    blackBishop = SDL_CreateTextureFromSurface(App.renderer, blackBishopSurface);
+    SDL_Texture *blackQueen;
+    SDL_Surface *blackQueenSurface;
+    blackQueenSurface = SDL_LoadBMP("images/blackQueen.bmp");
+    blackQueen = SDL_CreateTextureFromSurface(App.renderer, blackQueenSurface);
+    SDL_Texture *blackKing;
+    SDL_Surface *blackKingSurface;
+    blackKingSurface = SDL_LoadBMP("images/blackKing.bmp");
+    blackKing = SDL_CreateTextureFromSurface(App.renderer, blackKingSurface);
+    SDL_Texture *blackPawn;
+    SDL_Surface *blackPawnSurface;
+    blackPawnSurface = SDL_LoadBMP("images/blackPawn.bmp");
+    blackPawn = SDL_CreateTextureFromSurface(App.renderer, blackPawnSurface);
+    SDL_RenderCopy(App.renderer, alphaA, NULL, &alphaRecA);
+    SDL_RenderCopy(App.renderer, alphaB, NULL, &alphaRecB);
+    SDL_RenderCopy(App.renderer, alphaC, NULL, &alphaRecC);
+    SDL_RenderCopy(App.renderer, alphaD, NULL, &alphaRecD);
+    SDL_RenderCopy(App.renderer, alphaE, NULL, &alphaRecE);
+    SDL_RenderCopy(App.renderer, alphaF, NULL, &alphaRecF);
+    SDL_RenderCopy(App.renderer, alphaG, NULL, &alphaRecG);
+    SDL_RenderCopy(App.renderer, alphaH, NULL, &alphaRecH);
+    SDL_RenderCopy(App.renderer, numeric1, NULL, &numericRec1);
+    SDL_RenderCopy(App.renderer, numeric2, NULL, &numericRec2);
+    SDL_RenderCopy(App.renderer, numeric3, NULL, &numericRec3);
+    SDL_RenderCopy(App.renderer, numeric4, NULL, &numericRec4);
+    SDL_RenderCopy(App.renderer, numeric5, NULL, &numericRec5);
+    SDL_RenderCopy(App.renderer, numeric6, NULL, &numericRec6);
+    SDL_RenderCopy(App.renderer, numeric7, NULL, &numericRec7);
+    SDL_RenderCopy(App.renderer, numeric8, NULL, &numericRec8);
+
+    for(int e = 0; e < 8; e++){
+        for (int i = 0; i < 8; i++){
+            if (gameBoard.returnSquare(e, i) == "White Left Rook" ||
+                    gameBoard.returnSquare(e, i) == "White Right Rook"){
+                SDL_Rect tempRec;
+                tempRec.x = 10 + (85 * (i+1));
+                tempRec.y = 10 + (85 * e);
+                tempRec.w = 65;
+                tempRec.h = 65;
+                SDL_RenderCopy(App.renderer, whiteRook, NULL, &tempRec);
+            }
+
+            if (gameBoard.returnSquare(e, i) == "White Left Knight" ||
+                 gameBoard.returnSquare(e, i) == "White Right Knight"){
+                SDL_Rect tempRec;
+                tempRec.x = 10 + (85 * (i + 1));
+                tempRec.y = 10 + (85 * e);
+                tempRec.w = 65;
+                tempRec.h = 65;
+                SDL_RenderCopy(App.renderer, whiteKnight, NULL, &tempRec);
+            }   
+            if (gameBoard.returnSquare(e, i) == "White Left Bishop" ||
+                 gameBoard.returnSquare(e, i) == "White Right Bishop"){
+                SDL_Rect tempRec;
+                tempRec.x = 10 + (85 * (i + 1));
+                tempRec.y = 10 + (85 * e);
+                tempRec.w = 65;
+                tempRec.h = 65;
+                SDL_RenderCopy(App.renderer, whiteBishop, NULL, &tempRec);
+            }
+            if (gameBoard.returnSquare(e, i) == "White King"){
+                SDL_Rect tempRec;
+                tempRec.x = 10 + (85 * (i + 1));
+                tempRec.y = 10 + (85 * e);
+                tempRec.w = 65;
+                tempRec.h = 65;
+                SDL_RenderCopy(App.renderer, whiteKing, NULL, &tempRec);
+            }
+            if (gameBoard.returnSquare(e, i) == "White Queen"){
+                SDL_Rect tempRec;
+                tempRec.x = 10 + (85 * (i + 1));
+                tempRec.y = 10 + (85 * e);
+                tempRec.w = 65;
+                tempRec.h = 65;
+                SDL_RenderCopy(App.renderer, whiteQueen, NULL, &tempRec);
+            }
+            if (gameBoard.returnSquare(e, i) == "White Pawn"){
+                SDL_Rect tempRec;
+                tempRec.x = 10 + (85 * (i + 1));
+                tempRec.y = 10 + (85 * e);
+                tempRec.w = 65;
+                tempRec.h = 65;
+                SDL_RenderCopy(App.renderer, whitePawn, NULL, &tempRec);
+            }
+            if (gameBoard.returnSquare(e, i) == "Black Left Rook" ||
+                 gameBoard.returnSquare(e, i) == "Black Right Rook"){
+                SDL_Rect tempRec;
+                tempRec.x = 10 + (85 * (i + 1));
+                tempRec.y = 10 + (85 * e);
+                tempRec.w = 65;
+                tempRec.h = 65;
+                SDL_RenderCopy(App.renderer, blackRook, NULL, &tempRec);
+            }
+            if (gameBoard.returnSquare(e, i) == "Black Left Knight" ||
+                 gameBoard.returnSquare(e, i) == "Black Right Knight"){
+                SDL_Rect tempRec;
+                tempRec.x = 10 + (85 * (i + 1));
+                tempRec.y = 10 + (85 * e);
+                tempRec.w = 65;
+                tempRec.h = 65;
+                SDL_RenderCopy(App.renderer, blackKnight, NULL, &tempRec);
+            }
+            if (gameBoard.returnSquare(e, i) == "Black Left Bishop" ||
+                 gameBoard.returnSquare(e, i) == "Black Right Bishop"){
+                SDL_Rect tempRec;
+                tempRec.x = 10 + (85 * (i + 1));
+                tempRec.y = 10 + (85 * e);
+                tempRec.w = 65;
+                tempRec.h = 65;
+                SDL_RenderCopy(App.renderer, blackBishop, NULL, &tempRec);
+            }
+            if (gameBoard.returnSquare(e, i) == "Black King"){
+                SDL_Rect tempRec;
+                tempRec.x = 10 + (85 * (i + 1));
+                tempRec.y = 10 + (85 * e);
+                tempRec.w = 65;
+                tempRec.h = 65;
+                SDL_RenderCopy(App.renderer, blackKing, NULL, &tempRec);
+            }
+            if (gameBoard.returnSquare(e, i) == "Black Queen"){
+                SDL_Rect tempRec;
+                tempRec.x = 10 + (85 * (i + 1));
+                tempRec.y = 10 + (85 * e);
+                tempRec.w = 65;
+                tempRec.h = 65;
+                SDL_RenderCopy(App.renderer, blackQueen, NULL, &tempRec);
+            }
+            if (gameBoard.returnSquare(e, i) == "Black Pawn"){
+                SDL_Rect tempRec;
+                tempRec.x = 10 + (85 * (i + 1));
+                tempRec.y = 10 + (85 * e);
+                tempRec.w = 65;
+                tempRec.h = 65;
+                SDL_RenderCopy(App.renderer, blackPawn, NULL, &tempRec);
+            }
+        }
+    }
+    SDL_RenderPresent(App.renderer);
+    SDL_DestroyTexture(numeric1);
+    SDL_DestroyTexture(numeric2);
+    SDL_DestroyTexture(numeric3);
+    SDL_DestroyTexture(numeric4);
+    SDL_DestroyTexture(numeric5);
+    SDL_DestroyTexture(numeric6);
+    SDL_DestroyTexture(numeric7);
+    SDL_DestroyTexture(numeric8);
+    SDL_DestroyTexture(alphaA);
+    SDL_DestroyTexture(alphaB);
+    SDL_DestroyTexture(alphaC);
+    SDL_DestroyTexture(alphaD);
+    SDL_DestroyTexture(alphaE);
+    SDL_DestroyTexture(alphaF);
+    SDL_DestroyTexture(alphaG);
+    SDL_DestroyTexture(alphaH);
+    SDL_DestroyTexture(whitePawn);
+    SDL_DestroyTexture(whiteRook);
+    SDL_DestroyTexture(whiteKnight);
+    SDL_DestroyTexture(whiteBishop);
+    SDL_DestroyTexture(whiteKing);
+    SDL_DestroyTexture(whiteQueen);
+    SDL_DestroyTexture(blackPawn);
+    SDL_DestroyTexture(blackRook);
+    SDL_DestroyTexture(blackKnight);
+    SDL_DestroyTexture(blackBishop);
+    SDL_DestroyTexture(blackKing);
+    SDL_DestroyTexture(blackQueen);
+    SDL_FreeSurface(numericSurface1);
+    SDL_FreeSurface(numericSurface2);
+    SDL_FreeSurface(numericSurface3);
+    SDL_FreeSurface(numericSurface4);
+    SDL_FreeSurface(numericSurface5);
+    SDL_FreeSurface(numericSurface6);
+    SDL_FreeSurface(numericSurface7);
+    SDL_FreeSurface(numericSurface8);
+    SDL_FreeSurface(alphaSurfaceA);
+    SDL_FreeSurface(alphaSurfaceB);
+    SDL_FreeSurface(alphaSurfaceC);
+    SDL_FreeSurface(alphaSurfaceD);
+    SDL_FreeSurface(alphaSurfaceE);
+    SDL_FreeSurface(alphaSurfaceF);
+    SDL_FreeSurface(alphaSurfaceG);
+    SDL_FreeSurface(alphaSurfaceH);
+    SDL_FreeSurface(blackPawnSurface);
+    SDL_FreeSurface(blackRookSurface);
+    SDL_FreeSurface(blackKnightSurface);
+    SDL_FreeSurface(blackBishopSurface);
+    SDL_FreeSurface(blackQueenSurface);
+    SDL_FreeSurface(blackKingSurface);
+    SDL_FreeSurface(whitePawnSurface);
+    SDL_FreeSurface(whiteRookSurface);
+    SDL_FreeSurface(whiteKnightSurface);
+    SDL_FreeSurface(whiteBishopSurface);
+    SDL_FreeSurface(whiteQueenSurface);
+    SDL_FreeSurface(whiteKingSurface);
+}
+
+
+void Game::destroySDL(){
+    SDL_DestroyRenderer(App.renderer);
+    SDL_DestroyWindow(App.window);
 }
 
 void Game::printBoardToTerminal(){

@@ -9,6 +9,8 @@
 #include <time.h>
 #include <experimental/filesystem>
 #include <algorithm>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 #define PORT 9008
 
@@ -19,26 +21,38 @@ int main(int argc, char *argv[]){
     Game chess;
     bool clearSwitch = true;
     experimental::filesystem::create_directory("gamesave");
-    cout << "Please Enter Name for Player" << std::endl;
-    string name;
-    cin >> name;
-    chess.setPlayerOne(name);
     if(argc == 1){
         chess.clientServerToggle = 0;
     }
     else{
         for (int i = 0; i < argc; i++){
             if(!strcmp(argv[i], "-s")){
+                cout << "Please Enter Name for Player" << std::endl;
+       string name;
+       cin >> name;
+       chess.setPlayerOne(name);
                 cout << "Game is now running as server and waiting for a client to connect" << endl;
                 chess.clientServerToggle = 1;
             }
             if(!strcmp(argv[i], "-c")){
+                cout << "Please Enter Name for Player" << std::endl;
+       string name;
+       cin >> name;
+       chess.setPlayerOne(name);
                     chess.clientServerToggle = 2;
             }
+            if(!strcmp(argv[i], "-ai")){
+                cout << "Please Enter Name for Player" << std::endl;
+       string name;
+       cin >> name;
+       chess.setPlayerOne(name);
+                chess.clientServerToggle = 3;
+            }
             if(!strcmp(argv[i], "--help")){cout << "Usage: Chess [OPTION] ... [IP ADDRESS]\n" <<
-                                                        "Chess will run with no argument as a standalone game or with options as client and server\n" <<
+                                                        "Chess will run with no arguments as a standalone game in XWindows or with arguements in the terminal as solo, client and server\n" <<
+                                                        "   -ai                 run Chess in Terminal and play Computer AI\n" <<
                                                         "   -s                  run Chess as server\n" <<
-                                                        "   -c [IP ADDRESS]     run Chess as client connecting to [IP ADDRESS]" << endl;}
+                                                        "   -c [IP ADDRESS]     run Chess as client connecting to [IP ADDRESS]" << endl; return 0;}
         }
     }
     int x, xa;
@@ -275,7 +289,7 @@ int main(int argc, char *argv[]){
         }
         int listenStatus = listen(serverSocketHandler , 5);
         if(listenStatus < 0){
-            cout << "Listner has failed" << endl;
+            cout << "Listener has failed" << endl;
             return 0;
         }
         cout << "..Waiting for connections.. \n";
@@ -482,7 +496,7 @@ int main(int argc, char *argv[]){
             send(connection , input , strlen(input)+1 , 0);
         }
     }
-    if(chess.clientServerToggle == 0){
+    if(chess.clientServerToggle == 3){
         remove("Chess.txt");
         chess.initialiseBoard();
         system("clear");
@@ -685,6 +699,90 @@ int main(int argc, char *argv[]){
                 chess.printBoardToTerminal();
             }
         }
+    }
+    if(chess.clientServerToggle == 0){
+        remove("Chess.txt");
+        chess.initialiseBoard();
+        bool leftMouseButtonDown = false;
+        bool quit = false;
+        SDL_Event event;
+        chess.initSDL();
+        chess.printBoardToWindow();
+        system("clear");
+        chess.printBoardToTerminal();
+        bool squareSelected = false;
+        int originNumeric, squareNumeric;
+        char originAlpha, squareAlpha;
+        while (!quit) {
+            SDL_WaitEvent(&event);
+
+            switch (event.type) {
+                case SDL_MOUSEBUTTONDOWN:
+                    if(((event.motion.x / 85) - 1) == 7){
+                        squareAlpha = 'H';
+                    }
+                    if(((event.motion.x / 85) - 1) == 6){
+                           squareAlpha = 'G';
+                    }
+                    if(((event.motion.x / 85) - 1) == 5){
+                           squareAlpha = 'F';
+                    }
+                    if(((event.motion.x / 85) - 1) == 4){
+                           squareAlpha = 'E';
+                    }
+                    if(((event.motion.x / 85) - 1) == 3){
+                           squareAlpha = 'D';
+                    }
+                    if(((event.motion.x / 85) - 1) == 2){
+                           squareAlpha = 'C';
+                    }
+                    if(((event.motion.x / 85) - 1) == 1){
+                           squareAlpha = 'B';
+                    }
+                    if(((event.motion.x / 85) - 1) == 0){
+                           squareAlpha = 'A';
+                    }
+                    if((event.motion.y / 85) == 0)
+                        squareNumeric = 8;
+                    if((event.motion.y / 85) == 1)
+                           squareNumeric = 7;
+                    if((event.motion.y / 85) == 2)
+                           squareNumeric = 6;
+                    if((event.motion.y / 85) == 3)
+                           squareNumeric = 5;
+                    if((event.motion.y / 85) == 4)
+                           squareNumeric = 4;
+                    if((event.motion.y / 85) == 5)
+                           squareNumeric = 3;
+                    if((event.motion.y / 85) == 6)
+                           squareNumeric = 2;
+                    if((event.motion.y / 85) == 7)
+                           squareNumeric = 1;
+
+                    if(squareSelected){
+                        squareSelected = false;
+                        if(chess.movePiece(originNumeric, originAlpha, squareNumeric, squareAlpha)){
+                            chess.engineMove();
+                            chess.printBoardToWindow();
+                            system("clear");
+                            chess.printBoardToTerminal();
+                        }
+
+                    }
+                    else{
+                        squareSelected = true;
+                        originAlpha = squareAlpha;
+                        originNumeric =squareNumeric;
+                    }
+                    break;
+                case SDL_QUIT:
+                    quit = true;
+                    break;
+
+            }
+        }
+    chess.destroySDL();
+    SDL_Quit();
     }
     return 0;
 }
