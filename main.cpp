@@ -735,7 +735,7 @@ int main(int argc, char *argv[]){
 
             switch (event.type) {
                 case SDL_MOUSEBUTTONDOWN:
-                    if(event.motion.y > 679 && event.motion.x < 85){
+                    /*if(event.motion.y > 679 && event.motion.x < 85){
                         if(optionToggle == 0){
                             chess.printOptionsToWindow();
                             optionToggle = 1;
@@ -746,7 +746,7 @@ int main(int argc, char *argv[]){
                             optionToggle = 0;
                             break;
                         }
-                    }
+                    }*/
                     if(optionToggle == 0){
                         if(((event.motion.x / 85) - 1) == 7){
                             squareAlpha = 'H';

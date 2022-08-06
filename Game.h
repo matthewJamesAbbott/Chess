@@ -8,6 +8,7 @@
 #include "Board.h"
 #include "MoveRecorder.h"
 #include "Engine.h"
+#include "Print.h"
 #include "MoveCalculator.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
@@ -67,12 +68,21 @@ public:
 
     void printBoardToWindow();
 
+    void printOptionsToWindow();
+
     void initSDL();
 
     void destroySDL();
 
     int clientServerToggle{};
 
+    int guiOptionToggle{};
+
+    char* serverPort = "9008";
+
+    std::string clientIP;
+
+    int clientPort{};
 private:
     MoveRecorder rec;
     MoveCalculator calc;
@@ -80,7 +90,7 @@ private:
     std::string playerTwo;
     Board gameBoard;
     Engine *moveEngine = new Engine();
-
+    Print output;
 };
 
 struct {
