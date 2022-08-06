@@ -11,18 +11,31 @@
 #include <algorithm>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <numeric>
 
 #define PORT 9008
+#define SERVER 1
+#define GUI 0
+#define CLIENT 2
+#define SOLO 3
+#define BLACK 0
+#define WHITE 1
 
 using namespace std;
 using std::experimental::filesystem::directory_iterator;
+
+bool is_number(const std::string& s)
+{
+    return !s.empty() && std::find_if(s.begin(), 
+        s.end(), [](unsigned char c) { return !std::isdigit(c); }) == s.end();
+}
 
 int main(int argc, char *argv[]){
     Game chess;
     bool clearSwitch = true;
     experimental::filesystem::create_directory("gamesave");
     if(argc == 1){
-        chess.clientServerToggle = 0;
+        chess.clientServerToggle = GUI;
     }
     else{
         for (int i = 0; i < argc; i++){
@@ -32,21 +45,21 @@ int main(int argc, char *argv[]){
        cin >> name;
        chess.setPlayerOne(name);
                 cout << "Game is now running as server and waiting for a client to connect" << endl;
-                chess.clientServerToggle = 1;
+                chess.clientServerToggle = SERVER;
             }
             if(!strcmp(argv[i], "-c")){
                 cout << "Please Enter Name for Player" << std::endl;
        string name;
        cin >> name;
        chess.setPlayerOne(name);
-                    chess.clientServerToggle = 2;
+                    chess.clientServerToggle = CLIENT;
             }
             if(!strcmp(argv[i], "-ai")){
                 cout << "Please Enter Name for Player" << std::endl;
        string name;
        cin >> name;
        chess.setPlayerOne(name);
-                chess.clientServerToggle = 3;
+                chess.clientServerToggle = SOLO;
             }
             if(!strcmp(argv[i], "--help")){cout << "Usage: Chess [OPTION] ... [IP ADDRESS]\n" <<
                                                         "Chess will run with no arguments as a standalone game in XWindows or with arguements in the terminal as solo, client and server\n" <<
@@ -59,7 +72,7 @@ int main(int argc, char *argv[]){
     char y, ya;
     char* ipArray = argv[2];
     gotoHandle:
-    if(chess.clientServerToggle == 2){
+    if(chess.clientServerToggle == CLIENT){
         chess.initialiseBoard();
         chess.printBoardToTerminal();
         int clientSocket;
@@ -174,11 +187,11 @@ int main(int argc, char *argv[]){
                     chess.printBoardToTerminal();
                 }
                 else if (x == 14){
-                    chess.clientServerToggle = 1;
+                    chess.clientServerToggle = SERVER;
                     goto gotoHandle;
                 }
                 else if (x == 15){
-                    chess.clientServerToggle = 2;
+                    chess.clientServerToggle = CLIENT;
                     cout << "Please enter ip address of server" << endl;
                     string ip_address;
                     cin >> ip_address;
@@ -270,7 +283,7 @@ int main(int argc, char *argv[]){
         }
 
     }
-    if(chess.clientServerToggle == 1){
+    if(chess.clientServerToggle == SERVER){
         chess.initialiseBoard();
         chess.printBoardToTerminal();
         int serverSocketHandler = socket(AF_INET , SOCK_STREAM , 0);
@@ -418,11 +431,11 @@ int main(int argc, char *argv[]){
                     chess.printBoardToTerminal();
                 }
                 else if (x == 14){
-                    chess.clientServerToggle = 1;
+                    chess.clientServerToggle = SERVER;
                     goto gotoHandle;
                 }
                 else if (x == 15){
-                    chess.clientServerToggle = 2;
+                    chess.clientServerToggle = CLIENT;
                     cout << "Please enter ip address of server" << endl;
                     string ip_address;
                     cin >> ip_address;
@@ -496,7 +509,7 @@ int main(int argc, char *argv[]){
             send(connection , input , strlen(input)+1 , 0);
         }
     }
-    if(chess.clientServerToggle == 3){
+    if(chess.clientServerToggle == SOLO){
         remove("Chess.txt");
         chess.initialiseBoard();
         system("clear");
@@ -597,11 +610,11 @@ int main(int argc, char *argv[]){
                     chess.printBoardToTerminal();
                 }
                 else if (x == 14){
-                    chess.clientServerToggle = 1;
+                    chess.clientServerToggle = SERVER;
                     goto gotoHandle;
                 }
                 else if (x == 15){
-                    chess.clientServerToggle = 2;
+                    chess.clientServerToggle = CLIENT;
                     cout << "Please enter ip address of server" << endl;
                     string ip_address;
                     cin >> ip_address;
@@ -611,13 +624,13 @@ int main(int argc, char *argv[]){
                     goto gotoHandle;
                 }
                 else if (x == 16){
-                    if(chess.playerSide == 0) {
-                        chess.playerSide = 1;
+                    if(chess.playerSide == BLACK) {
+                        chess.playerSide = WHITE;
                         chess.initialiseBoardReverse();
                         chess.printBoardToTerminal();
                     }
                     else {
-                        chess.playerSide = 0;
+                        chess.playerSide = WHITE;
                         chess.initialiseBoard();
                         chess.printBoardToTerminal();
                     }
@@ -700,7 +713,8 @@ int main(int argc, char *argv[]){
             }
         }
     }
-    if(chess.clientServerToggle == 0){
+
+    if(chess.clientServerToggle == GUI){
         remove("Chess.txt");
         chess.initialiseBoard();
         bool leftMouseButtonDown = false;
@@ -711,70 +725,194 @@ int main(int argc, char *argv[]){
         system("clear");
         chess.printBoardToTerminal();
         bool squareSelected = false;
-        int originNumeric, squareNumeric;
+        int originNumeric, squareNumeric, optionToggle;
         char originAlpha, squareAlpha;
+        optionToggle = 0;
+        chess.guiOptionToggle = 0;
+        int textAreaToggle = 0;
         while (!quit) {
             SDL_WaitEvent(&event);
 
             switch (event.type) {
                 case SDL_MOUSEBUTTONDOWN:
-                    if(((event.motion.x / 85) - 1) == 7){
-                        squareAlpha = 'H';
-                    }
-                    if(((event.motion.x / 85) - 1) == 6){
-                           squareAlpha = 'G';
-                    }
-                    if(((event.motion.x / 85) - 1) == 5){
-                           squareAlpha = 'F';
-                    }
-                    if(((event.motion.x / 85) - 1) == 4){
-                           squareAlpha = 'E';
-                    }
-                    if(((event.motion.x / 85) - 1) == 3){
-                           squareAlpha = 'D';
-                    }
-                    if(((event.motion.x / 85) - 1) == 2){
-                           squareAlpha = 'C';
-                    }
-                    if(((event.motion.x / 85) - 1) == 1){
-                           squareAlpha = 'B';
-                    }
-                    if(((event.motion.x / 85) - 1) == 0){
-                           squareAlpha = 'A';
-                    }
-                    if((event.motion.y / 85) == 0)
-                        squareNumeric = 8;
-                    if((event.motion.y / 85) == 1)
-                           squareNumeric = 7;
-                    if((event.motion.y / 85) == 2)
-                           squareNumeric = 6;
-                    if((event.motion.y / 85) == 3)
-                           squareNumeric = 5;
-                    if((event.motion.y / 85) == 4)
-                           squareNumeric = 4;
-                    if((event.motion.y / 85) == 5)
-                           squareNumeric = 3;
-                    if((event.motion.y / 85) == 6)
-                           squareNumeric = 2;
-                    if((event.motion.y / 85) == 7)
-                           squareNumeric = 1;
-
-                    if(squareSelected){
-                        squareSelected = false;
-                        if(chess.movePiece(originNumeric, originAlpha, squareNumeric, squareAlpha)){
-                            chess.engineMove();
+                    if(event.motion.y > 679 && event.motion.x < 85){
+                        if(optionToggle == 0){
+                            chess.printOptionsToWindow();
+                            optionToggle = 1;
+                            break;
+                        }
+                        else{
                             chess.printBoardToWindow();
-                            system("clear");
-                            chess.printBoardToTerminal();
+                            optionToggle = 0;
+                            break;
+                        }
+                    }
+                    if(optionToggle == 0){
+                        if(((event.motion.x / 85) - 1) == 7){
+                            squareAlpha = 'H';
+                        }
+                        if(((event.motion.x / 85) - 1) == 6){
+                            squareAlpha = 'G';
+                        }
+                        if(((event.motion.x / 85) - 1) == 5){
+                            squareAlpha = 'F';
+                        }
+                        if(((event.motion.x / 85) - 1) == 4){
+                            squareAlpha = 'E';
+                        }
+                        if(((event.motion.x / 85) - 1) == 3){
+                            squareAlpha = 'D';
+                        }
+                        if(((event.motion.x / 85) - 1) == 2){
+                            squareAlpha = 'C';
+                        }
+                        if(((event.motion.x / 85) - 1) == 1){
+                            squareAlpha = 'B';
+                        }
+                        if(((event.motion.x / 85) - 1) == 0){
+                            squareAlpha = 'A';
+                        }
+                        if((event.motion.y / 85) == 0)
+                            squareNumeric = 8;
+                        if((event.motion.y / 85) == 1)
+                            squareNumeric = 7;
+                        if((event.motion.y / 85) == 2)
+                            squareNumeric = 6;
+                        if((event.motion.y / 85) == 3)
+                            squareNumeric = 5;
+                        if((event.motion.y / 85) == 4)
+                            squareNumeric = 4;
+                        if((event.motion.y / 85) == 5)
+                            squareNumeric = 3;
+                        if((event.motion.y / 85) == 6)
+                            squareNumeric = 2;
+                        if((event.motion.y / 85) == 7)
+                            squareNumeric = 1;
+
+                        if(squareSelected){
+                            squareSelected = false;
+                            if(chess.movePiece(originNumeric, originAlpha, squareNumeric, squareAlpha)){
+                                chess.engineMove();
+                                chess.printBoardToWindow();
+                                system("clear");
+                                chess.printBoardToTerminal();
+                            }
+
+                        }
+                        else{
+                            squareSelected = true;
+                            originAlpha = squareAlpha;
+                            originNumeric = squareNumeric;
+                        }
+                    }
+
+                    // Option Window
+                    else{
+                        // Set text input to none if not selected.
+                        if(!(event.motion.x >= 100 && (event.motion.x <= 100 + 85) && (event.motion.y >= 85 + 50*    2) && (event.motion.y <= 85 + 50*2 + 40)) || !(event.motion.x >= 85 && (event.motion.x <= 85*3) && (event.motion.y >= 85 + 50*4) &&    (event.motion.y <= 85 + 50*4 + 40)) || !((event.motion.x >= 85*6) && (event.motion.x <= 85*7) && (event.motion.y >= 85 + 50*     4) && (event.motion.y <= 85 + 50*4 + 40)))
+                            textAreaToggle = 0;
+                        // Play game against the computer
+                        if((event.motion.x >= 85*8) && (event.motion.x <= 85*8 + 40) && event.motion.y >= 85 && event.motion.y <= 85 + 40){
+                            chess.guiOptionToggle = 0;   
+                            chess.printOptionsToWindow();
+                        }
+                        // Start game as server
+                        if((event.motion.x >= 85*8) && (event.motion.x <= 85*8 + 40) && (event.motion.y >= 85 + 50) && (event.motion.y <= 85 + 50 + 40)){
+                            chess.guiOptionToggle = SERVER;
+                            chess.printOptionsToWindow();
+                        }
+                        // Connect to server as client
+                        if((event.motion.x >= 85*8) && (event.motion.x <= 85*8 + 40) && (event.motion.y >= 45 + 50*3) && (event.motion.y <= 85 + 50*3 + 40)){
+                            chess.guiOptionToggle = CLIENT;
+                            chess.printOptionsToWindow();
+                        }
+                        // Text area for server port
+                        if(event.motion.x >= 100 && (event.motion.x <= 100 + 85) && (event.motion.y >= 85 + 50*2) && (event.motion.y <= 85 + 50*2 + 40)){
+                            textAreaToggle = 1;
+                        }
+                        // Text area for client ip
+                        if(event.motion.x >= 85 && (event.motion.x <= 85*3) && (event.motion.y >= 85 + 50*4) && (event.motion.y <= 85 + 50*4 + 40)){
+                            textAreaToggle = 2;
+                        }
+                        // Text are for client port
+                        if((event.motion.x >= 85*6) && (event.motion.x <= 85*7) && (event.motion.y >= 85 + 50*4) && (event.motion.y <= 85 + 50*4 + 40)){
+                            textAreaToggle = 3;
+                        }
+                        // Change Sides
+                        if((event.motion.x >= 85*6 + 15) && (event.motion.x <= 85*6 + 15 + 40) && (event.motion.y >= 85 + 50*5) && (event.motion.y <= 85 + 50*5 + 40)){
+                            if(chess.playerSide == BLACK) {
+                                chess.playerSide = WHITE;
+                                chess.initialiseBoardReverse();
+                            }
+                            else {
+                                chess.playerSide = WHITE;
+                                chess.initialiseBoard();
+                            }
+
+                        }
+                        // Start new game
+                        if((event.motion.x >= 85*6 + 15) && (event.motion.x <= 85*6 + 15 + 40) && (event.motion.y >= 85 + 50*6) && (event.motion.y <= 85 + 50*6 + 40)){
+                            if(chess.playerSide == BLACK)
+                                chess.initialiseBoard();
+                            else
+                                chess.initialiseBoardReverse();
+                        }
+                        // Save game
+                        if((event.motion.x >= 85*6 + 15) && (event.motion.x <= 85*6 + 15 + 40) && (event.motion.y >= 85 + 50*7) && (event.motion.y <= 85 + 50*7 + 40)){
+                            time_t current = time(nullptr);
+                            string dateTime = ctime(&current);
+                            replace(dateTime.begin(), dateTime.end(), ' ', '-');
+                            replace(dateTime.begin(), dateTime.end(), ':', ',');
+                            replace(dateTime.begin(), dateTime.end(), '\n', '.');
+      
+                            ofstream outFileHandle;
+   
+                            string saveFile = "gamesave/" + dateTime;
+                            outFileHandle.open(saveFile ,ios_base::app);
+   
+   
+                            ifstream inFileHandle;
+                            string line;
+                            inFileHandle.open("Chess.txt");
+                            while(getline(inFileHandle, line)){
+                                outFileHandle << line << "\n";
+                            }
+                            inFileHandle.close();
+                            outFileHandle.close();
+   
+                        }
+                        // Recall move
+                        if((event.motion.x >= 85*6 + 15) && (event.motion.x <= 85*6 + 15 + 40) && (event.motion.y >= 85 + 50*8) && (event.motion.y <= 85 + 50*8 + 40)){
+                
+                        }
+                        // Load save game
+                        if((event.motion.x >= 85*6 + 15) && (event.motion.x <= 85*6 + 15 + 40) && (event.motion.y >= 85 + 50*9) && (event.motion.y <= 85 + 50*9 + 40)){
+   
                         }
 
-                    }
-                    else{
-                        squareSelected = true;
-                        originAlpha = squareAlpha;
-                        originNumeric =squareNumeric;
+
                     }
                     break;
+                   
+                case SDL_TEXTINPUT:
+                    if(textAreaToggle == 1){
+                        
+                        char *input;
+                        strcat(input, event.text.text);
+                        string test = "";
+                        test.append(input);
+                        if(is_number(test)){
+                           // chess.serverPort = input;
+                        }
+
+                        break;
+                    }
+                    else if(textAreaToggle == 2){
+
+                    }
+                    else if(textAreaToggle == 3){
+
+                    }
                 case SDL_QUIT:
                     quit = true;
                     break;

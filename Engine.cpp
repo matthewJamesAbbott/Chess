@@ -6,6 +6,9 @@
 #include "MoveCalculator.h"
 #include <vector>
 
+#define BLACK 1
+#define WHITE 0
+
 void Tree::addTreeNode(int rank, int x, int y, int xa, int ya){
     auto *newTreeNode = new TreeNode();
     newTreeNode->rank = rank;
@@ -74,11 +77,11 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
     std::vector<int> moveVector;
     int base = 0;
     int playerSide;
-    if(computerSide == 0)
-        playerSide = 1;
+    if(computerSide == BLACK)
+        playerSide = WHITE;
     else
-        playerSide = 0;
-    if(computerSide == 0) {
+        playerSide = BLACK;
+    if(computerSide == WHITE) {
         for (int e = 0; e < 8; e++) {
             for (int i = 0; i < 8; i++) {
                 if (gameBoard.returnSquare(e, i).find("White")) {

@@ -17,6 +17,8 @@
 #define QUEEN 9
 #define KING 10
 #define EMPTY 0
+#define BLACK 0
+#define WHITE 1
 
 void LinkedList::addNode(int x, int y, int squareRank){
     auto* newnode = new Node();
@@ -114,13 +116,13 @@ bool MoveCalculator::castleCheck(int side){
     std::string line;
     fileHandle.open("Chess.txt");
     while(std::getline(fileHandle, line)){
-        if(side == 1){
+        if(side == WHITE){
             if(!line.find("(0,3") || !line.find("(0,0")){
                 fileHandle.close();
                 return false;
             }
         }
-        else if(side == 0){
+        else if(side == BLACK){
             if(!line.find("(7,3") || !line.find("(7,0")){
                 fileHandle.close();
                 return false;
@@ -154,11 +156,11 @@ int MoveCalculator::enPassantCheck(int side){
         int xa = line.at(5) - 48;
         int ya = line.at(7) - 48;
 
-        if (side == 0 && x == 1 && xa == 3 && y == ya){
+        if (side == BLACK && x == 1 && xa == 3 && y == ya){
             return y;
 
         }
-        if (side == 1 && x == 6 && xa == 4 && y == ya){
+        if (side == WHITE && x == 6 && xa == 4 && y == ya){
             return y;
         }
     }
