@@ -24,8 +24,7 @@
 using namespace std;
 using std::experimental::filesystem::directory_iterator;
 
-bool is_number(const std::string& s)
-{
+bool is_number(const std::string& s){ // checks string to see if it contains only numbers
     return !s.empty() && std::find_if(s.begin(), 
         s.end(), [](unsigned char c) { return !std::isdigit(c); }) == s.end();
 }
@@ -72,12 +71,25 @@ int main(int argc, char *argv[]){
     char y, ya;
     char* ipArray = argv[2];
     gotoHandle:
+
+
+
+
     if(chess.clientServerToggle == CLIENT){ // begin routines for client in terminal
+
+
+        /*
+         * store pieces in 2D array board
+         * send object chess.gameBoard to Print via Games inheritance to print to terminal
+         *
+         */
+
+
         chess.initialiseBoard();
         chess.printBoardToTerminal(chess.gameBoard);
 
         /*
-         * Network routines for client 
+         * network routines for client 
          *
          */
 
@@ -101,7 +113,7 @@ int main(int argc, char *argv[]){
         }
 
         /*
-         * Take and parse input from user from the terminal
+         * take and parse input from user from the terminal
          *
          */
 
@@ -110,12 +122,12 @@ int main(int argc, char *argv[]){
             while (true){
                 cout << "Please enter number for piece you wish to move or 9 to exit" << endl;
                 cin >> x;
-                if (x == 1 || x == 2 || x == 3 || x == 4 || x == 5 || x == 6 || x == 7 || x == 8){
+                if (x == 1 || x == 2 || x == 3 || x == 4 || x == 5 || x == 6 || x == 7 || x == 8){ // test input for numeric co ordinate
                     break;
                 } 
-                else if (x == 9)
+                else if (x == 9) // test input for game exit
                     return 0;
-                else if (x == 10){
+                else if (x == 10){ // test input for help
                     cout << "Welcome to Abbotts Chess \n" <<
                          "\n" <<
                          "Chess allows all regulation moves by asking the user for input of the four co-ordinates in succession\n"
@@ -144,21 +156,28 @@ int main(int argc, char *argv[]){
                          "9 Exit game\n" <<
                          "" << endl;
                 }
-                else if (x == 11){
+                else if (x == 11){ // test input for save game
+
+                    /*
+                     * create string representation of the time and date for a filename
+                     *
+                     */
 
                     time_t current = time(nullptr);
                     string dateTime = ctime(&current);
-                    replace(dateTime.begin(), dateTime.end(), ' ', '-');
+                    replace(dateTime.begin(),dateTime.end(), ' ', '-');
                     replace(dateTime.begin(),dateTime.end(), ':', ',');
                     replace(dateTime.begin(),dateTime.end(), '\n', '.');
 
+                    /*
+                     * copy game state from Chess.txt to file in gamesave 
+                     *
+                     */
+
 
                     ofstream outFileHandle;
-
                     string saveFile = "gamesave/" + dateTime;
                     outFileHandle.open(saveFile ,ios_base::app);
-
-
                     ifstream inFileHandle;
                     string line;
                     inFileHandle.open("Chess.txt");
@@ -169,16 +188,32 @@ int main(int argc, char *argv[]){
                     outFileHandle.close();
 
                 }
-                else if (x == 12){
+
+
+                else if (x == 12){ // test input for restore game
                     string path = "gamesave/";
                     vector<string> dir;
                     cout << "Please enter the corresponding number to the game you wish to restore" << endl;
+                    
+                    /*
+                     * display contents of directory gamesave
+                     *
+                     */
+
+
                     int i = 1;
                     for (const auto & entry : directory_iterator(path)){
                         cout << i << " " << entry.path() << endl;
                         dir.push_back(entry.path());
                         i++;
                     }
+
+                    /*
+                     * take input of users choice of saved game state
+                     *
+                     */
+
+
                     string loadInput;
                     int index;
                     while(true) {
@@ -193,18 +228,35 @@ int main(int argc, char *argv[]){
                             cin.ignore(1, '\n');
                         }
                     }
+
+                    /*
+                     * load save state from users choice
+                     * send object chess.gameBoard to Print via Game's inheritance to print to terminal
+                     * solution to child data member shared with parent.
+                     *
+                     */
+
                     chess.loadGame(loadInput);
                     chess.printBoardToTerminal(chess.gameBoard);
                 }
-                else if (x == 13){
+
+
+
+                else if (x == 13){ // test input for new game
                     chess.initialiseBoard();
                     chess.printBoardToTerminal(chess.gameBoard);
                 }
-                else if (x == 14){
+
+
+
+                else if (x == 14){ // test input for start game as server
                     chess.clientServerToggle = SERVER;
                     goto gotoHandle;
                 }
-                else if (x == 15){
+
+
+
+                else if (x == 15){ // test input for start game as client
                     chess.clientServerToggle = CLIENT;
                     cout << "Please enter ip address of server" << endl;
                     string ip_address;
@@ -214,54 +266,58 @@ int main(int argc, char *argv[]){
                     ipArray = ipAddress;
                     goto gotoHandle;
                 }
-                else{
+                else{ // catch bad input
                     cout << "You have entered an illegal character please try again" << endl;
                     cin.clear();
                     cin.ignore(1, '\n');
                     x = 0;
                 }
             }
-            while (true){
+            while (true){ // test input for alpha co ordinate
                 cout << "Please enter letter for piece you wish to move or 9 to exit" << endl;
                 cin >> y;
                 if (y == 'a' || y == 'A' || y == 'b' || y == 'B' || y == 'c' || y == 'C' || y == 'd' || y == 'D'
                     || y == 'e' || y == 'E' || y == 'f' || y == 'F' || y == 'g' || y == 'G' || y == 'h' || y == 'H'){
                     break;
                 } 
-                else if (y == '9')
+                else if (y == '9') // test input for game exit
                     return 0;
-                else{
+
+                else{ // catch bad input
                     cout << "You have entered an illegal character please try again" << endl;
                     cin.clear();
                     cin.ignore(1, '\n');
                     y = 0;
                 }
             }
-            while (true){
+
+            while (true){ // test input for numeric co ordinate
                 cout << "Please enter number for were you wish piece to move to or 9 to exit" << endl;
                 cin >> xa;
                 if (xa == 1 || xa == 2 || xa == 3 || xa == 4 || xa == 5 || xa == 6 || xa == 7 || xa == 8){
                     break;
                 } 
-                else if (xa == 9)
+                else if (xa == 9) // test input for game exit
                     return 0;
-                else{
+
+                else{ // catch bad input
                     cout << "You have entered an illegal character please try again" << endl;
                     cin.clear();
                     cin.ignore(1, '\n');
                     xa = 0;
                 }
             }
-            while (true){
+
+            while (true){ // test input for alpha co ordinate
                 cout << "Please enter letter for were you wish piece to move to or 9 to exit" << endl;
                 cin >> ya;
                 if (ya == 'a' || ya == 'A' || ya == 'b' || ya == 'B' || ya == 'c' || ya == 'C' || ya == 'd' || ya == 'D'
                     || ya == 'e' || ya == 'E' || ya == 'f' || ya == 'F' || ya == 'g' || ya == 'G' || ya == 'h' ||
                     ya == 'H'){
                     break;
-                } else if (ya == '9')
+                } else if (ya == '9') // test input for game exit
                     return 0;
-                else{
+                else{ // catch bad input
                     cout << "You have entered an illegal character please try again" << endl;
                     cin.clear();
                     cin.ignore(1, '\n');
@@ -273,7 +329,7 @@ int main(int argc, char *argv[]){
 
             /*
              * move piece in 2D array board
-             * send object board to Print via Games inheritance to print to terminal
+             * send object chess.gameBoard to Print via Games inheritance to print to terminal
              * 
              */
 
@@ -284,7 +340,7 @@ int main(int argc, char *argv[]){
 
             /*
              * send move to server
-             * Wait for server to respond then
+             * wait for server to respond then
              * store reply in array
              *
              */
@@ -295,19 +351,24 @@ int main(int argc, char *argv[]){
             input[1] = y;
             input[2] = xa + '0';
             input[3] = ya;
+  
             send(clientSocket , input , strlen(input)+1 , 0);
+ 
             char receiveMessage[MAX];
             int rMsgSize = recv(clientSocket , receiveMessage , MAX , 0);
+ 
             if(rMsgSize < 0){
                 cout << "Packet receive failed." << endl;
                 return 0;
             }
+
             else if(rMsgSize == 0){
                 cout << "Server is off." << endl;
                 return 0;
             }
+
             if(receiveMessage[0] == 'b' && receiveMessage[1] == 'y' && receiveMessage[2] == 'e'){
-                cout << "\nConnection ended... take care bye bye... " ;
+                cout << "\nConnection closed." ;
                 break;
             }
 
@@ -316,7 +377,7 @@ int main(int argc, char *argv[]){
             /*
              * convert numeric chars to integers
              * move piece in 2D array board
-             * send object board to Print to print to terminal
+             * send object chess.gameBoard to Print via Games inheritance to print to terminal
              *
              */
 
@@ -330,6 +391,15 @@ int main(int argc, char *argv[]){
 
 
     if(chess.clientServerToggle == SERVER){ // begin routines for server in terminal
+
+
+        /*
+         * store pieces in 2D array board
+         * send object chess.gameBoard to Print via Game's inheritance to print to terminal
+         *
+         */
+
+
         chess.initialiseBoard();
         chess.printBoardToTerminal(chess.gameBoard);
         int serverSocketHandler = socket(AF_INET , SOCK_STREAM , 0);
