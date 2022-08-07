@@ -258,6 +258,33 @@ MoveRecorder.cpp.s:
 	$(MAKE) -f CMakeFiles/Chess.dir/build.make CMakeFiles/Chess.dir/MoveRecorder.cpp.s
 .PHONY : MoveRecorder.cpp.s
 
+Print.o: Print.cpp.o
+
+.PHONY : Print.o
+
+# target to build an object file
+Print.cpp.o:
+	$(MAKE) -f CMakeFiles/Chess.dir/build.make CMakeFiles/Chess.dir/Print.cpp.o
+.PHONY : Print.cpp.o
+
+Print.i: Print.cpp.i
+
+.PHONY : Print.i
+
+# target to preprocess a source file
+Print.cpp.i:
+	$(MAKE) -f CMakeFiles/Chess.dir/build.make CMakeFiles/Chess.dir/Print.cpp.i
+.PHONY : Print.cpp.i
+
+Print.s: Print.cpp.s
+
+.PHONY : Print.s
+
+# target to generate assembly for a file
+Print.cpp.s:
+	$(MAKE) -f CMakeFiles/Chess.dir/build.make CMakeFiles/Chess.dir/Print.cpp.s
+.PHONY : Print.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -309,6 +336,9 @@ help:
 	@echo "... MoveRecorder.o"
 	@echo "... MoveRecorder.i"
 	@echo "... MoveRecorder.s"
+	@echo "... Print.o"
+	@echo "... Print.i"
+	@echo "... Print.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

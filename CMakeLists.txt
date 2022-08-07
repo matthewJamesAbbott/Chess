@@ -7,7 +7,7 @@ PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
 PKG_SEARCH_MODULE(SDL2TTF REQUIRED SDL2_ttf>=2.0.0)
 
 set(CMAKE_CXX_STANDARD 14)
-add_executable(Chess main.cpp MoveCalculator.cpp MoveCalculator.h Board.cpp Board.h Game.cpp Game.h Engine.cpp Engine.h MoveRecorder.cpp MoveRecorder.h)
+add_executable(Chess main.cpp MoveCalculator.cpp MoveCalculator.h Board.cpp Board.h Game.cpp Game.h Engine.cpp Engine.h MoveRecorder.cpp MoveRecorder.h Print.cpp Print.h)
 
 target_include_directories(${PROJECT_NAME} PRIVATE
          include ${SDL2_INCLUDE_DIRS} ${SDL2IMAGE_INCLUDE_DIRS} ${SDL2TTF_INCLUDE_DIRS})
