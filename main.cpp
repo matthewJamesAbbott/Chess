@@ -32,14 +32,14 @@ bool is_number(const std::string& s)
 
 int main(int argc, char *argv[]){
     Game chess;
-    bool clearSwitch = true;
+    bool clearSwitch = true; // turns clear screen on and off for terminal
     experimental::filesystem::create_directory("gamesave");
-    if(argc == 1){
+    if(argc == 1){ // no arguements straight to XWindows client.
         chess.clientServerToggle = GUI;
     }
-    else{
+    else{ // otherwise collect arguements
         for (int i = 0; i < argc; i++){
-            if(!strcmp(argv[i], "-s")){
+            if(!strcmp(argv[i], "-s")){ // game started as server in terminal
                 cout << "Please Enter Name for Player" << std::endl;
        string name;
        cin >> name;
@@ -47,14 +47,14 @@ int main(int argc, char *argv[]){
                 cout << "Game is now running as server and waiting for a client to connect" << endl;
                 chess.clientServerToggle = SERVER;
             }
-            if(!strcmp(argv[i], "-c")){
+            if(!strcmp(argv[i], "-c")){  // game started as client in terminal
                 cout << "Please Enter Name for Player" << std::endl;
        string name;
        cin >> name;
        chess.setPlayerOne(name);
                     chess.clientServerToggle = CLIENT;
             }
-            if(!strcmp(argv[i], "-ai")){
+            if(!strcmp(argv[i], "-ai")){ // game started with computer player in terminal
                 cout << "Please Enter Name for Player" << std::endl;
        string name;
        cin >> name;
@@ -72,9 +72,16 @@ int main(int argc, char *argv[]){
     char y, ya;
     char* ipArray = argv[2];
     gotoHandle:
-    if(chess.clientServerToggle == CLIENT){
+    if(chess.clientServerToggle == CLIENT){ // begin routines for client in terminal
         chess.initialiseBoard();
         chess.printBoardToTerminal(chess.gameBoard);
+
+        /*
+         * Network routines for client 
+         *
+         */
+
+
         int clientSocket;
         clientSocket = socket(AF_INET , SOCK_STREAM , 0);
         if(clientSocket < 0){
@@ -92,6 +99,13 @@ int main(int argc, char *argv[]){
         else{
             cout << "\t\tConnection Established..." << endl;
         }
+
+        /*
+         * Take and parse input from user from the terminal
+         *
+         */
+
+
         while (true){
             while (true){
                 cout << "Please enter number for piece you wish to move or 9 to exit" << endl;
@@ -254,8 +268,28 @@ int main(int argc, char *argv[]){
                     ya = 0;
                 }
             }
+
+
+
+            /*
+             * move piece in 2D array board
+             * send object board to Print via Games inheritance to print to terminal
+             * 
+             */
+
+
             chess.movePiece(x, y, xa, ya);
             chess.printBoardToTerminal(chess.gameBoard);
+
+
+            /*
+             * send move to server
+             * Wait for server to respond then
+             * store reply in array
+             *
+             */
+
+
             char input[4];
             input[0] = x + '0';
             input[1] = y;
@@ -276,6 +310,16 @@ int main(int argc, char *argv[]){
                 cout << "\nConnection ended... take care bye bye... " ;
                 break;
             }
+
+
+
+            /*
+             * convert numeric chars to integers
+             * move piece in 2D array board
+             * send object board to Print to print to terminal
+             *
+             */
+
             int a = receiveMessage[0] - '0';
             int b = receiveMessage[2] - '0';
             chess.movePiece(a,receiveMessage[1],b,receiveMessage[3]);
@@ -283,7 +327,9 @@ int main(int argc, char *argv[]){
         }
 
     }
-    if(chess.clientServerToggle == SERVER){
+
+
+    if(chess.clientServerToggle == SERVER){ // begin routines for server in terminal
         chess.initialiseBoard();
         chess.printBoardToTerminal(chess.gameBoard);
         int serverSocketHandler = socket(AF_INET , SOCK_STREAM , 0);
@@ -509,7 +555,7 @@ int main(int argc, char *argv[]){
             send(connection , input , strlen(input)+1 , 0);
         }
     }
-    if(chess.clientServerToggle == SOLO){
+    if(chess.clientServerToggle == SOLO){ // begin routines for game with computer player in terminal
         remove("Chess.txt");
         chess.initialiseBoard();
         system("clear");
@@ -714,7 +760,7 @@ int main(int argc, char *argv[]){
         }
     }
 
-    if(chess.clientServerToggle == GUI){
+    if(chess.clientServerToggle == GUI){ // begin routines for XWindows interface
         remove("Chess.txt");
         chess.initialiseBoard();
         bool leftMouseButtonDown = false;
@@ -735,7 +781,7 @@ int main(int argc, char *argv[]){
 
             switch (event.type) {
                 case SDL_MOUSEBUTTONDOWN:
-                    /*if(event.motion.y > 679 && event.motion.x < 85){
+                    if(event.motion.y > 679 && event.motion.x < 85){
                         if(optionToggle == 0){
                             chess.printOptionsToWindow();
                             optionToggle = 1;
@@ -746,7 +792,7 @@ int main(int argc, char *argv[]){
                             optionToggle = 0;
                             break;
                         }
-                    }*/
+                    }
                     if(optionToggle == 0){
                         if(((event.motion.x / 85) - 1) == 7){
                             squareAlpha = 'H';
