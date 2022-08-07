@@ -74,7 +74,7 @@ int main(int argc, char *argv[]){
     gotoHandle:
     if(chess.clientServerToggle == CLIENT){
         chess.initialiseBoard();
-        chess.printBoardToTerminal();
+        chess.printBoardToTerminal(chess.gameBoard);
         int clientSocket;
         clientSocket = socket(AF_INET , SOCK_STREAM , 0);
         if(clientSocket < 0){
@@ -180,11 +180,11 @@ int main(int argc, char *argv[]){
                         }
                     }
                     chess.loadGame(loadInput);
-                    chess.printBoardToTerminal();
+                    chess.printBoardToTerminal(chess.gameBoard);
                 }
                 else if (x == 13){
                     chess.initialiseBoard();
-                    chess.printBoardToTerminal();
+                    chess.printBoardToTerminal(chess.gameBoard);
                 }
                 else if (x == 14){
                     chess.clientServerToggle = SERVER;
@@ -255,7 +255,7 @@ int main(int argc, char *argv[]){
                 }
             }
             chess.movePiece(x, y, xa, ya);
-            chess.printBoardToTerminal();
+            chess.printBoardToTerminal(chess.gameBoard);
             char input[4];
             input[0] = x + '0';
             input[1] = y;
@@ -279,13 +279,13 @@ int main(int argc, char *argv[]){
             int a = receiveMessage[0] - '0';
             int b = receiveMessage[2] - '0';
             chess.movePiece(a,receiveMessage[1],b,receiveMessage[3]);
-            chess.printBoardToTerminal();
+            chess.printBoardToTerminal(chess.gameBoard);
         }
 
     }
     if(chess.clientServerToggle == SERVER){
         chess.initialiseBoard();
-        chess.printBoardToTerminal();
+        chess.printBoardToTerminal(chess.gameBoard);
         int serverSocketHandler = socket(AF_INET , SOCK_STREAM , 0);
         if(serverSocketHandler < 0){
             cout << "Socket creation has failed.";
@@ -336,7 +336,7 @@ int main(int argc, char *argv[]){
             int a = receiveMessage[0] - '0';
             int b = receiveMessage[2] - '0';
             chess.movePiece(a,receiveMessage[1],b,receiveMessage[3]);
-            chess.printBoardToTerminal();
+            chess.printBoardToTerminal(chess.gameBoard);
             while (true){
                 cout << "Please enter number for piece you wish to move or 9 to exit" << endl;
                 cin >> x;
@@ -424,11 +424,11 @@ int main(int argc, char *argv[]){
                         }
                     }
                     chess.loadGame(loadInput);
-                    chess.printBoardToTerminal();
+                    chess.printBoardToTerminal(chess.gameBoard);
                 }
                 else if (x == 13){
                     chess.initialiseBoard();
-                    chess.printBoardToTerminal();
+                    chess.printBoardToTerminal(chess.gameBoard);
                 }
                 else if (x == 14){
                     chess.clientServerToggle = SERVER;
@@ -500,7 +500,7 @@ int main(int argc, char *argv[]){
                 }
             }
             chess.movePiece(x, y, xa, ya);
-            chess.printBoardToTerminal();
+            chess.printBoardToTerminal(chess.gameBoard);
             char input[4];
             input[0] = x + '0';
             input[1] = y;
@@ -513,7 +513,7 @@ int main(int argc, char *argv[]){
         remove("Chess.txt");
         chess.initialiseBoard();
         system("clear");
-        chess.printBoardToTerminal();
+        chess.printBoardToTerminal(chess.gameBoard);
         while (true){
             while (true){
                 cout << "Please enter number for piece you wish to move or 10 for help" << endl;
@@ -603,11 +603,11 @@ int main(int argc, char *argv[]){
                         }
                     }
                     chess.loadGame(loadInput);
-                    chess.printBoardToTerminal();
+                    chess.printBoardToTerminal(chess.gameBoard);
                 }
                 else if (x == 13){
                     chess.initialiseBoard();
-                    chess.printBoardToTerminal();
+                    chess.printBoardToTerminal(chess.gameBoard);
                 }
                 else if (x == 14){
                     chess.clientServerToggle = SERVER;
@@ -627,12 +627,12 @@ int main(int argc, char *argv[]){
                     if(chess.playerSide == BLACK) {
                         chess.playerSide = WHITE;
                         chess.initialiseBoardReverse();
-                        chess.printBoardToTerminal();
+                        chess.printBoardToTerminal(chess.gameBoard);
                     }
                     else {
                         chess.playerSide = WHITE;
                         chess.initialiseBoard();
-                        chess.printBoardToTerminal();
+                        chess.printBoardToTerminal(chess.gameBoard);
                     }
                 }
                 else if (x == 17){
@@ -643,7 +643,7 @@ int main(int argc, char *argv[]){
                 }
                 else if (x == 22){
                     if(chess.recallMove())
-                        chess.printBoardToTerminal();
+                        chess.printBoardToTerminal(chess.gameBoard);
                     else
                         cout << "There are no move moves to recall." << endl;
                 }
@@ -705,11 +705,11 @@ int main(int argc, char *argv[]){
             if(chess.movePiece(x, y, xa, ya)){
                 if(clearSwitch)
                     system("clear");
-                chess.printBoardToTerminal();
+                chess.printBoardToTerminal(chess.gameBoard);
                 chess.engineMove();
                 if(clearSwitch)
                     system("clear");
-                chess.printBoardToTerminal();
+                chess.printBoardToTerminal(chess.gameBoard);
             }
         }
     }
@@ -721,9 +721,9 @@ int main(int argc, char *argv[]){
         bool quit = false;
         SDL_Event event;
         chess.initSDL();
-        chess.printBoardToWindow();
+        chess.printBoardToWindow(chess.gameBoard);
         system("clear");
-        chess.printBoardToTerminal();
+        chess.printBoardToTerminal(chess.gameBoard);
         bool squareSelected = false;
         int originNumeric, squareNumeric, optionToggle;
         char originAlpha, squareAlpha;
@@ -742,7 +742,7 @@ int main(int argc, char *argv[]){
                             break;
                         }
                         else{
-                            chess.printBoardToWindow();
+                            chess.printBoardToWindow(chess.gameBoard);
                             optionToggle = 0;
                             break;
                         }
@@ -793,9 +793,9 @@ int main(int argc, char *argv[]){
                             squareSelected = false;
                             if(chess.movePiece(originNumeric, originAlpha, squareNumeric, squareAlpha)){
                                 chess.engineMove();
-                                chess.printBoardToWindow();
+                                chess.printBoardToWindow(chess.gameBoard);
                                 system("clear");
-                                chess.printBoardToTerminal();
+                                chess.printBoardToTerminal(chess.gameBoard);
                             }
 
                         }

@@ -285,6 +285,7 @@ bool Game::engineMove(){
     rec.recordMove(moveArray[0],moveArray[1],moveArray[2],moveArray[3],gameBoard);
     return true;
 }
+/*
 
 void Game::initSDL(){
     output.initSDL();
@@ -305,6 +306,8 @@ void Game::destroySDL(){
 void Game::printBoardToTerminal(){
     output.printBoardToTerminal(gameBoard);
 }
+
+*/
 bool Game::movePiece(int ia, char ca, int ib, char cb){
     int ya;
     if(ca == 'A' || ca == 'a')

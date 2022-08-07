@@ -12,7 +12,7 @@
 #include "MoveCalculator.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
-class Game{
+class Game: public Print{
 
 public:
 
@@ -64,7 +64,7 @@ public:
     /**
      * Print unicode representation of board and pieces to terminal
      */
-    void printBoardToTerminal();
+/*    void printBoardToTerminal();
 
     void printBoardToWindow();
 
@@ -74,6 +74,7 @@ public:
 
     void destroySDL();
 
+*/
     int clientServerToggle{};
 
     int guiOptionToggle{};
@@ -83,12 +84,13 @@ public:
     std::string clientIP;
 
     int clientPort{};
+
+    Board gameBoard;
 private:
     MoveRecorder rec;
     MoveCalculator calc;
     std::string playerOne;
     std::string playerTwo;
-    Board gameBoard;
     Engine *moveEngine = new Engine();
     Print output;
 };
