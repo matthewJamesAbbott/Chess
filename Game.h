@@ -92,7 +92,6 @@ private:
     std::string playerOne;
     std::string playerTwo;
     Engine *moveEngine = new Engine();
-    Print output;
 };
 
 struct {
