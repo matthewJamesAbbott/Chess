@@ -95,16 +95,17 @@ int main(int argc, char *argv[]){
 
 
         int clientSocket;
-        clientSocket = socket(AF_INET , SOCK_STREAM , 0);
+        clientSocket = socket(AF_INET , SOCK_STREAM , 0); // open socket
         if(clientSocket < 0){
             cout << "Creation of client socket failed" << endl;
             return 0;
         }
-        struct sockaddr_in serverAddr;
-        serverAddr.sin_family = AF_INET;
-        serverAddr.sin_addr.s_addr = inet_addr(ipArray);
-        serverAddr.sin_port = htons(PORT);
-        if(connect(clientSocket ,  (struct sockaddr*) & serverAddr , sizeof(serverAddr)) < 0){
+        struct sockaddr_in serverAddr; // setup sin struct
+        serverAddr.sin_family = AF_INET; // family
+        serverAddr.sin_addr.s_addr = inet_addr(ipArray); // ip address
+        serverAddr.sin_port = htons(PORT); // port
+
+        if(connect(clientSocket ,  (struct sockaddr*) & serverAddr , sizeof(serverAddr)) < 0){ // connect to server
             cout << "Connection Error..." << endl;
             return 0;
         }
@@ -113,6 +114,7 @@ int main(int argc, char *argv[]){
         }
 
         /*
+         * clients game loop
          * take and parse input from user from the terminal
          *
          */
@@ -255,7 +257,6 @@ int main(int argc, char *argv[]){
                 }
 
 
-
                 else if (x == 15){ // test input for start game as client
                     chess.clientServerToggle = CLIENT;
                     cout << "Please enter ip address of server" << endl;
@@ -367,13 +368,6 @@ int main(int argc, char *argv[]){
                 return 0;
             }
 
-            if(receiveMessage[0] == 'b' && receiveMessage[1] == 'y' && receiveMessage[2] == 'e'){
-                cout << "\nConnection closed." ;
-                break;
-            }
-
-
-
             /*
              * convert numeric chars to integers
              * move piece in 2D array board
@@ -402,31 +396,40 @@ int main(int argc, char *argv[]){
 
         chess.initialiseBoard();
         chess.printBoardToTerminal(chess.gameBoard);
-        int serverSocketHandler = socket(AF_INET , SOCK_STREAM , 0);
+
+
+        /*
+         * network routines for server
+         *
+         */
+
+        int serverSocketHandler = socket(AF_INET , SOCK_STREAM , 0); // open socket
         if(serverSocketHandler < 0){
             cout << "Socket creation has failed.";
             return 0;
         }
-        struct sockaddr_in serverAddr , clientAddr;
-        serverAddr.sin_family = AF_INET;
-        serverAddr.sin_port = htons(PORT);
-        serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-        int bindStatus = bind(serverSocketHandler , (struct sockaddr*) & serverAddr , sizeof(serverAddr));
+
+        struct sockaddr_in serverAddr , clientAddr; // setup sin struct
+        serverAddr.sin_family = AF_INET; // family
+        serverAddr.sin_port = htons(PORT); // port
+        serverAddr.sin_addr.s_addr = htonl(INADDR_ANY); // ip address
+
+        int bindStatus = bind(serverSocketHandler , (struct sockaddr*) & serverAddr , sizeof(serverAddr)); // bind to socket
         if(bindStatus < 0){
             cout << "Socket binding has failed" << endl;
             return 0;
         }
-        int listenStatus = listen(serverSocketHandler , 5);
+
+        int listenStatus = listen(serverSocketHandler , 5); // set socket to listen
         if(listenStatus < 0){
             cout << "Listener has failed" << endl;
             return 0;
         }
         cout << "..Waiting for connections.. \n";
-        char buff[MAX];
-        int clientSocketHandler;
-        socklen_t len = sizeof(clientAddr);
+        
+        socklen_t len = sizeof(clientAddr); // get size of socket in bits
         int connection;
-        if((connection = accept(serverSocketHandler , (struct sockaddr*) & clientAddr , &len)) < 0){
+        if((connection = accept(serverSocketHandler , (struct sockaddr*) & clientAddr , &len)) < 0){ // accept connection
             cout << "Server didn't accept the request." << endl;
             return 0;
         }
@@ -434,9 +437,17 @@ int main(int argc, char *argv[]){
             cout << "Server accepted the request. \n" ;
         }
 
+
+        /*
+         * servers game loop
+         *
+         */
+
+
+
         while (true){
-            char receiveMessage[MAX];
-            int rMsgSize = recv(connection , receiveMessage , MAX , 0);
+            char receiveMessage[MAX]; // intialise array to store clients move
+            int rMsgSize = recv(connection , receiveMessage , MAX , 0); // receive clients move
             if(rMsgSize < 0){
                 cout << "Packet receive failed." << endl;
                 return 0;
@@ -445,23 +456,43 @@ int main(int argc, char *argv[]){
                 cout << "Server is off." << endl;
                 return 0;
             }
-            if(receiveMessage[0] == 'b' && receiveMessage[1] == 'y' && receiveMessage[2] == 'e'){
-                cout << "\nConnection ended... take care bye bye... " ;
-                break;
-            }
+
+            /*
+             * extract numeric co ordinates and convert to integers
+             *
+             */
+
+
             int a = receiveMessage[0] - '0';
             int b = receiveMessage[2] - '0';
+
+            /*
+             * move piece in 2D array board
+             * send object chess.gameBoard to Print via Game's inheritance to print to terminal
+             *
+             */
+
+
             chess.movePiece(a,receiveMessage[1],b,receiveMessage[3]);
             chess.printBoardToTerminal(chess.gameBoard);
-            while (true){
+
+
+            /*
+             * take and parse input from user from the terminal
+             *
+             */
+
+
+
+            while (true){ 
                 cout << "Please enter number for piece you wish to move or 9 to exit" << endl;
                 cin >> x;
-                if (x == 1 || x == 2 || x == 3 || x == 4 || x == 5 || x == 6 || x == 7 || x == 8){
+                if (x == 1 || x == 2 || x == 3 || x == 4 || x == 5 || x == 6 || x == 7 || x == 8){ // test input for numeric co ordinate
                     break;
                 } 
-                else if (x == 9)
+                else if (x == 9) // test input for game exit
                     return 0;
-                else if (x == 10){
+                else if (x == 10){ // test input for help
                     cout << "Welcome to Abbotts Chess \n" <<
                          "\n" <<
                          "Chess allows all regulation moves by asking the user for input of the four co-ordinates in succession\n"
@@ -490,11 +521,11 @@ int main(int argc, char *argv[]){
                          "9 Exit game\n" <<
                          "" << endl;
                 }
-                else if (x == 11){
+                else if (x == 11){ // test input for save game
 
                     time_t current = time(nullptr);
                     string dateTime = ctime(&current);
-                    replace(dateTime.begin(), dateTime.end(), ' ', '-');
+                    replace(dateTime.begin(),dateTime.end(), ' ', '-');
                     replace(dateTime.begin(),dateTime.end(), ':', ',');
                     replace(dateTime.begin(),dateTime.end(), '\n', '.');
 
@@ -515,7 +546,7 @@ int main(int argc, char *argv[]){
                     outFileHandle.close();
 
                 }
-                else if (x == 12){
+                else if (x == 12){ // test input for restore game
                     string path = "gamesave/";
                     vector<string> dir;
                     cout << "Please enter the corresponding number to the game you wish to restore" << endl;
@@ -542,15 +573,15 @@ int main(int argc, char *argv[]){
                     chess.loadGame(loadInput);
                     chess.printBoardToTerminal(chess.gameBoard);
                 }
-                else if (x == 13){
+                else if (x == 13){ // test input for new game
                     chess.initialiseBoard();
                     chess.printBoardToTerminal(chess.gameBoard);
                 }
-                else if (x == 14){
+                else if (x == 14){ // test input for start game as server
                     chess.clientServerToggle = SERVER;
                     goto gotoHandle;
                 }
-                else if (x == 15){
+                else if (x == 15){ // test input for start game as client
                     chess.clientServerToggle = CLIENT;
                     cout << "Please enter ip address of server" << endl;
                     string ip_address;
@@ -560,30 +591,30 @@ int main(int argc, char *argv[]){
                     ipArray = ipAddress;
                     goto gotoHandle;
                 }
-                else {
+                else { // catch bad input
                     cout << "You have entered an illegal character please try again" << endl;
                     cin.clear();
                     cin.ignore(1, '\n');
                     x = 0;
                 }
             }
-            while (true){
+            while (true){ // take input and test for alpha co ordinate
                 cout << "Please enter letter for piece you wish to move or 9 to exit" << endl;
                 cin >> y;
                 if (y == 'a' || y == 'A' || y == 'b' || y == 'B' || y == 'c' || y == 'C' || y == 'd' || y == 'D'
                     || y == 'e' || y == 'E' || y == 'f' || y == 'F' || y == 'g' || y == 'G' || y == 'h' || y == 'H'){
                     break;
                 } 
-                else if (y == '9')
+                else if (y == '9') // test input for game exit
                     return 0;
-                else{
+                else{ // catch bad input
                     cout << "You have entered an illegal character please try again" << endl;
                     cin.clear();
                     cin.ignore(1, '\n');
                     y = 0;
                 }
             }
-            while (true){
+            while (true){ // take input and test for numeric co ordinate
                 cout << "Please enter number for were you wish piece to move to or 9 to exit" << endl;
                 cin >> xa;
                 if (xa == 1 || xa == 2 || xa == 3 || xa == 4 || xa == 5 || xa == 6 || xa == 7 || xa == 8){
