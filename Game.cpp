@@ -293,7 +293,14 @@ void Game::loadGame(std::string fileName){
 
     
 
-    rec.setMove(turn);
+    rec.setMove(turn); // set turn in private object for class MoveRecorder
+
+    /*
+     * open game state file through handle to in stream
+     * move to last turn hook and then over move co ordinates name and delimit
+     * ready to extract board state
+     *
+     */
 
     inFileHandle.open("Chess.txt");
     while(std::getline(inFileHandle, line)){
@@ -304,6 +311,14 @@ void Game::loadGame(std::string fileName){
             break;
         }
     }
+
+    /*
+     * continue to extract lines from game state file parsing them for piece positions
+     * input string representation of piece into correct place in 2D array board
+     * close handle to in stream
+     *
+     */
+
     for(int e = 0; e < 8; e++){
         int pos = 0;
         int start = 0;
