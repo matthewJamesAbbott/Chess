@@ -153,17 +153,34 @@ void Game::initialiseBoardReverse(){
     gameBoard.setSquare(7,7,"White Right Rook");
 }
 
+/*
+ * read and parse move history from Chess.txt for board layout
+ * of last move reset game to board layout giving the user
+ * the next turn
+ *
+ */
+
 bool Game::recallMove(){
     std::ifstream inFileHandle;
     inFileHandle.open("Chess.txt");
     int turn;
     std::string line;
-    while(std::getline(inFileHandle, line)){
+    
+    while(std::getline(inFileHandle, line)){ // find last turn in Chess.txt
         if(!line.find("["))
             turn = line.at(1) - 48;
     }
     inFileHandle.close();
-    if(turn > 2) {
+
+    if(turn > 2) { // test if there have been enough turns to have a game state recorded
+
+        /*
+         * open Chess.txt extract lines of text until 2 turns
+         * before current leaving stream open when finished
+         *
+         */
+
+
         inFileHandle.open("Chess.txt");
         std::string move = "[";
         move += std::to_string(turn - 2);
@@ -175,6 +192,14 @@ bool Game::recallMove(){
                 break;
             }
         }
+
+        /*
+         * continue extracting lines of text from Chess.txt parsing them
+         * for string representations of the pieces
+         * then inserting string representation into correct position in 2D array board
+         *
+         */
+        
         for (int e = 0; e < 8; e++) {
             int pos = 0;
             int start = 0;
@@ -225,24 +250,39 @@ bool Game::recallMove(){
                 }
             }
         }
-        inFileHandle.close();
-        return true;
+        inFileHandle.close(); // close file stream
+        return true; // did something 
     }
-    else if(turn == 2){
-        this->initialiseBoard();
-        return true;
+    else if(turn == 2){ // game is in second turn and can be taken back to board initialisation for recallMove
+        this->initialiseBoard(); 
+        return true; // did something
     }
-    return false;
+    return false; // did nothing game is already at base initialisation no move to recall
 }
 
+/*
+ * list files in gamesave
+ * take user selection of file then open and parse file for last turn and piece positions
+ * input string representations of pieces into 2D array board
+ *
+ */
+
 void Game::loadGame(std::string fileName){
-    std::ofstream outFileHandle;
-    std::remove("Chess.txt");
+
+    std::ofstream outFileHandle; // open handle to out stream
+    std::remove("Chess.txt"); // remove game state file
     std::string saveFile = "Chess.txt";
-    outFileHandle.open(saveFile ,std::ios_base::app);
-    std::ifstream inFileHandle;
-    std::string line;
-    inFileHandle.open(fileName);
+    outFileHandle.open(saveFile ,std::ios_base::app); // use out stream handle to open new game state file
+    std::ifstream inFileHandle; // open handle to in stream
+    std::string line; 
+    inFileHandle.open(fileName); // use in stream handle to open fileName supplied via functions input argument
+
+    /*
+     * copy contents of fileName to Chess.txt
+     * then close both handles to in stream and out stream
+     *
+     */
+
     int turn;
     while(std::getline(inFileHandle, line)){
         outFileHandle << line << "\n";
@@ -251,6 +291,8 @@ void Game::loadGame(std::string fileName){
     }
     inFileHandle.close();
     outFileHandle.close();
+
+    
 
     rec.setMove(turn);
 
