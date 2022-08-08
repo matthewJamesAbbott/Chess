@@ -30,7 +30,7 @@ void Game::setPlayerTwo(std::string name){
 }
 
 /*
- * load string representations of pieces into 2D array board
+ * load string representations of pieces into 2D array board black bottom
  * take note that due to the way the terminal prints 0,0 in
  * the array is 7,0 on the board so this intialises "White Left Rook" 
  * to square 8A
@@ -92,7 +92,23 @@ void Game::initialiseBoard(){
     gameBoard.setSquare(7,7,"Black Right Rook");
 }
 
+
+/*
+ * load string representations of pieces into 2D array board white bottom
+ * take note that due to the way the terminal prints 0,0 in
+ * the array is 7,0 on the board so this intialises "Black Left Rook" 
+ * to square 8A
+ *
+ */
+
 void Game::initialiseBoardReverse(){
+
+    /*
+     * load black pieces into 2D array starting at 8A
+     * finishing at 7H
+     *
+     */
+
     gameBoard.setSquare(0,0,"Black Left Rook");
     gameBoard.setSquare(0,1,"Black Left Knight");
     gameBoard.setSquare(0,2,"Black Left Bishop");
@@ -104,11 +120,26 @@ void Game::initialiseBoardReverse(){
     for(int i = 0; i < 8; i++){
         gameBoard.setSquare(1,i,"Black Pawn");
     }
+
+     /*
+      * load string representations of empty space into
+      * 2D array starting at 6A finishing at 3H
+      *
+      */
+
     for(int e = 2; e < 6; e++){
         for(int i = 0; i < 8; i++){
             gameBoard.setSquare(e,i,"Empty");
         }
     }
+
+    /*
+     * load white pieces into 2D array starting at 2A
+     * finishing at 1H
+     * notice pawns in reverse order from black
+     *
+     */
+
     for(int i = 0; i < 8; i++){
         gameBoard.setSquare(6,i,"White Pawn");
     }
