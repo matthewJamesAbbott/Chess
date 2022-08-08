@@ -390,6 +390,14 @@ void Game::loadGame(std::string fileName){
     inFileHandle.close();
 }
 
+/*
+ * test if computer is in checkmate
+ * calculate a computer generated move with object moveEngine from class Engine
+ * input piece at correct position in 2D array board and replace pieces original position with "Empty"
+ * record computers move in game state file through object rec from class MoveRecorder
+ *
+ */
+
 bool Game::engineMove(){
     int *moveArray;
     int computerSide = WHITE;
