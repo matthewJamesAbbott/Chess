@@ -261,7 +261,6 @@ bool Game::recallMove(){
 }
 
 /*
- * list files in gamesave
  * take user selection of file then open and parse file for last turn and piece positions
  * input string representations of pieces into 2D array board
  *
