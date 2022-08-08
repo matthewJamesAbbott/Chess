@@ -401,12 +401,29 @@ void Game::loadGame(std::string fileName){
 bool Game::engineMove(){
     int *moveArray;
     int computerSide = WHITE;
-    if(this->playerSide == WHITE)
+    if(this->playerSide == WHITE) // check which side for computer to play
         computerSide = BLACK;
+
+    /*
+     * send object gameBoard and colour of computers pieces to object calc of class MoveCalculator
+     * to be tested for checkmate by function checkMateTest
+     * if test passes print success and exit function returning false
+     *
+     */
+
     if(calc.checkMateTest(gameBoard,computerSide)){
         std::cout << "Check Mate You Win" << std::endl;
         return false;
     }
+
+    /*
+     * resolve computers move and store it in an array of integers
+     * input string representations of piece and empty to correct places in the 2D array board
+     * record game state in Chess.txt
+     * exit function and return the success of move
+     *
+     */
+
     moveArray = moveEngine->resolveMove(gameBoard, computerSide);
     gameBoard.setSquare(moveArray[2], moveArray[3], gameBoard.returnSquare(moveArray[0], moveArray[1]));
     gameBoard.setSquare(moveArray[0], moveArray[1], "Empty");
