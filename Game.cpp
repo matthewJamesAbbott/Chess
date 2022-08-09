@@ -431,8 +431,27 @@ bool Game::engineMove(){
     return true;
 }
 
+/*
+ * take input arguments for alpha and numeric co-ordinates for pieces orignal position
+ * and its resting position after turn
+ * convert co-ordinates into numeric positions for 2D array board
+ * test for checkmate
+ * generate a list of possible moves for piece at co-ordinates with object calc from class MoveCalculator
+ * test move against generated list
+ * create temporary object checkBoard that is a copy of gameBoard through gameBoard's copy constructor
+ * make move in checkBoard and then test if king is in check
+ * if test is negative make move in gameBoard record move in Chess.txt else exit function on false
+ * to allow play to make a different move
+ *
+ */
 
 bool Game::movePiece(int ia, char ca, int ib, char cb){
+    
+    /*
+     * convert alpha co-ordinate for piece's origin into numeric co-ordinates
+     *
+     */
+
     int ya;
     if(ca == 'A' || ca == 'a')
         ya = 0;
@@ -450,6 +469,12 @@ bool Game::movePiece(int ia, char ca, int ib, char cb){
         ya = 6;
     else if(ca == 'H' || ca == 'h')
         ya = 7;
+
+    /*
+     * reverse numeric co-ordinate for piece's origin to deal with terminal printing
+     *
+     */
+
     int xa;
     if(ia == 1)
         xa = 7;
@@ -467,6 +492,12 @@ bool Game::movePiece(int ia, char ca, int ib, char cb){
         xa = 1;
     else if(ia == 8)
         xa = 0;
+
+    /*
+     * convert alpha co-ordinate for piece's destination into numeric co-ordinates 
+     *
+     */
+
     int yb;
     if(cb == 'A' || cb == 'a')
         yb = 0;
@@ -484,6 +515,12 @@ bool Game::movePiece(int ia, char ca, int ib, char cb){
         yb = 6;
     else if(cb == 'H' || cb == 'h')
         yb = 7;
+
+    /*
+     * reverse numeric co-ordinate for piece's destination to deal with terminal printing
+     *
+     */
+
     int xb;
     if(ib == 1)
         xb = 7;
@@ -501,6 +538,7 @@ bool Game::movePiece(int ia, char ca, int ib, char cb){
         xb = 1;
     else if(ib == 8)
         xb = 0;
+
     LinkedList *list;
     Board checkBoard = gameBoard;
     if(calc.checkMateTest(gameBoard,this->playerSide)){
