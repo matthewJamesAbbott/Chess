@@ -9,19 +9,34 @@
 #define BLACK 1
 #define WHITE 0
 
+/*
+ * add pieces rank, origin co-ordinates and destination co-ordinates to decision tree
+ *
+ */
+
 void Tree::addTreeNode(int rank, int x, int y, int xa, int ya){
-    auto *newTreeNode = new TreeNode();
-    newTreeNode->rank = rank;
-    newTreeNode->x = x;
-    newTreeNode->y = y;
-    newTreeNode->xa = xa;
-    newTreeNode->ya = ya;
-    if(head==nullptr){
+
+    auto *newTreeNode = new TreeNode(); // create new node on tree
+    newTreeNode->rank = rank; // input piece rank
+    newTreeNode->x = x; // input origin numeric
+    newTreeNode->y = y; // input origin alpha
+    newTreeNode->xa = xa; // input destination numeric
+    newTreeNode->ya = ya; // input destination alpha
+
+    if(head==nullptr){ // if head of tree is empty make the new node the head
         head = newTreeNode;
     }
-    else{
-        TreeNode *current = head;
-        TreeNode *parent;
+    else{ // else if head of tree is not empty 
+        TreeNode *current = head; // create and point TreeNode pointer current towards head
+        TreeNode *parent; // create TreeNode pointer parent
+
+        /*
+         * sort and place TreeNodes into tree based on value of rank
+         * if new TreeNode's rank is less than the current nodes rank move to the left
+         * if new TreeNode's rank is more than the current nodes rank move to the right
+         * if current node after move is empty insert newTreeNode
+         */
+
         while(true){
             parent = current;
             if(rank < current->rank){
@@ -42,6 +57,14 @@ void Tree::addTreeNode(int rank, int x, int y, int xa, int ya){
     }
 }
 
+/*
+ * recursive function to extract and serialise possible moves
+ * from the decision tree
+ * note that return of function is void and it works on a
+ * global vector called returnVector
+ *
+ */
+
 void Engine::moveVector(TreeNode *localRoot, int base)
 {
     if(localRoot != nullptr){
@@ -56,6 +79,14 @@ void Engine::moveVector(TreeNode *localRoot, int base)
     }
 }
 
+/*
+ * recursive function to extract a second move without taking
+ * the highest possible piece available
+ * this is called in the case of the first recursive function 
+ * results in check against the computer
+ *
+ */
+
 void Engine::secondGuess(TreeNode *localRoot){
     if(localRoot != nullptr){
         secondGuess(localRoot->leftTreeNode);
@@ -69,6 +100,11 @@ void Engine::secondGuess(TreeNode *localRoot){
         secondGuess(localRoot->rightTreeNode);
     }
 }
+
+/*
+ * 
+ *
+ */
 
 int *Engine::resolveMove(Board gameBoard, int computerSide){
     Tree *moveTree = new Tree();
@@ -173,7 +209,6 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
             i = i + 4;
         }
     }
-    //std::cout << "move " << move[0] << " " << move[1] << " " << move[2] << " " << move[3] << std::endl;
     delete moveTree;
     returnVector.clear();
     int *returnPointer = move;
