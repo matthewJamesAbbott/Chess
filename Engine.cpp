@@ -200,8 +200,8 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
      * create TreeNode pointer and point it to the head of moveTree
      * call function moveVector to extract and serialise co-ordinates in moveTree
      * keeping only those that are equal to the highest value of rank
-     * test if tree only returns more than one move/set of co-ordinates
-     * pick at random which move to make
+     * test if tree returns more than one move/set of co-ordinates
+     * pick at random which move to make from what was returned 
      *
      */
 
@@ -219,7 +219,7 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
     /*
      * make Board object and use copy constructor to copy gameBoard
      * make selected move on testBoard
-     * test testBoard for check against the computer if false load array move with co-ordinates for move
+     * test testBoard for check against the computer if false load array move with co-ordinates for computers move
      *
      */
 
