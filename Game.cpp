@@ -539,28 +539,61 @@ bool Game::movePiece(int ia, char ca, int ib, char cb){
     else if(ib == 8)
         xb = 0;
 
+    /*
+     * create list and checkBoard object
+     * check if opponent has put you in check mate
+     * calculate possible moves for piece and store them in list
+     *
+     */
+
     LinkedList *list;
     Board checkBoard = gameBoard;
     if(calc.checkMateTest(gameBoard,this->playerSide)){
-        std::cout << "Check Mate Computer Wins" << std::endl;
+        std::cout << "Check Mate YOU LOSE" << std::endl;
         return false;
     }
     list = calc.possibleSquares2DArray(xa, ya, gameBoard, playerSide);
+
+    /*
+     * serialise list into vector with just x and y co-ordinates and no weight 
+     * (weight is used to determine which piece to take when ai is playing and is also stored in list)
+     * find players king 
+     *
+     */
+
     std::vector<int> moveVector;
     moveVector = list->returnVector();
     for(int i = 0; i < moveVector.size();){
-        int a = moveVector[i];
-        int b = moveVector[i + 1];
+        int a = moveVector[i]; // numeric co-ordinate
+        int b = moveVector[i + 1]; // alpha co-ordinate
         i = i + 2;
-        if (xb == a && yb == b){
-            std::string originalSquare = checkBoard.returnSquare(xa, ya);
-            if(b == 1 && ya == 3 && checkBoard.returnSquare(xa, ya).find("King")){
+        if (xb == a && yb == b){ // test if destination co-ordinates are in list of possible moves for piece
+            std::string originalSquare = checkBoard.returnSquare(xa, ya); // obtain piece representation as string
+
+            /*
+             * castle routine (main checks done in class MoveCalculator)
+             * check if king is in right position
+             * move king and rook to right positions on checkBoard 
+             * set origins as empty
+             *
+             */
+
+            if(b == 1 && ya == 3 && checkBoard.returnSquare(xa, ya).find("King")){ // needs extra tests
                 checkBoard.setSquare(xb,yb,originalSquare);
                 checkBoard.setSquare(xb,2, checkBoard.returnSquare(xa,0));
                 checkBoard.setSquare(xb,0, "Empty");
                 checkBoard.setSquare(xb,ya, "Empty");
             }
-            else if(a == 2 && originalSquare == "Black Pawn" && checkBoard.returnSquare(a,b) == "Empty" || a == 5 &&
+
+            /*
+             * enpassant routine (main checks done in class MoveCalculator)
+             * check pawn is in right position
+             * move pawn to right position on checkboard and replace opponents pawn with empty
+             * set origin of pawn to empty
+             *
+             */
+
+            else if(a == 2 && originalSquare == "Black Pawn" && checkBoard.returnSquare(a,b) == "Empty" || a == 5 && 
             originalSquare == "White Pawn" && checkBoard.returnSquare(a,b) == "Empty"){
                 checkBoard.setSquare(xb,yb, originalSquare);
                 checkBoard.setSquare(xa,ya, "Empty");
@@ -570,12 +603,26 @@ bool Game::movePiece(int ia, char ca, int ib, char cb){
                 if(a == 5)
                     checkBoard.setSquare(xb-1,yb, "Empty");
             }
+
+            /*
+             * normal move routine
+             * move piece on checkBoard
+             * set origin of piece to empty
+             *
+             */
+
             else{
                 checkBoard.setSquare(xb, yb, originalSquare);
                 checkBoard.setSquare(xa, ya, "Empty");
             }
         }
     }
+
+    /*
+     * find position of players king on checkBoard after move
+     *
+     */
+
     int kingX;
     int kingY;
     for(int e = 0; e < 8; e++){
@@ -586,6 +633,14 @@ bool Game::movePiece(int ia, char ca, int ib, char cb){
             }
         }
     }
+
+    /*
+     * check if kings position is in check
+     * if test is false record move in Chess.txt
+     * return true so move can be made on gameBoard
+     *
+     */
+
     if(!calc.checkCalculator(kingX,kingY, checkBoard, this->playerSide)){
         for(int e = 0; e < 8; e++){
             for(int i = 0; i < 8; i++){
@@ -595,5 +650,6 @@ bool Game::movePiece(int ia, char ca, int ib, char cb){
         rec.recordMove(xa,ya,xb,yb,gameBoard);
         return true;
     }
-    return false;
+
+    return false; // king is in check return false so player can chose a new move
 }
