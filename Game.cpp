@@ -557,7 +557,8 @@ bool Game::movePiece(int ia, char ca, int ib, char cb){
     /*
      * serialise list into vector with just x and y co-ordinates and no weight 
      * (weight is used to determine which piece to take when ai is playing and is also stored in list)
-     * find players king 
+     * extract co-ordinates from list to be tested
+     * test if players choice is in list
      *
      */
 
