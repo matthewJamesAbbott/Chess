@@ -215,6 +215,14 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
         choice = rand() % test;
         choice = choice * 4;
     }
+    
+    /*
+     * make Board object and use copy constructor to copy gameBoard
+     * make selected move on testBoard
+     * test testBoard for check against the computer if false load array move with co-ordinates for move
+     *
+     */
+
     int move[4];
     Board testBoard;
     testBoard = gameBoard;
@@ -226,6 +234,8 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
         move[2] = returnVector[choice + 2];
         move[3] = returnVector[choice + 3];
     }
+
+
     else{
 
         stepper = moveTree->head;
