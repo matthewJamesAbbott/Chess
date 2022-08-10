@@ -102,21 +102,50 @@ void Engine::secondGuess(TreeNode *localRoot){
 }
 
 /*
- * 
+ * function to take gameBoard and computers colour and 
+ * return a pointer to an array with the co-ordinates of the computers move
  *
  */
 
 int *Engine::resolveMove(Board gameBoard, int computerSide){
+
+    /*
+     * create tree to store possible moves in
+     * create object calc from MoveCalculator
+     * create LinkedList pointer
+     * Create vector to store serialised moves from list
+     *
+     */
+
     Tree *moveTree = new Tree();
     MoveCalculator calc;
     LinkedList *list;
     std::vector<int> moveVector;
+
+
     int base = 0;
     int playerSide;
+    
+    /*
+     * set variable for players colour
+     *
+     */
+
     if(computerSide == BLACK)
         playerSide = WHITE;
     else
         playerSide = BLACK;
+
+    /*
+     * test if computer is white
+     * if correct go through all squares on the board testing for White pieces
+     * when a White piece is found calculate all possible moves for piece and 
+     * save to a LinkedList that list points to
+     * extract and serialise weighted co-ordinates from list
+     * insert co-ordinates into decision tree
+     *
+     */
+
     if(computerSide == WHITE) {
         for (int e = 0; e < 8; e++) {
             for (int i = 0; i < 8; i++) {
@@ -138,6 +167,12 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
             }
         }
     }
+
+    /*
+     * do the same as above but test if computer is black instead of white
+     *
+     */
+
     else
     {
         for (int e = 0; e < 8; e++) {
@@ -160,6 +195,16 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
             }
         }
     }
+
+    /*
+     * create TreeNode pointer and point it to the head of moveTree
+     * call function moveVector to extract and serialise co-ordinates in moveTree
+     * keeping only those that are equal to the highest value of rank
+     * test if tree only returns more than one move/set of co-ordinates
+     * pick at random which move to make
+     *
+     */
+
     TreeNode *stepper;
     stepper = moveTree->head;
     this->moveVector(stepper, base);
