@@ -168,6 +168,13 @@ bool MoveCalculator::castleCheck(int side){
     return true;
 }
 
+/*
+ * check if oppositions pawn has moved two spaces from its starting
+ * position in the last turn
+ * return alpha co-ordinate on success and 10 on failure
+ *
+ */
+
 int MoveCalculator::enPassantCheck(int side){
     std::ifstream fileHandle;
     std::string line;
@@ -202,8 +209,22 @@ int MoveCalculator::enPassantCheck(int side){
     return 10;
 }
 
+/*
+ * calculate all possible moves for a piece at co-ordiantes passed to function
+ * save co-ordinates in Linkedlist and return the list on completion
+ *
+ */
 
 LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard, int side){
+
+    /*
+     * extract string representation of piece
+     * convert piece into numeric representation
+     * evaluate each piece for rank then store the moves co-ordinates and rank in list
+     * return list
+     *
+     */
+
     std::string piece = moveBoard.returnSquare(x,y);
     int switchedPiece = 0;
     if(piece == "White Left Rook")
@@ -244,6 +265,13 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
         switchedPiece = 18;
     if(piece == "Empty")
         switchedPiece = 19;
+
+    /*
+     * create list to return on the heap
+     * take input of piece and find possible moves from switch
+     *
+     */
+
     auto* list = new LinkedList();
     switch(switchedPiece){
         case 1: // White Left Rook Moves
@@ -1029,6 +1057,12 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
     }
 }
 
+/*
+ * test gameBoard for checkmate of the colour passed argument side
+ * return false if not in checkmate and continue game or return true and end game if in checkmate
+ *
+ */
+
 bool MoveCalculator::checkMateTest(Board gameBoard, int side){
     Board testBoard = gameBoard;
     MoveCalculator calc;
@@ -1097,6 +1131,11 @@ bool MoveCalculator::checkMateTest(Board gameBoard, int side){
     }
     return true;
 }
+
+/*
+ *
+ *
+ */
 
 bool MoveCalculator::checkCalculator(int x, int y, Board moveBoard, int side){
     LinkedList *temp;
