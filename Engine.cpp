@@ -235,12 +235,31 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
         move[3] = returnVector[choice + 3];
     }
 
+    else{ // move results in check against computer
 
-    else{
+    /*
+     * move TreeNode pointer to head of moveTree
+     * clear the vector that was used by recursive function moveVector
+     * pass secondGuess TreeNode pointer stepper to pull a move from
+     * moveTree that has a lower value than base found in the input argument
+     * of moveVector (not the maximum value for rank found in moveTree)
+     *
+     */
+
 
         stepper = moveTree->head;
         returnVector.clear();
         this->secondGuess(stepper);
+
+        /*
+         * set testBoard to be the same as gameBoard
+         * make move on testBoard
+         * search the board for computers king
+         * test testBoard after move for computer being in check
+         * if test is false fill move array with co-ordinates of move
+         *
+         */
+
         int kingX, kingY;
         for(int i = 0; i < returnVector.size();){
             testBoard = gameBoard;
@@ -264,6 +283,15 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
             i = i + 4;
         }
     }
+
+    /*
+     * remove moveTree from heap
+     * clear vector used in recursive functions
+     * create pointer to move array
+     * return pointer to move array
+     *
+     */
+
     delete moveTree;
     returnVector.clear();
     int *returnPointer = move;
