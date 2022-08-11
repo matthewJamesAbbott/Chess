@@ -20,16 +20,28 @@
 #define BLACK 0
 #define WHITE 1
 
+/*
+ * add node to list returned from possibleSquares2Darray function
+ *
+ */
+
 void LinkedList::addNode(int x, int y, int squareRank){
-    auto* newnode = new Node();
-    newnode->x = x;
-    newnode->y = y;
-    newnode->squareRank= squareRank;
-    newnode->next = nullptr;
-    if (head == nullptr){
+    auto* newnode = new Node(); // create new node on heap
+    newnode->x = x; // store squares numeric co-ordinate in list
+    newnode->y = y; // store squares alpha co-ordinate in list
+    newnode->squareRank= squareRank; // store pieces rank in list
+    newnode->next = nullptr; // set Node pointer next to nullptr
+    if (head == nullptr){ // test if head of list is empty if so make new node head
         head = newnode;
     }
-    else{
+
+    /*
+     * else create Node pointer and point it to head
+     * then step through list and insert node when next is nullptr
+     *
+     */
+
+    else{ 
         Node* temp = head;
         while (temp->next != nullptr){
             temp = temp->next;
@@ -37,6 +49,11 @@ void LinkedList::addNode(int x, int y, int squareRank){
         temp->next = newnode;
     }
 }
+
+/*
+ * serialise possibleSquares list into vector moveVector
+ *
+ */
 
 std::vector<int> LinkedList::returnVector(){
     Node* temp = head;
@@ -48,6 +65,11 @@ std::vector<int> LinkedList::returnVector(){
     }
     return moveVector;
 }
+
+/*
+ * serialise possibleSquares list into vector moveVector with piece weights included 
+ *
+ */
 
 std::vector<int> LinkedList::returnWeightedVector(){
     Node* temp = head;
@@ -61,9 +83,14 @@ std::vector<int> LinkedList::returnWeightedVector(){
     return moveVector;
 }
 
-LinkedList::~LinkedList() = default;
+LinkedList::~LinkedList() = default; // default constructor for linked list
 
-MoveCalculator::MoveCalculator() = default;
+MoveCalculator::MoveCalculator() = default; // default constructor for MoveCalculator
+
+/*
+ * evaluate square on moveBoard for pieces rank
+ *
+ */
 
 int MoveCalculator::evaluatePiece(int x, int y, Board moveBoard, int side){
     if(side == 1) {
@@ -110,6 +137,14 @@ int MoveCalculator::evaluatePiece(int x, int y, Board moveBoard, int side){
         }
     }
 }
+
+/*
+ * check if king or left rook has been moved
+ * by looking for through past moves in Chess.txt
+ * return false if king or left rook has been moved
+ * else return true to allow castle move to continue
+ *
+ */
 
 bool MoveCalculator::castleCheck(int side){
     std::ifstream fileHandle;
