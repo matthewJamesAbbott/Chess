@@ -1133,8 +1133,8 @@ bool MoveCalculator::checkMateTest(Board gameBoard, int side){
 }
 
 /*
- *
- *
+ * check if co-ordinates on moveBoard can be attacked by the oposition in the next turn
+ * return true if co-ordinates can be attacked and false if they are not
  */
 
 bool MoveCalculator::checkCalculator(int x, int y, Board moveBoard, int side){
