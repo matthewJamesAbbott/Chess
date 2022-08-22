@@ -140,7 +140,7 @@ int MoveCalculator::evaluatePiece(int x, int y, Board moveBoard, int side){
 
 /*
  * check if king or left rook has been moved
- * by looking for through past moves in Chess.txt
+ * by looking through past moves in Chess.txt
  * return false if king or left rook has been moved
  * else return true to allow castle move to continue
  *
