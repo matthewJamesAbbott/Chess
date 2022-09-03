@@ -338,7 +338,7 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                 list->addNode(x-2,y+1, this->evaluatePiece(x-2, y+1, moveBoard, 1));
             else if(x > 1 && y < 7 && (!moveBoard.returnSquare(x-2,y+1).find("Black")))
                 list->addNode(x-2,y+1, this->evaluatePiece(x-2,y+1, moveBoard, 1));
-            if(x > 1 && y < 0 && moveBoard.returnSquare(x-2, y-1) == "Empty")
+            if(x > 1 && y > 0 && moveBoard.returnSquare(x-2, y-1) == "Empty")
                 list->addNode(x-2,y-1, this->evaluatePiece(x-2, y-1, moveBoard, 1));
             else if(x > 1 && y > 0 && (!moveBoard.returnSquare(x-2,y-1).find("Black")))
                 list->addNode(x-2,y-1, this->evaluatePiece(x-2, y-1, moveBoard, 1));
