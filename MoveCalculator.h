@@ -116,6 +116,7 @@ public:
 private:
     int whiteKingX = 0;
     int blackKingY = 0;
+    int swap[2] = { 1, 0 };
 };
 
 #endif //CHESS_MOVECALCULATOR_H

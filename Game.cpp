@@ -548,7 +548,7 @@ bool Game::movePiece(int ia, char ca, int ib, char cb){
 
     LinkedList *list;
     Board checkBoard = gameBoard;
-    if(calc.checkMateTest(gameBoard,this->playerSide)){
+    if(calc.checkMateTest(gameBoard, playerSide)){
         std::cout << "Check Mate YOU LOSE" << std::endl;
         return false;
     }
