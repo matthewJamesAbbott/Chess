@@ -148,11 +148,9 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
      */
 
     if(computerSide == WHITE) {
-        std::cout << "computer is white \n";
         for (int e = 0; e < 8; e++) {
             for (int i = 0; i < 8; i++) {
                 if (gameBoard.returnSquare(e, i).find("White") != std::string::npos) {
-                    std::cout << "found white piece " << gameBoard.returnSquare(e, i) << "\n";
                     list = calc.possibleSquares2DArray(e, i, gameBoard, computerSide);
                     moveVector = list->returnWeightedVector();
                     for (int j = 0; j < moveVector.size(); j++) {
@@ -181,8 +179,8 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
     {
         for (int e = 0; e < 8; e++) {
             for (int i = 0; i < 8; i++) {
-                if (gameBoard.returnSquare(e, i).find("Black")) {
-                    list = calc.possibleSquares2DArray(e, i, gameBoard, playerSide);
+                if (gameBoard.returnSquare(e, i).find("Black") != std::string::npos) {
+                    list = calc.possibleSquares2DArray(e, i, gameBoard, computerSide);
                     moveVector = list->returnWeightedVector();
                     for (int j = 0; j < moveVector.size(); j++) {
                         int a = moveVector[j];

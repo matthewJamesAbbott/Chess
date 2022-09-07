@@ -579,7 +579,7 @@ bool Game::movePiece(int ia, char ca, int ib, char cb){
              *
              */
 
-            if(b == 1 && ya == 3 && checkBoard.returnSquare(xa, ya).find("King")){ // needs extra tests
+            if(b == 1 && ya == 3 && checkBoard.returnSquare(xa, ya).find("King") != std::string::npos){ // needs extra tests
                 checkBoard.setSquare(xb,yb,originalSquare);
                 checkBoard.setSquare(xb,2, checkBoard.returnSquare(xa,0));
                 checkBoard.setSquare(xb,0, "Empty");
