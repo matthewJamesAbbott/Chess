@@ -9,8 +9,8 @@
 #include <time.h>
 #include <experimental/filesystem>
 #include <algorithm>
-// #include <SDL2/SDL.h>
-// #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <numeric>
 
 #define PORT 9008
@@ -34,7 +34,7 @@ int main(int argc, char *argv[]){
     bool clearSwitch = true; // turns clear screen on and off for terminal
     experimental::filesystem::create_directory("gamesave");
     if(argc == 1){ // no arguements straight to XWindows client.
-        chess.clientServerToggle = SOLO;
+        chess.clientServerToggle = GUI;
     }
     else{ // otherwise collect arguements
         for (int i = 0; i < argc; i++){
@@ -860,7 +860,7 @@ int main(int argc, char *argv[]){
             }
         }
     }
-/*
+
     if(chess.clientServerToggle == GUI){ // begin routines for XWindows interface
         remove("Chess.txt");
         chess.initialiseBoard();
@@ -1068,6 +1068,6 @@ int main(int argc, char *argv[]){
         }
     chess.destroySDL();
     SDL_Quit();
-    }*/
+    }
     return 0;
 }
