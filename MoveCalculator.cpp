@@ -93,7 +93,7 @@ MoveCalculator::MoveCalculator() = default; // default constructor for MoveCalcu
  */
 
 int MoveCalculator::evaluatePiece(int x, int y, Board moveBoard, int side){
-    if(side == 1) {
+    if(side == WHITE) {
         if (moveBoard.returnSquare(x, y) == "Black Pawn") {
             return PAWN;
         } else if (moveBoard.returnSquare(x, y) == "Black Left Knight" ||
