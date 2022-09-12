@@ -181,13 +181,13 @@ int MoveCalculator::enPassantCheck(int side){
     int turn = 0;
     fileHandle.open("Chess.txt");
     while(std::getline(fileHandle, line)){
-        if(!line.find("["))
+        if(line.find("[") != std::string::npos)
             turn = line.at(1) - 48;
     }
     fileHandle.close();
     fileHandle.open("Chess.txt");
     while(std::getline(fileHandle, line)){
-        if(!line.find("[" + std::to_string(turn))){
+        if(line.find("[" + std::to_string(turn)) != std::string::npos){
             std::getline(fileHandle, line);
             break;
         }
@@ -244,8 +244,8 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
         switchedPiece = 7;
     if(piece == "Black Pawn")
         switchedPiece = 8;
-    if(piece == "Empty")
-        switchedPiece = 9;
+//    if(piece == "Empty")
+//        switchedPiece = 9;
 
     /*
      * create list to return on the heap
@@ -499,8 +499,8 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                 list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard, WHITE));
             else if(x > 0 && y > 0 && (moveBoard.returnSquare(x-1,y-1).find("Black") == 0))
                 list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard, WHITE));
-            else if(this->castleCheck(WHITE) && moveBoard.returnSquare(0,1) == "Empty" && moveBoard.returnSquare(0,2) == "Empty")
-                list->addNode(x,y-2,1);
+            if (this->castleCheck(WHITE) && moveBoard.returnSquare(0,1) == "Empty" && moveBoard.returnSquare(0,2) == "Empty")
+                list->addNode(x,y,1);
             }
             return list;
 
@@ -564,17 +564,17 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                 if (x == 6 && moveBoard.returnSquare(x - 1, y) == "Empty" &&
                     moveBoard.returnSquare(x - 2, y) == "Empty")
                     list->addNode(x - 2, y, this->evaluatePiece(x - 2, y, moveBoard, BLACK));
-                if (x != 0 && y != 7 && moveBoard.returnSquare(x - 1, y + 1) != "Empty")
+                if (x != 0 && y != 7 && moveBoard.returnSquare(x - 1, y + 1).find(opponentColour) == 0)
                     list->addNode(x - 1, y + 1, this->evaluatePiece(x - 1, y + 1, moveBoard, BLACK));
-                if (x != 0 && y != 0 && moveBoard.returnSquare(x - 1, y - 1) != "Empty")
+                if (x != 0 && y != 0 && moveBoard.returnSquare(x - 1, y - 1).find(opponentColour) == 0)
                     list->addNode(x - 1, y - 1, this->evaluatePiece(x - 1, y - 1, moveBoard, BLACK));
                 if (x == 3 && this->enPassantCheck(BLACK) != 10)
                     list->addNode(x - 1, this->enPassantCheck(BLACK), 2);
             }
                 return list;
             
-        case 9: // Empty Square
-            return list;
+//        case 9: // Empty Square
+//            return list;
             
     }
 }
@@ -587,7 +587,6 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
 
 bool MoveCalculator::checkMateTest(Board gameBoard, int side){
     Board testBoard = gameBoard;
-    MoveCalculator calc;
     LinkedList *temp;
     std::vector<int> moveVector;
     std::vector<int> returnedVector;

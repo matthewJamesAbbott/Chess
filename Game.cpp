@@ -410,12 +410,12 @@ bool Game::engineMove(){
      * if test passes print success and exit function returning false
      *
      */
-
+/*
     if(calc.checkMateTest(gameBoard,computerSide)){
         std::cout << "Check Mate You Win" << std::endl;
         return false;
     }
-
+*/
     /*
      * resolve computers move and store it in an array of integers
      * input string representations of piece and empty to correct places in the 2D array board
@@ -447,6 +447,7 @@ bool Game::engineMove(){
 
 bool Game::movePiece(int ia, char ca, int ib, char cb){
     
+
     /*
      * convert alpha co-ordinate for piece's origin into numeric co-ordinates
      *
@@ -626,9 +627,14 @@ bool Game::movePiece(int ia, char ca, int ib, char cb){
 
     int kingX;
     int kingY;
+    std::string kingColour;
+    if (this->playerSide == BLACK)
+        kingColour = "Black King";
+    else
+        kingColour = "White King";
     for(int e = 0; e < 8; e++){
         for(int i = 0; i < 8; i++){
-            if(checkBoard.returnSquare(e,i) == "Black King"){
+            if(checkBoard.returnSquare(e,i).find(kingColour) == 0 ){
                 kingX = e;
                 kingY = i;
             }
