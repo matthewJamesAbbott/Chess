@@ -19,7 +19,7 @@ one build with SDL functions and X Windows GUI or optional Terminal via input ar
 
 compiled on linux 64 bit intel with cmake.
 
-
+<pre>
 Chess --help
 Usage: Chess [OPTION] ... [IP ADDRESS]
 Chess will run with no arguments as a standalone game in XWindows or with arguements in the terminal as solo, client and server
@@ -63,3 +63,4 @@ allowing enpassant taking of pawns.
 Please enter number for piece you wish to move or 10 for help
 
 
+</pre>
