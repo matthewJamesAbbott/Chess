@@ -29,7 +29,7 @@ void LinkedList::addNode(int x, int y, int squareRank){
     auto* newnode = new Node(); // create new node on heap
     newnode->x = x; // store squares numeric co-ordinate in list
     newnode->y = y; // store squares alpha co-ordinate in list
-    newnode->squareRank= squareRank; // store pieces rank in list
+    newnode->squareRank = squareRank; // store pieces rank in list
     newnode->next = nullptr; // set Node pointer next to nullptr
     if (head == nullptr){ // test if head of list is empty if so make new node head
         head = newnode;
@@ -124,7 +124,7 @@ int MoveCalculator::evaluatePiece(int x, int y, Board moveBoard, int side){
             return KING;
         } else if (moveBoard.returnSquare(x, y) == "Empty") {
             return EMPTY;
-        }
+        } else return -1;
     }
     else{
         if(moveBoard.returnSquare(x,y) == "White Pawn"){
@@ -147,7 +147,7 @@ int MoveCalculator::evaluatePiece(int x, int y, Board moveBoard, int side){
         }
         else if(moveBoard.returnSquare(x,y) == "Empty"){
             return EMPTY;
-        }
+        } else return -1;
     }
 }
 
@@ -512,8 +512,8 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                 list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard, side));
             else if(x > 0 && y > 0 && (moveBoard.returnSquare(x-1,y-1).find(opponentColour) == 0))
                 list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard, side));
-            if (this->castleCheck(side) && moveBoard.returnSquare(kingNumericStart,1) == "Empty" && moveBoard.returnSquare(kingNumericStart,2) == "Empty")
-                list->addNode(x,y-2,side);
+//            if (this->castleCheck(side) && moveBoard.returnSquare(kingNumericStart,1) == "Empty" && moveBoard.returnSquare(kingNumericStart,2) == "Empty")
+//                list->addNode(x,y-2,side);
             return list;
 
         case 6: // White Pawn Moves

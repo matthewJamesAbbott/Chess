@@ -399,7 +399,6 @@ void Game::loadGame(std::string fileName){
  */
 
 bool Game::engineMove(){
-    Engine *moveEngine = new Engine();
     int *moveArray;
     int computerSide = WHITE;
     if(this->playerSide == WHITE) // check which side for computer to play
@@ -425,13 +424,15 @@ bool Game::engineMove(){
      *
      */
     while (1>0){
+        
+        Engine *moveEngine = new Engine();
         moveArray = moveEngine->resolveMove(gameBoard, computerSide);
+        delete moveEngine;
         if (gameBoard.returnSquare(moveArray[0], moveArray[1]) != "Empty"){
             gameBoard.setSquare(moveArray[2], moveArray[3], gameBoard.returnSquare(moveArray[0], moveArray[1]));
             gameBoard.setSquare(moveArray[0], moveArray[1], "Empty");
             rec.recordMove(moveArray[0],moveArray[1],moveArray[2],moveArray[3],gameBoard);
             delete moveArray;
-            delete moveEngine;
             return true;
         }
     
@@ -574,8 +575,8 @@ bool Game::movePiece(int ia, char ca, int ib, char cb){
     std::vector<int> moveVector;
     if (list != nullptr){
         moveVector = list->returnVector();
+        delete list;
     }
-    delete list;
     for(int i = 0; i < moveVector.size();){
         int a = moveVector[i]; // numeric co-ordinate
         int b = moveVector[i + 1]; // alpha co-ordinate

@@ -4,6 +4,7 @@
 
 #include "Engine.h"
 #include "MoveCalculator.h"
+#include "Game.h"
 #include <vector>
 #include <iostream>
 #define BLACK 0
@@ -102,13 +103,13 @@ void Engine::moveVector(TreeNode *localRoot, int base)
 void Engine::secondGuess(TreeNode *localRoot){
     if(localRoot != nullptr){
         secondGuess(localRoot->leftTreeNode);
-        if(localRoot->rank >= 0){
+//        if(localRoot->rank >= 0){
             returnVector.insert(returnVector.begin(), localRoot->x);
             returnVector.insert(returnVector.begin(), localRoot->y);
             returnVector.insert(returnVector.begin(), localRoot->xa);
             returnVector.insert(returnVector.begin(), localRoot->ya);
 
-        }
+//        }
         secondGuess(localRoot->rightTreeNode);
     }
 }

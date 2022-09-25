@@ -939,7 +939,9 @@ int main(int argc, char *argv[]){
                         if(squareSelected){
                             squareSelected = false;
                             if(chess.movePiece(originNumeric, originAlpha, squareNumeric, squareAlpha)){
-                                chess.engineMove();
+                                if(!chess.engineMove()){
+                                    chess.initialiseBoard();
+                                }
                                 chess.printBoardToWindow(chess.gameBoard);
                                 system("clear");
                                 chess.printBoardToTerminal(chess.gameBoard);

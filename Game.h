@@ -16,7 +16,7 @@ class Game: public Print{
 
 public:
 
-    int playerSide = 0;
+    static int playerSide = 0;
 
     Game();
 
