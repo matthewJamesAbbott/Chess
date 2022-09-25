@@ -6,7 +6,6 @@
 #include "MoveCalculator.h"
 #include <vector>
 #include <iostream>
-
 #define BLACK 0
 #define WHITE 1
 
@@ -58,6 +57,18 @@ void Tree::addTreeNode(int rank, int x, int y, int xa, int ya){
     }
 }
 
+Tree::~Tree(){
+    this->deleteLeaves(head);
+}
+
+void Tree::deleteLeaves(TreeNode *node){
+    if (node == nullptr){ 
+        return;
+    }
+    deleteLeaves(node->leftTreeNode); 
+    deleteLeaves(node->rightTreeNode); 
+    delete node;
+}
 /*
  * recursive function to extract and serialise possible moves
  * from the decision tree
@@ -122,7 +133,7 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
     MoveCalculator calc;
     LinkedList *list;
     std::vector<int> moveVector;
-
+    std::cout << computerSide << std::endl;
 
     int base = 0;
     int playerSide;
@@ -131,11 +142,18 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
      * set variable for players colour
      *
      */
-
-    if(computerSide == BLACK)
+    std::string compSideColour;
+    std::string compKing;
+    if(computerSide == BLACK){
         playerSide = WHITE;
-    else
+	compSideColour = "Black";
+    compKing = "Black King";
+    }
+    else{
         playerSide = BLACK;
+	compSideColour = "White";
+    compKing = "White King";
+    }
 
     /*
      * test if computer is white
@@ -147,12 +165,14 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
      *
      */
 
-    if(computerSide == WHITE) {
         for (int e = 0; e < 8; e++) {
             for (int i = 0; i < 8; i++) {
-                if (gameBoard.returnSquare(e, i).find("White") != std::string::npos) {
+                if (gameBoard.returnSquare(e, i).find(compSideColour) != std::string::npos) {
                     list = calc.possibleSquares2DArray(e, i, gameBoard, computerSide);
+                    moveVector.clear();
+                    if (list != nullptr){
                     moveVector = list->returnWeightedVector();
+                    }
                     for (int j = 0; j < moveVector.size(); j++) {
                         int a = moveVector[j];
                         int b = moveVector[j + 1];
@@ -167,36 +187,6 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
                 }
             }
         }
-        //moveVector.clear();
-    }
-
-    /*
-     * do the same as above but test if computer is black instead of white
-     *
-     */
-
-    else
-    {
-        for (int e = 0; e < 8; e++) {
-            for (int i = 0; i < 8; i++) {
-                if (gameBoard.returnSquare(e, i).find("Black") != std::string::npos) {
-                    list = calc.possibleSquares2DArray(e, i, gameBoard, computerSide);
-                    moveVector = list->returnWeightedVector();
-                    for (int j = 0; j < moveVector.size(); j++) {
-                        int a = moveVector[j];
-                        int b = moveVector[j + 1];
-                        int c = moveVector[j + 2];
-                        if (c > base)
-                            base = c;
-                        if (c >= 0 && c <= 10) {
-                            moveTree->addTreeNode(c, e, i, a, b);
-                        }
-                        j = j + 2;
-                    }
-                }
-            }
-        }
-    }
 
     /*
      * create TreeNode pointer and point it to the head of moveTree
@@ -225,12 +215,23 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
      *
      */
 
-    int move[4];
+    int *move = new int[4];
     Board testBoard;
     testBoard = gameBoard;
     testBoard.setSquare(returnVector[choice+2], returnVector[choice+3],testBoard.returnSquare(returnVector[choice], returnVector[choice+1]));
     testBoard.setSquare(returnVector[choice], returnVector[choice+1], "Empty");
-    if(!calc.checkCalculator(returnVector[choice + 2], returnVector[choice + 3], testBoard, computerSide)){
+    int kingX, kingY;
+    for(int e = 0; e < 8; e++){
+        for(int i = 0; i < 8; i++)
+        {
+            if(testBoard.returnSquare(e,i) == compKing){
+                kingX = e;
+                kingY = i;
+            }
+
+        }
+    }
+    if(!calc.checkCalculator(kingX, kingY, testBoard, computerSide)){
         move[0] = returnVector[choice];
         move[1] = returnVector[choice + 1];
         move[2] = returnVector[choice + 2];
@@ -262,14 +263,13 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
          *
          */
 
-        int kingX, kingY;
         for(int i = 0; i < returnVector.size();){
             testBoard = gameBoard;
             testBoard.setSquare(returnVector[i+2], returnVector[i+3],testBoard.returnSquare(returnVector[i], returnVector[i+1]));
             testBoard.setSquare(returnVector[i], returnVector[i+1], "Empty");
             for (int e = 0; e < 8; e++){
                 for (int i2 = 0; i2 < 8; i2++){
-                    if (testBoard.returnSquare(e, i2) == "Black King"){
+                    if (testBoard.returnSquare(e, i2) == compKing){
                         kingX = e;
                         kingY = i2;
                     }
@@ -285,6 +285,7 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
             i = i + 4;
         }
     }
+    
 
     /*
      * remove moveTree from heap
@@ -296,7 +297,8 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
 
     delete moveTree;
     returnVector.clear();
-    int *returnPointer = move;
-    return returnPointer;
+    
+    return move;
 
 }
+

@@ -56,14 +56,19 @@ void LinkedList::addNode(int x, int y, int squareRank){
  */
 
 std::vector<int> LinkedList::returnVector(){
-    Node* temp = head;
+
     std::vector<int> moveVector;
+    Node* temp = head;
     while (temp != nullptr){
         moveVector.push_back(temp->x);
         moveVector.push_back(temp->y);
         temp = temp->next;
     }
+    
     return moveVector;
+    
+
+    
 }
 
 /*
@@ -83,7 +88,17 @@ std::vector<int> LinkedList::returnWeightedVector(){
     return moveVector;
 }
 
-LinkedList::~LinkedList() = default; // default constructor for linked list
+LinkedList::~LinkedList(){
+
+    while (head){
+        Node* temp = head;
+        
+            head = temp->next;
+        
+        delete temp;
+        
+    }
+}
 
 MoveCalculator::MoveCalculator() = default; // default constructor for MoveCalculator
 
@@ -244,8 +259,8 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
         switchedPiece = 7;
     if(piece == "Black Pawn")
         switchedPiece = 8;
-//    if(piece == "Empty")
-//        switchedPiece = 9;
+    if(piece == "Empty")
+        switchedPiece = 9;
 
     /*
      * create list to return on the heap
@@ -499,8 +514,8 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                 list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard, WHITE));
             else if(x > 0 && y > 0 && (moveBoard.returnSquare(x-1,y-1).find("Black") == 0))
                 list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard, WHITE));
-            if (this->castleCheck(WHITE) && moveBoard.returnSquare(0,1) == "Empty" && moveBoard.returnSquare(0,2) == "Empty")
-                list->addNode(x,y,1);
+//            if (this->castleCheck(WHITE) && moveBoard.returnSquare(0,1) == "Empty" && moveBoard.returnSquare(0,2) == "Empty")
+//                list->addNode(x,y,1);
             }
             return list;
 
@@ -552,8 +567,8 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                 list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard, BLACK));
             else if(x > 0 && y > 0 && (moveBoard.returnSquare(x-1,y-1).find("White") == 0))
                 list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard, BLACK));
-            else if(this->castleCheck(BLACK) && moveBoard.returnSquare(7,1) == "Empty" && moveBoard.returnSquare(7,2) == "Empty")
-                list->addNode(x, y - 2, 1);
+//            else if(this->castleCheck(BLACK) && moveBoard.returnSquare(7,1) == "Empty" && moveBoard.returnSquare(7,2) == "Empty")
+//                list->addNode(x, y - 2, 1);
             }
             return list;
 
@@ -573,8 +588,8 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
             }
                 return list;
             
-//        case 9: // Empty Square
-//            return list;
+       case 9: // Empty Square
+            return nullptr;
             
     }
 }
@@ -588,27 +603,36 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
 bool MoveCalculator::checkMateTest(Board gameBoard, int side){
     Board testBoard = gameBoard;
     LinkedList *temp;
-    std::vector<int> moveVector;
     std::vector<int> returnedVector;
-    std::string piece;
     int kingX;
     int kingY;
-    if(side == BLACK){
+    std::string sideColour;
+    std::string sideKing;
+    if (side == 0){
+        sideColour = "Black";
+        sideKing = "Black King";
+    }
+    else{
+        sideColour = "White";
+        sideKing = "White King";
+    }
         for (int e = 0; e < 8; e++){
             for (int i = 0; i < 8; i++){
-                if (gameBoard.returnSquare(e, i).find("Black") == 0){
+                if (gameBoard.returnSquare(e, i).find(sideColour) == 0){
                     temp = possibleSquares2DArray(e, i, gameBoard, side);
-                    returnedVector = temp->returnVector();
-                    for (int k = 0; k < returnedVector.size() / 2; k++){
+                    if (temp != nullptr){
+                        returnedVector = temp->returnVector();
+                        delete temp;
+                    }
+                    for (int k = 0; k < returnedVector.size() / 2; k=k+2){
                         testBoard = gameBoard;
                         int a = returnedVector[k];
                         int b = returnedVector[k + 1];
-                        piece = testBoard.returnSquare(e, i);
+                        testBoard.setSquare(a, b, testBoard.returnSquare(e, i));
                         testBoard.setSquare(e, i, "Empty");
-                        testBoard.setSquare(a, b, piece);
                         for (int e2 = 0; e2 < 8; e2++){
                             for (int i2 = 0; i2 < 8; i2++){
-                                if (testBoard.returnSquare(e2, i2) == "Black King"){
+                                if (testBoard.returnSquare(e2, i2) == sideKing){
                                     kingX = e2;
                                     kingY = i2;
                                 }
@@ -617,40 +641,10 @@ bool MoveCalculator::checkMateTest(Board gameBoard, int side){
                         if (!this->checkCalculator(kingX, kingY, testBoard, side)){
                             return false;
                         }
-                        k = k + 1;
                     }
                 }
             }
         }
-    }
-    else{
-        for (int e = 0; e < 8; e++){
-            for (int i = 0; i < 8; i++){
-                if (gameBoard.returnSquare(e, i).find("White") == 0){
-                    temp = possibleSquares2DArray(e, i, gameBoard, side);
-                    returnedVector = temp->returnVector();
-                    for (int k = 0; k < returnedVector.size() / 2; k++){
-                        int a = returnedVector[k];
-                        int b = returnedVector[k + 1];
-                        piece = testBoard.returnSquare(e, i);
-                        testBoard.setSquare(e, i, "Empty");
-                        testBoard.setSquare(a, b, piece);
-                        for (int e2 = 0; e < 8; e++){
-                            for (int i2 = 0; i < 8; i++){
-                                if (testBoard.returnSquare(e2, i2) == "White King"){
-                                    kingX = e2;
-                                    kingY = i2;
-                                }
-                            }
-                        }
-                        if (!this->checkCalculator(kingX, kingY, testBoard, side))
-                            return false;
-                        k = k + 1;
-                    }
-                }
-            }
-        }
-    }
     return true;
 }
 
@@ -663,34 +657,32 @@ bool MoveCalculator::checkCalculator(int x, int y, Board moveBoard, int side){
     LinkedList *temp;
     std::vector<int> moveVector;
     std::vector<int> returnedVector;
-    int opponentSide = BLACK;
+    std::string opponentColour;
+    int opponentSide;;
+
     if(side == BLACK){
         opponentSide = WHITE;
-        for (int e = 0; e < 8; e++){
-            for (int i = 0; i < 8; i++){
-                if (moveBoard.returnSquare(e, i).find("White") == 0){
-                    temp = possibleSquares2DArray(e, i, moveBoard, opponentSide);
-                    returnedVector = temp->returnVector();
-                    moveVector.insert(moveVector.end(), returnedVector.begin(), returnedVector.end());
-                }
-            }
-        }
+        opponentColour = "White";
     }
     else{
+        opponentSide = BLACK;
+        opponentColour = "Black";
+    }
         for (int e = 0; e < 8; e++){
             for (int i = 0; i < 8; i++){
-                if (moveBoard.returnSquare(e, i).find("Black") == 0){
+                if (moveBoard.returnSquare(e, i).find(opponentColour) == 0){
                     temp = possibleSquares2DArray(e, i, moveBoard, opponentSide);
-                    returnedVector = temp->returnVector();
+                    if (temp != nullptr){
+                        returnedVector = temp->returnVector();
+                        delete temp;
+                    }
                     moveVector.insert(moveVector.end(), returnedVector.begin(), returnedVector.end());
                 }
             }
         }
-    }
-    for(int k = 0; k < moveVector.size(); k++){
+    for(int k = 0; k < moveVector.size(); k=k+2){
         int a = moveVector[k];
         int b = moveVector[k+1];
-        k = k+1;
         if(x == a && y == b){
             std::cout << "check baby !!!" << std::endl;
             moveVector.clear();

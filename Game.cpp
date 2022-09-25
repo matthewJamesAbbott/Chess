@@ -423,13 +423,19 @@ bool Game::engineMove(){
      * exit function and return the success of move
      *
      */
-
-    moveArray = moveEngine->resolveMove(gameBoard, computerSide);
-    gameBoard.setSquare(moveArray[2], moveArray[3], gameBoard.returnSquare(moveArray[0], moveArray[1]));
-    gameBoard.setSquare(moveArray[0], moveArray[1], "Empty");
-    rec.recordMove(moveArray[0],moveArray[1],moveArray[2],moveArray[3],gameBoard);
-    return true;
+    while (1>0){
+        moveArray = moveEngine->resolveMove(gameBoard, computerSide);
+        if (gameBoard.returnSquare(moveArray[0], moveArray[1]) != "Empty"){
+            gameBoard.setSquare(moveArray[2], moveArray[3], gameBoard.returnSquare(moveArray[0], moveArray[1]));
+            gameBoard.setSquare(moveArray[0], moveArray[1], "Empty");
+            rec.recordMove(moveArray[0],moveArray[1],moveArray[2],moveArray[3],gameBoard);
+            delete moveArray;
+            return true;
+        }
+    
+    }
 }
+
 
 /*
  * take input arguments for alpha and numeric co-ordinates for pieces orignal position
@@ -549,11 +555,11 @@ bool Game::movePiece(int ia, char ca, int ib, char cb){
 
     LinkedList *list;
     Board checkBoard = gameBoard;
-    if(calc.checkMateTest(gameBoard, playerSide)){
+    if(calc.checkMateTest(gameBoard, this->playerSide)){
         std::cout << "Check Mate YOU LOSE" << std::endl;
         return false;
     }
-    list = calc.possibleSquares2DArray(xa, ya, gameBoard, playerSide);
+    list = calc.possibleSquares2DArray(xa, ya, gameBoard, this->playerSide);
 
     /*
      * serialise list into vector with just x and y co-ordinates and no weight 
@@ -564,7 +570,10 @@ bool Game::movePiece(int ia, char ca, int ib, char cb){
      */
 
     std::vector<int> moveVector;
-    moveVector = list->returnVector();
+    if (list != nullptr){
+        moveVector = list->returnVector();
+    }
+    delete list;
     for(int i = 0; i < moveVector.size();){
         int a = moveVector[i]; // numeric co-ordinate
         int b = moveVector[i + 1]; // alpha co-ordinate

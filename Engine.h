@@ -42,6 +42,8 @@ public:
      * @param ya Horizontal or alpha co ordinate move destianation <int>
      */
     void addTreeNode(int rank, int x, int y, int xa, int ya);
+    void deleteLeaves(TreeNode *node);
+    ~Tree();
 };
 
 class Engine{
