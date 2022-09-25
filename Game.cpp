@@ -399,23 +399,24 @@ void Game::loadGame(std::string fileName){
  */
 
 bool Game::engineMove(){
+    Engine *moveEngine = new Engine();
     int *moveArray;
     int computerSide = WHITE;
     if(this->playerSide == WHITE) // check which side for computer to play
         computerSide = BLACK;
 
     /*
-     * send object gameBoard and colour of computers pieces to object calc of class MoveCalculator
-     * to be tested for checkmate by function checkMateTest
+     * send object gameBoard and colour of computers pieces to MoveCalculator.checkMateTest
      * if test passes print success and exit function returning false
      *
      */
-/*
+
     if(calc.checkMateTest(gameBoard,computerSide)){
+
         std::cout << "Check Mate You Win" << std::endl;
         return false;
     }
-*/
+
     /*
      * resolve computers move and store it in an array of integers
      * input string representations of piece and empty to correct places in the 2D array board
@@ -430,6 +431,7 @@ bool Game::engineMove(){
             gameBoard.setSquare(moveArray[0], moveArray[1], "Empty");
             rec.recordMove(moveArray[0],moveArray[1],moveArray[2],moveArray[3],gameBoard);
             delete moveArray;
+            delete moveEngine;
             return true;
         }
     

@@ -133,7 +133,6 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
     MoveCalculator calc;
     LinkedList *list;
     std::vector<int> moveVector;
-    std::cout << computerSide << std::endl;
 
     int base = 0;
     int playerSide;
@@ -156,10 +155,8 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
     }
 
     /*
-     * test if computer is white
-     * if correct go through all squares on the board testing for White pieces
-     * when a White piece is found calculate all possible moves for piece and 
-     * save to a LinkedList that list points to
+     * test all squares for the computer colour and when found calculate all possible moves for piece 
+     * save to a LinkedList that pointer list points to
      * extract and serialise weighted co-ordinates from list
      * insert co-ordinates into decision tree
      *
@@ -172,6 +169,7 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
                     moveVector.clear();
                     if (list != nullptr){
                     moveVector = list->returnWeightedVector();
+                    delete list;
                     }
                     for (int j = 0; j < moveVector.size(); j++) {
                         int a = moveVector[j];
@@ -263,7 +261,7 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
          *
          */
 
-        for(int i = 0; i < returnVector.size();){
+        for(int i = 0; i < returnVector.size(); i=i+4){
             testBoard = gameBoard;
             testBoard.setSquare(returnVector[i+2], returnVector[i+3],testBoard.returnSquare(returnVector[i], returnVector[i+1]));
             testBoard.setSquare(returnVector[i], returnVector[i+1], "Empty");
@@ -282,7 +280,6 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
                 move[3] = returnVector[i + 3];
                 break;
             }
-            i = i + 4;
         }
     }
     
@@ -290,7 +287,6 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
     /*
      * remove moveTree from heap
      * clear vector used in recursive functions
-     * create pointer to move array
      * return pointer to move array
      *
      */

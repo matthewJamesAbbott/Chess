@@ -637,7 +637,7 @@ void Print::printOptionsToWindow(){
     SDL_RenderCopy(SDL_Struct.renderer,recallMoveButton , NULL, &recallMoveButtonRec);
     SDL_RenderCopy(SDL_Struct.renderer,serverPortInputText, NULL, &serverPortInputBoxRec);
     SDL_RenderPresent(SDL_Struct.renderer);
-    SDL_DestroyTexture(serverText);
+/*    SDL_DestroyTexture(serverText);
     SDL_DestroyTexture(clientText);
     SDL_DestroyTexture(aiText);
     SDL_DestroyTexture(changeSideText);
@@ -684,7 +684,7 @@ void Print::printOptionsToWindow(){
     SDL_FreeSurface(clientCheckBoxSurface);
     SDL_FreeSurface(clientIPInputBoxTextSurface);
     SDL_FreeSurface(clientPortInputBoxTextSurface);
-
+*/
 }
 
 void Print::destroySDL(){

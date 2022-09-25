@@ -659,7 +659,7 @@ int main(int argc, char *argv[]){
     if(chess.clientServerToggle == SOLO){ // begin routines for game with computer player in terminal
         remove("Chess.txt");
         chess.initialiseBoard();
-        //system("clear");
+        system("clear");
         chess.printBoardToTerminal(chess.gameBoard);
         while (true){
             while (true){
@@ -851,11 +851,11 @@ int main(int argc, char *argv[]){
             }
             if(chess.movePiece(x, y, xa, ya)){
                 if(clearSwitch)
-                    //system("clear");
+                    system("clear");
                 chess.printBoardToTerminal(chess.gameBoard);
                 chess.engineMove();
                 if(clearSwitch)
-                    //system("clear");
+                    system("clear");
                 chess.printBoardToTerminal(chess.gameBoard);
             }
         }
@@ -869,7 +869,7 @@ int main(int argc, char *argv[]){
         SDL_Event event;
         chess.initSDL();
         chess.printBoardToWindow(chess.gameBoard);
-        //system("clear");
+        system("clear");
         chess.printBoardToTerminal(chess.gameBoard);
         bool squareSelected = false;
         int originNumeric, squareNumeric, optionToggle;
@@ -939,9 +939,11 @@ int main(int argc, char *argv[]){
                         if(squareSelected){
                             squareSelected = false;
                             if(chess.movePiece(originNumeric, originAlpha, squareNumeric, squareAlpha)){
-                                chess.engineMove();
+                                if(!chess.engineMove()){
+                                    chess.initialiseBoard();
+                                }
                                 chess.printBoardToWindow(chess.gameBoard);
-                                //system("clear");
+                                system("clear");
                                 chess.printBoardToTerminal(chess.gameBoard);
                             }
 

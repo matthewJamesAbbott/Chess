@@ -89,14 +89,12 @@ std::vector<int> LinkedList::returnWeightedVector(){
 }
 
 LinkedList::~LinkedList(){
-
+    
+    Node *temp;
     while (head){
-        Node* temp = head;
-        
-            head = temp->next;
-        
+        temp = head;
+        head = temp->next;
         delete temp;
-        
     }
 }
 
@@ -251,16 +249,14 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
         switchedPiece = 3;
     if(piece.find("Queen") != std::string::npos)
         switchedPiece = 4;
-    if(piece == "White King")
+    if(piece.find("King") != std::string::npos)
         switchedPiece = 5;
     if(piece == "White Pawn")
         switchedPiece = 6;
-    if(piece == "Black King")
-        switchedPiece = 7;
     if(piece == "Black Pawn")
-        switchedPiece = 8;
+        switchedPiece = 7;
     if(piece == "Empty")
-        switchedPiece = 9;
+        switchedPiece = 8;
 
     /*
      * create list to return on the heap
@@ -273,6 +269,7 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
     else 
         opponentColour = "Black";
 
+            int kingNumericStart = 0;
     auto* list = new LinkedList();
     switch(switchedPiece){
         case 1: // Rooks Moves
@@ -480,43 +477,43 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
             }
             return list;
         
-        case 5: // White King Moves
-            if (side == WHITE){
+        case 5: // Kings Moves
+            if (side == 0)
+                kingNumericStart = 7;
             if(x < 7 && moveBoard.returnSquare(x+1,y) == "Empty")
-                list->addNode(x+1, y, this->evaluatePiece(x+1, y, moveBoard, WHITE));
-            else if(x < 7 &&(moveBoard.returnSquare(x+1,y).find("Black") == 0))
-                list->addNode(x+1,y, evaluatePiece(x+1,y, moveBoard, WHITE));
+                list->addNode(x+1, y, this->evaluatePiece(x+1, y, moveBoard, side));
+            else if(x < 7 &&(moveBoard.returnSquare(x+1,y).find(opponentColour) == 0))
+                list->addNode(x+1,y, evaluatePiece(x+1,y, moveBoard, side));
             if(x > 0 && moveBoard.returnSquare(x-1,y) == "Empty")
-                list->addNode(x-1,y, evaluatePiece(x-1, y, moveBoard, WHITE));
-            else if(x > 0 && (moveBoard.returnSquare(x-1,y).find("Black") == 0))
-                list->addNode(x-1,y, this->evaluatePiece(x-1,y, moveBoard, WHITE));
+                list->addNode(x-1,y, evaluatePiece(x-1, y, moveBoard, side));
+            else if(x > 0 && (moveBoard.returnSquare(x-1,y).find(opponentColour) == 0))
+                list->addNode(x-1,y, this->evaluatePiece(x-1,y, moveBoard, side));
             if(y < 7 && moveBoard.returnSquare(x,y+1) == "Empty")
-                list->addNode(x,y+1, this->evaluatePiece(x,y+1, moveBoard, WHITE));
-            else if(y < 7 && (moveBoard.returnSquare(x,y+1).find("Black") == 0))
-                list->addNode(x,y+1, this->evaluatePiece(x,y+1, moveBoard, WHITE));
+                list->addNode(x,y+1, this->evaluatePiece(x,y+1, moveBoard, side));
+            else if(y < 7 && (moveBoard.returnSquare(x,y+1).find(opponentColour) == 0))
+                list->addNode(x,y+1, this->evaluatePiece(x,y+1, moveBoard, side));
             if(y > 0 && moveBoard.returnSquare(x,y-1) == "Empty")
-                list->addNode(x,y-1, this->evaluatePiece(x,y-1, moveBoard, WHITE));
-            else if(y > 0 && (moveBoard.returnSquare(x,y-1).find("Black") == 0))
-                list->addNode(x,y-1, this->evaluatePiece(x,y-1, moveBoard, WHITE));
+                list->addNode(x,y-1, this->evaluatePiece(x,y-1, moveBoard, side));
+            else if(y > 0 && (moveBoard.returnSquare(x,y-1).find(opponentColour) == 0))
+                list->addNode(x,y-1, this->evaluatePiece(x,y-1, moveBoard, side));
             if(x < 7 && y < 7 && moveBoard.returnSquare(x+1,y+1) == "Empty")
-                list->addNode(x+1,y+1, this->evaluatePiece(x+1,y+1, moveBoard, WHITE));
-            else if(x < 7 && y < 7 && (moveBoard.returnSquare(x+1,y+1).find("Black") == 0))
-                list->addNode(x+1,y+1, this->evaluatePiece(x+1,y+1, moveBoard, WHITE));
+                list->addNode(x+1,y+1, this->evaluatePiece(x+1,y+1, moveBoard, side));
+            else if(x < 7 && y < 7 && (moveBoard.returnSquare(x+1,y+1).find(opponentColour) == 0))
+                list->addNode(x+1,y+1, this->evaluatePiece(x+1,y+1, moveBoard, side));
             if(x < 7 && y > 0 && moveBoard.returnSquare(x+1,y-1) == "Empty")
-                list->addNode(x+1,y-1, this->evaluatePiece(x+1,y-1, moveBoard, WHITE));
-            else if(x < 7 && y > 0 && (moveBoard.returnSquare(x+1,y-1).find("Black") == 0))
-                list->addNode(x+1,y-1, this->evaluatePiece(x+1,y-1, moveBoard, WHITE));
+                list->addNode(x+1,y-1, this->evaluatePiece(x+1,y-1, moveBoard, side));
+            else if(x < 7 && y > 0 && (moveBoard.returnSquare(x+1,y-1).find(opponentColour) == 0))
+                list->addNode(x+1,y-1, this->evaluatePiece(x+1,y-1, moveBoard, side));
             if(x > 0 && y < 7 && moveBoard.returnSquare(x-1,y+1) == "Empty")
-                list->addNode(x-1,y+1, this->evaluatePiece(x-1,y+1, moveBoard, WHITE));
-            else if(x > 0 && y < 7 && (moveBoard.returnSquare(x-1,y+1).find("Black") == 0))
-                list->addNode(x-1,y+1, this->evaluatePiece(x-1,y+1, moveBoard, WHITE));
+                list->addNode(x-1,y+1, this->evaluatePiece(x-1,y+1, moveBoard, side));
+            else if(x > 0 && y < 7 && (moveBoard.returnSquare(x-1,y+1).find(opponentColour) == 0))
+                list->addNode(x-1,y+1, this->evaluatePiece(x-1,y+1, moveBoard, side));
             if(x > 0 && y > 0 && moveBoard.returnSquare(x-1,y-1) == "Empty")
-                list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard, WHITE));
-            else if(x > 0 && y > 0 && (moveBoard.returnSquare(x-1,y-1).find("Black") == 0))
-                list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard, WHITE));
-//            if (this->castleCheck(WHITE) && moveBoard.returnSquare(0,1) == "Empty" && moveBoard.returnSquare(0,2) == "Empty")
-//                list->addNode(x,y,1);
-            }
+                list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard, side));
+            else if(x > 0 && y > 0 && (moveBoard.returnSquare(x-1,y-1).find(opponentColour) == 0))
+                list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard, side));
+            if (this->castleCheck(side) && moveBoard.returnSquare(kingNumericStart,1) == "Empty" && moveBoard.returnSquare(kingNumericStart,2) == "Empty")
+                list->addNode(x,y-2,side);
             return list;
 
         case 6: // White Pawn Moves
@@ -532,47 +529,8 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                     list->addNode(x + 1, y - 1, this->evaluatePiece(x + 1, y - 1, moveBoard, WHITE));
             }
             return list;
-
-        case 7: // Black King Moves
-            if (side == BLACK){
-            if(x < 7 && moveBoard.returnSquare(x+1,y) == "Empty")
-                list->addNode(x+1,y, this->evaluatePiece(x+1,y, moveBoard, BLACK));
-            else if(x < 7 &&(moveBoard.returnSquare(x+1,y).find("White") == 0))
-                list->addNode(x+1,y, this->evaluatePiece(x+1,y, moveBoard, BLACK));
-            if(x > 0 && moveBoard.returnSquare(x-1,y) == "Empty")
-                list->addNode(x-1,y, this->evaluatePiece(x-1,y, moveBoard, BLACK));
-            else if(x > 0 && (moveBoard.returnSquare(x-1,y).find("White") == 0))
-                list->addNode(x-1,y, this->evaluatePiece(x-1,y, moveBoard, BLACK));
-            if(y < 7 && moveBoard.returnSquare(x,y+1) == "Empty")
-                list->addNode(x,y+1, this->evaluatePiece(x,y+1, moveBoard, BLACK));
-            else if(y < 7 && (moveBoard.returnSquare(x,y+1).find("White") == 0))
-                list->addNode(x,y+1, this->evaluatePiece(x,y+1, moveBoard, BLACK));
-            if(y > 0 && moveBoard.returnSquare(x,y-1) == "Empty")
-                list->addNode(x,y-1, this->evaluatePiece(x,y-1, moveBoard, BLACK));
-            else if(y > 0 && (moveBoard.returnSquare(x,y-1).find("White") == 0))
-                list->addNode(x,y-1, this->evaluatePiece(x,y-1, moveBoard, BLACK));
-            if(x < 7 && y < 7 && moveBoard.returnSquare(x+1,y+1) == "Empty")
-                list->addNode(x+1,y+1, this->evaluatePiece(x+1,y+1, moveBoard, BLACK));
-            else if(x < 7 && y < 7 && (moveBoard.returnSquare(x+1,y+1).find("White") == 0))
-                list->addNode(x+1,y+1, this->evaluatePiece(x+1,y+1, moveBoard, BLACK));
-            if(x < 7 && y > 0 && moveBoard.returnSquare(x+1,y-1) == "Empty")
-                list->addNode(x+1,y-1, this->evaluatePiece(x+1,y-1, moveBoard, BLACK));
-            else if(x < 7 && y > 0 && (moveBoard.returnSquare(x+1,y-1).find("White") == 0))
-                list->addNode(x+1,y-1, this->evaluatePiece(x+1,y-1, moveBoard, BLACK));
-            if(x > 0 && y < 7 && moveBoard.returnSquare(x-1,y+1) == "Empty")
-                list->addNode(x-1,y+1, this->evaluatePiece(x-1,y+1, moveBoard, BLACK));
-            else if(x > 0 && y < 7 && (moveBoard.returnSquare(x-1,y+1).find("White") == 0))
-                list->addNode(x-1,y+1, this->evaluatePiece(x-1,y+1, moveBoard, BLACK));
-            if(x > 0 && y > 0 && moveBoard.returnSquare(x-1,y-1) == "Empty")
-                list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard, BLACK));
-            else if(x > 0 && y > 0 && (moveBoard.returnSquare(x-1,y-1).find("White") == 0))
-                list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard, BLACK));
-//            else if(this->castleCheck(BLACK) && moveBoard.returnSquare(7,1) == "Empty" && moveBoard.returnSquare(7,2) == "Empty")
-//                list->addNode(x, y - 2, 1);
-            }
-            return list;
-
-        case 8: // Black Pawn Moves
+ 
+        case 7: // Black Pawn Moves
             if(side == BLACK) {
                 if (x != 0 && moveBoard.returnSquare(x - 1, y) == "Empty")
                     list->addNode(x - 1, y, this->evaluatePiece(x - 1, y, moveBoard, BLACK));
@@ -588,7 +546,7 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
             }
                 return list;
             
-       case 9: // Empty Square
+       case 8: // Empty Square
             return nullptr;
             
     }

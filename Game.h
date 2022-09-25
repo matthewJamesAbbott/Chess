@@ -91,7 +91,7 @@ private:
     MoveCalculator calc;
     std::string playerOne;
     std::string playerTwo;
-    Engine *moveEngine = new Engine();
+//    Engine *moveEngine = new Engine();
 };
 
 struct {
