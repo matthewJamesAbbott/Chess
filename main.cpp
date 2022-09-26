@@ -9,8 +9,8 @@
 #include <time.h>
 #include <experimental/filesystem>
 #include <algorithm>
-// #include <SDL2/SDL.h>
-// #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <numeric>
 
 #define PORT 9008
@@ -860,7 +860,7 @@ int main(int argc, char *argv[]){
             }
         }
     }
-/*
+
     if(chess.clientServerToggle == GUI){ // begin routines for XWindows interface
         remove("Chess.txt");
         chess.initialiseBoard();
@@ -1070,7 +1070,7 @@ int main(int argc, char *argv[]){
         }
     chess.destroySDL();
     SDL_Quit();
-    }*/
+    }
     return 0;
     
 }

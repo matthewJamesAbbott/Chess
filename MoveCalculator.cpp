@@ -518,8 +518,8 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                 list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard, side));
             else if(x > 0 && y > 0 && (moveBoard.returnSquare(x-1,y-1).find(opponentColour) != std::string::npos))
                 list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard, side));
-//            if (this->castleCheck(side) && moveBoard.returnSquare(kingNumericStart,1) == "Empty" && moveBoard.returnSquare(kingNumericStart,2) == "Empty")
-//                list->addNode(x,y-2,side);
+            if (this->castleCheck(side) && moveBoard.returnSquare(kingNumericStart,1) == "Empty" && moveBoard.returnSquare(kingNumericStart,2) == "Empty")
+                list->addNode(x,y-2,side);
             return list;
 
         case 6: // White Pawn Moves

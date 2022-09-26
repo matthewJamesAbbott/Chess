@@ -401,8 +401,8 @@ void Game::loadGame(std::string fileName){
 bool Game::engineMove(){
     int *moveArray;
     int computerSide = WHITE;
-//    if(this->playerSide == WHITE) // check which side for computer to play
-//        computerSide = BLACK;
+    if(this->playerSide == WHITE) // check which side for computer to play
+        computerSide = BLACK;
 
     /*
      * send object gameBoard and colour of computers pieces to MoveCalculator.checkMateTest
