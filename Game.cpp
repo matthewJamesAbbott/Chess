@@ -409,13 +409,13 @@ bool Game::engineMove(){
      * if test passes print success and exit function returning false
      *
      */
-/*
+
     if(calc.checkMateTest(gameBoard,computerSide)){
 
         std::cout << "Check Mate You Win" << std::endl;
         return false;
     }
-*/
+
     /*
      * resolve computers move and store it in an array of integers
      * input string representations of piece and empty to correct places in the 2D array board
