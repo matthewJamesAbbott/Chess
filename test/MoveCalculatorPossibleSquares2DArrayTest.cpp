@@ -146,11 +146,6 @@ output.printBoardToTerminal(testBoard);
 
 output.printBoardToTerminal(testBoard);
  
-/*
- * black side
- *
- *
- */
 
   for (int xIterator = 0; xIterator < 8; xIterator++){
     for (int yIterator = 0; yIterator < 8; yIterator++){
@@ -298,10 +293,6 @@ for (int xIterator = 0; xIterator < 8; xIterator++){
     }
   }
 
-/*
- * white test if piece will take its own colour
- *
- */
 
   testBoard.setSquare(3,3,"White Left Knight");
   testBoard.setSquare(1,2,"White Pawn");
