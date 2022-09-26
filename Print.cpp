@@ -28,22 +28,22 @@ void Print::printBoardToWindow(Board gameBoard){
                 *numeric5 ,*numeric6, *numeric7, *numeric8;
     SDL_Rect alphaRecA, alphaRecB, alphaRecC, alphaRecD, alphaRecE, alphaRecF, alphaRecG, alphaRecH, numericRec1, numericRec2,
              numericRec3, numericRec4, numericRec5, numericRec6, numericRec7, numericRec8;
-    SDL_Surface *alphaSurfaceA = NULL;
-    SDL_Surface *alphaSurfaceB = NULL;
-    SDL_Surface *alphaSurfaceC = NULL;
-    SDL_Surface *alphaSurfaceD = NULL;
-    SDL_Surface *alphaSurfaceE = NULL;
-    SDL_Surface *alphaSurfaceF = NULL;
-    SDL_Surface *alphaSurfaceG = NULL;
-    SDL_Surface *alphaSurfaceH = NULL;
-    SDL_Surface *numericSurface1 = NULL;
-    SDL_Surface *numericSurface2 = NULL;
-    SDL_Surface *numericSurface3 = NULL;
-    SDL_Surface *numericSurface4 = NULL;
-    SDL_Surface *numericSurface5 = NULL;
-    SDL_Surface *numericSurface6 = NULL;
-    SDL_Surface *numericSurface7 = NULL;
-    SDL_Surface *numericSurface8 = NULL;
+    SDL_Surface *alphaSurfaceA = nullptr;
+    SDL_Surface *alphaSurfaceB = nullptr;
+    SDL_Surface *alphaSurfaceC = nullptr;
+    SDL_Surface *alphaSurfaceD = nullptr;
+    SDL_Surface *alphaSurfaceE = nullptr;
+    SDL_Surface *alphaSurfaceF = nullptr;
+    SDL_Surface *alphaSurfaceG = nullptr;
+    SDL_Surface *alphaSurfaceH = nullptr;
+    SDL_Surface *numericSurface1 = nullptr;
+    SDL_Surface *numericSurface2 = nullptr;
+    SDL_Surface *numericSurface3 = nullptr;
+    SDL_Surface *numericSurface4 = nullptr;
+    SDL_Surface *numericSurface5 = nullptr;
+    SDL_Surface *numericSurface6 = nullptr;
+    SDL_Surface *numericSurface7 = nullptr;
+    SDL_Surface *numericSurface8 = nullptr;
     alphaRecA.x = 85;
     alphaRecA.y = 8 * 85;
     alphaRecA.w = 85;
@@ -239,22 +239,22 @@ void Print::printBoardToWindow(Board gameBoard){
     SDL_Surface *blackPawnSurface;
     blackPawnSurface = SDL_LoadBMP("images/blackPawn.bmp");
     blackPawn = SDL_CreateTextureFromSurface(SDL_Struct.renderer, blackPawnSurface);
-    SDL_RenderCopy(SDL_Struct.renderer, alphaA, NULL, &alphaRecA);
-    SDL_RenderCopy(SDL_Struct.renderer, alphaB, NULL, &alphaRecB);
-    SDL_RenderCopy(SDL_Struct.renderer, alphaC, NULL, &alphaRecC);
-    SDL_RenderCopy(SDL_Struct.renderer, alphaD, NULL, &alphaRecD);
-    SDL_RenderCopy(SDL_Struct.renderer, alphaE, NULL, &alphaRecE);
-    SDL_RenderCopy(SDL_Struct.renderer, alphaF, NULL, &alphaRecF);
-    SDL_RenderCopy(SDL_Struct.renderer, alphaG, NULL, &alphaRecG);
-    SDL_RenderCopy(SDL_Struct.renderer, alphaH, NULL, &alphaRecH);
-    SDL_RenderCopy(SDL_Struct.renderer, numeric1, NULL, &numericRec1);
-    SDL_RenderCopy(SDL_Struct.renderer, numeric2, NULL, &numericRec2);
-    SDL_RenderCopy(SDL_Struct.renderer, numeric3, NULL, &numericRec3);
-    SDL_RenderCopy(SDL_Struct.renderer, numeric4, NULL, &numericRec4);
-    SDL_RenderCopy(SDL_Struct.renderer, numeric5, NULL, &numericRec5);
-    SDL_RenderCopy(SDL_Struct.renderer, numeric6, NULL, &numericRec6);
-    SDL_RenderCopy(SDL_Struct.renderer, numeric7, NULL, &numericRec7);
-    SDL_RenderCopy(SDL_Struct.renderer, numeric8, NULL, &numericRec8);
+    SDL_RenderCopy(SDL_Struct.renderer, alphaA, nullptr, &alphaRecA);
+    SDL_RenderCopy(SDL_Struct.renderer, alphaB, nullptr, &alphaRecB);
+    SDL_RenderCopy(SDL_Struct.renderer, alphaC, nullptr, &alphaRecC);
+    SDL_RenderCopy(SDL_Struct.renderer, alphaD, nullptr, &alphaRecD);
+    SDL_RenderCopy(SDL_Struct.renderer, alphaE, nullptr, &alphaRecE);
+    SDL_RenderCopy(SDL_Struct.renderer, alphaF, nullptr, &alphaRecF);
+    SDL_RenderCopy(SDL_Struct.renderer, alphaG, nullptr, &alphaRecG);
+    SDL_RenderCopy(SDL_Struct.renderer, alphaH, nullptr, &alphaRecH);
+    SDL_RenderCopy(SDL_Struct.renderer, numeric1, nullptr, &numericRec1);
+    SDL_RenderCopy(SDL_Struct.renderer, numeric2, nullptr, &numericRec2);
+    SDL_RenderCopy(SDL_Struct.renderer, numeric3, nullptr, &numericRec3);
+    SDL_RenderCopy(SDL_Struct.renderer, numeric4, nullptr, &numericRec4);
+    SDL_RenderCopy(SDL_Struct.renderer, numeric5, nullptr, &numericRec5);
+    SDL_RenderCopy(SDL_Struct.renderer, numeric6, nullptr, &numericRec6);
+    SDL_RenderCopy(SDL_Struct.renderer, numeric7, nullptr, &numericRec7);
+    SDL_RenderCopy(SDL_Struct.renderer, numeric8, nullptr, &numericRec8);
 
     for(int e = 0; e < 8; e++){
         for (int i = 0; i < 8; i++){
@@ -265,7 +265,7 @@ void Print::printBoardToWindow(Board gameBoard){
                 tempRec.y = 10 + (85 * e);
                 tempRec.w = 65;
                 tempRec.h = 65;
-                SDL_RenderCopy(SDL_Struct.renderer, whiteRook, NULL, &tempRec);
+                SDL_RenderCopy(SDL_Struct.renderer, whiteRook, nullptr, &tempRec);
             }
             if (gameBoard.returnSquare(e, i) == "White Left Knight" ||
                  gameBoard.returnSquare(e, i) == "White Right Knight"){
@@ -274,7 +274,7 @@ void Print::printBoardToWindow(Board gameBoard){
                 tempRec.y = 10 + (85 * e);
                 tempRec.w = 65;
                 tempRec.h = 65;
-                SDL_RenderCopy(SDL_Struct.renderer, whiteKnight, NULL, &tempRec);
+                SDL_RenderCopy(SDL_Struct.renderer, whiteKnight, nullptr, &tempRec);
             }
             if (gameBoard.returnSquare(e, i) == "White Left Bishop" ||
                  gameBoard.returnSquare(e, i) == "White Right Bishop"){
@@ -283,7 +283,7 @@ void Print::printBoardToWindow(Board gameBoard){
                 tempRec.y = 10 + (85 * e);
                 tempRec.w = 65;
                 tempRec.h = 65;
-                SDL_RenderCopy(SDL_Struct.renderer, whiteBishop, NULL, &tempRec);
+                SDL_RenderCopy(SDL_Struct.renderer, whiteBishop, nullptr, &tempRec);
             }
             if (gameBoard.returnSquare(e, i) == "White King"){
                 SDL_Rect tempRec;
@@ -291,7 +291,7 @@ void Print::printBoardToWindow(Board gameBoard){
                 tempRec.y = 10 + (85 * e);
                 tempRec.w = 65;
                 tempRec.h = 65;
-                SDL_RenderCopy(SDL_Struct.renderer, whiteKing, NULL, &tempRec);
+                SDL_RenderCopy(SDL_Struct.renderer, whiteKing, nullptr, &tempRec);
             }
             if (gameBoard.returnSquare(e, i) == "White Queen"){
                 SDL_Rect tempRec;
@@ -299,7 +299,7 @@ void Print::printBoardToWindow(Board gameBoard){
                 tempRec.y = 10 + (85 * e);
                 tempRec.w = 65;
                 tempRec.h = 65;
-                SDL_RenderCopy(SDL_Struct.renderer, whiteQueen, NULL, &tempRec);
+                SDL_RenderCopy(SDL_Struct.renderer, whiteQueen, nullptr, &tempRec);
             }
             if (gameBoard.returnSquare(e, i) == "White Pawn"){
                 SDL_Rect tempRec;
@@ -307,7 +307,7 @@ void Print::printBoardToWindow(Board gameBoard){
                 tempRec.y = 10 + (85 * e);
                 tempRec.w = 65;
                 tempRec.h = 65;
-                SDL_RenderCopy(SDL_Struct.renderer, whitePawn, NULL, &tempRec);
+                SDL_RenderCopy(SDL_Struct.renderer, whitePawn, nullptr, &tempRec);
             }
             if (gameBoard.returnSquare(e, i) == "Black Left Rook" ||
                  gameBoard.returnSquare(e, i) == "Black Right Rook"){
@@ -316,7 +316,7 @@ void Print::printBoardToWindow(Board gameBoard){
                 tempRec.y = 10 + (85 * e);
                 tempRec.w = 65;
                 tempRec.h = 65;
-                SDL_RenderCopy(SDL_Struct.renderer, blackRook, NULL, &tempRec);
+                SDL_RenderCopy(SDL_Struct.renderer, blackRook, nullptr, &tempRec);
             }
             if (gameBoard.returnSquare(e, i) == "Black Left Knight" ||
                  gameBoard.returnSquare(e, i) == "Black Right Knight"){
@@ -325,7 +325,7 @@ void Print::printBoardToWindow(Board gameBoard){
                 tempRec.y = 10 + (85 * e);
                 tempRec.w = 65;
                 tempRec.h = 65;
-                SDL_RenderCopy(SDL_Struct.renderer, blackKnight, NULL, &tempRec);
+                SDL_RenderCopy(SDL_Struct.renderer, blackKnight, nullptr, &tempRec);
             }
             if (gameBoard.returnSquare(e, i) == "Black Left Bishop" ||
                  gameBoard.returnSquare(e, i) == "Black Right Bishop"){
@@ -334,7 +334,7 @@ void Print::printBoardToWindow(Board gameBoard){
                 tempRec.y = 10 + (85 * e);
                 tempRec.w = 65;
                 tempRec.h = 65;
-                SDL_RenderCopy(SDL_Struct.renderer, blackBishop, NULL, &tempRec);
+                SDL_RenderCopy(SDL_Struct.renderer, blackBishop, nullptr, &tempRec);
             }
             if (gameBoard.returnSquare(e, i) == "Black King"){
                 SDL_Rect tempRec;
@@ -342,7 +342,7 @@ void Print::printBoardToWindow(Board gameBoard){
                 tempRec.y = 10 + (85 * e);
                 tempRec.w = 65;
                 tempRec.h = 65;
-                SDL_RenderCopy(SDL_Struct.renderer, blackKing, NULL, &tempRec);
+                SDL_RenderCopy(SDL_Struct.renderer, blackKing, nullptr, &tempRec);
             }
             if (gameBoard.returnSquare(e, i) == "Black Queen"){
                 SDL_Rect tempRec;
@@ -350,7 +350,7 @@ void Print::printBoardToWindow(Board gameBoard){
                 tempRec.y = 10 + (85 * e);
                 tempRec.w = 65;
                 tempRec.h = 65;
-                SDL_RenderCopy(SDL_Struct.renderer, blackQueen, NULL, &tempRec);
+                SDL_RenderCopy(SDL_Struct.renderer, blackQueen, nullptr, &tempRec);
             }
             if (gameBoard.returnSquare(e, i) == "Black Pawn"){
                 SDL_Rect tempRec;
@@ -358,7 +358,7 @@ void Print::printBoardToWindow(Board gameBoard){
                 tempRec.y = 10 + (85 * e);
                 tempRec.w = 65;
                 tempRec.h = 65;
-                SDL_RenderCopy(SDL_Struct.renderer, blackPawn, NULL, &tempRec);
+                SDL_RenderCopy(SDL_Struct.renderer, blackPawn, nullptr, &tempRec);
             }
         }
     }
@@ -432,29 +432,29 @@ void Print::printOptionsToWindow(){
              clientCheckBoxRec, aiCheckBoxRec, changeSideButtonRec, newGameButtonRec, saveGameButtonRec, restoreGameButtonRec, serverPortInputBoxTextRec,
              serverPortInputBoxRec, clientIPInputBoxRec, clientPortInputBoxRec, serverPortInputTextRec, clientIPInputTextRec, clientPortInputTextRec, background,
              clientIPInputTextBoxRec, recallMoveTextRec, recallMoveButtonRec, clientIPInputBoxTextRec, clientPortInputBoxTextRec, menuSquareRec;
-    SDL_Surface *serverTextSurface = NULL;
-    SDL_Surface *clientTextSurface = NULL;
-    SDL_Surface *aiTextSurface = NULL;
-    SDL_Surface *changeSideTextSurface = NULL;
-    SDL_Surface *newGameTextSurface = NULL;
-    SDL_Surface *saveGameTextSurface = NULL;
-    SDL_Surface *restoreGameTextSurface = NULL;
-    SDL_Surface *serverPortInputTextSurface = NULL;
-    SDL_Surface *clientIPInputTextSurface = NULL;
-    SDL_Surface *clientPortInputTextSurface = NULL;
-    SDL_Surface *serverPortInputBoxTextSurface = NULL;
-    SDL_Surface *clientIPInputTextBoxSurface = NULL;
-    SDL_Surface *changeSideButtonSurface = NULL;
-    SDL_Surface *newGameButtonSurface = NULL;
-    SDL_Surface *saveGameButtonSurface = NULL;
-    SDL_Surface *restoreGameButtonSurface = NULL;
-    SDL_Surface *recallMoveTextSurface = NULL;
-    SDL_Surface *recallMoveButtonSurface = NULL;
-    SDL_Surface *aiCheckBoxSurface = NULL;
-    SDL_Surface *serverCheckBoxSurface = NULL;
-    SDL_Surface *clientCheckBoxSurface = NULL;
-    SDL_Surface *clientIPInputBoxTextSurface = NULL;
-    SDL_Surface *clientPortInputBoxTextSurface = NULL;
+    SDL_Surface *serverTextSurface = nullptr;
+    SDL_Surface *clientTextSurface = nullptr;
+    SDL_Surface *aiTextSurface = nullptr;
+    SDL_Surface *changeSideTextSurface = nullptr;
+    SDL_Surface *newGameTextSurface = nullptr;
+    SDL_Surface *saveGameTextSurface = nullptr;
+    SDL_Surface *restoreGameTextSurface = nullptr;
+    SDL_Surface *serverPortInputTextSurface = nullptr;
+    SDL_Surface *clientIPInputTextSurface = nullptr;
+    SDL_Surface *clientPortInputTextSurface = nullptr;
+    SDL_Surface *serverPortInputBoxTextSurface = nullptr;
+    SDL_Surface *clientIPInputTextBoxSurface = nullptr;
+    SDL_Surface *changeSideButtonSurface = nullptr;
+    SDL_Surface *newGameButtonSurface = nullptr;
+    SDL_Surface *saveGameButtonSurface = nullptr;
+    SDL_Surface *restoreGameButtonSurface = nullptr;
+    SDL_Surface *recallMoveTextSurface = nullptr;
+    SDL_Surface *recallMoveButtonSurface = nullptr;
+    SDL_Surface *aiCheckBoxSurface = nullptr;
+    SDL_Surface *serverCheckBoxSurface = nullptr;
+    SDL_Surface *clientCheckBoxSurface = nullptr;
+    SDL_Surface *clientIPInputBoxTextSurface = nullptr;
+    SDL_Surface *clientPortInputBoxTextSurface = nullptr;
 
     background.x = 0;
     background.y = 0;
@@ -616,26 +616,26 @@ void Print::printOptionsToWindow(){
     recallMoveButtonRec.h = 40;
     recallMoveButtonSurface = SDL_LoadBMP("images/button.bmp");
     recallMoveButton = SDL_CreateTextureFromSurface(SDL_Struct.renderer, recallMoveButtonSurface);
-    SDL_RenderCopy(SDL_Struct.renderer,serverText , NULL, &serverTextRec);
-    SDL_RenderCopy(SDL_Struct.renderer,clientCheckBox , NULL, &clientCheckBoxRec);
-    SDL_RenderCopy(SDL_Struct.renderer,serverCheckBox , NULL, &serverCheckBoxRec);
-    SDL_RenderCopy(SDL_Struct.renderer,serverPortInputBoxText, NULL, &serverPortInputBoxTextRec);
-    SDL_RenderCopy(SDL_Struct.renderer,clientText , NULL, &clientTextRec);
-    SDL_RenderCopy(SDL_Struct.renderer,clientIPInputBoxText, NULL, &clientIPInputBoxTextRec);
-    SDL_RenderCopy(SDL_Struct.renderer,clientPortInputBoxText, NULL, &clientPortInputBoxTextRec);
-    SDL_RenderCopy(SDL_Struct.renderer,aiText , NULL, &aiTextRec);
-    SDL_RenderCopy(SDL_Struct.renderer,aiCheckBox , NULL, &aiCheckBoxRec);
-    SDL_RenderCopy(SDL_Struct.renderer,changeSideText, NULL, &changeSideTextRec);
-    SDL_RenderCopy(SDL_Struct.renderer,changeSideButton, NULL, &changeSideButtonRec);
-    SDL_RenderCopy(SDL_Struct.renderer,newGameText , NULL, &newGameTextRec);
-    SDL_RenderCopy(SDL_Struct.renderer,newGameButton , NULL, &newGameButtonRec);
-    SDL_RenderCopy(SDL_Struct.renderer,saveGameText , NULL, &saveGameTextRec);
-    SDL_RenderCopy(SDL_Struct.renderer,saveGameButton , NULL, &saveGameButtonRec);
-    SDL_RenderCopy(SDL_Struct.renderer,restoreGameText , NULL, &restoreGameTextRec);
-    SDL_RenderCopy(SDL_Struct.renderer,restoreGameButton , NULL, &restoreGameButtonRec);
-    SDL_RenderCopy(SDL_Struct.renderer,recallMoveText , NULL, &recallMoveTextRec);
-    SDL_RenderCopy(SDL_Struct.renderer,recallMoveButton , NULL, &recallMoveButtonRec);
-    SDL_RenderCopy(SDL_Struct.renderer,serverPortInputText, NULL, &serverPortInputBoxRec);
+    SDL_RenderCopy(SDL_Struct.renderer,serverText , nullptr, &serverTextRec);
+    SDL_RenderCopy(SDL_Struct.renderer,clientCheckBox , nullptr, &clientCheckBoxRec);
+    SDL_RenderCopy(SDL_Struct.renderer,serverCheckBox , nullptr, &serverCheckBoxRec);
+    SDL_RenderCopy(SDL_Struct.renderer,serverPortInputBoxText, nullptr, &serverPortInputBoxTextRec);
+    SDL_RenderCopy(SDL_Struct.renderer,clientText , nullptr, &clientTextRec);
+    SDL_RenderCopy(SDL_Struct.renderer,clientIPInputBoxText, nullptr, &clientIPInputBoxTextRec);
+    SDL_RenderCopy(SDL_Struct.renderer,clientPortInputBoxText, nullptr, &clientPortInputBoxTextRec);
+    SDL_RenderCopy(SDL_Struct.renderer,aiText , nullptr, &aiTextRec);
+    SDL_RenderCopy(SDL_Struct.renderer,aiCheckBox , nullptr, &aiCheckBoxRec);
+    SDL_RenderCopy(SDL_Struct.renderer,changeSideText, nullptr, &changeSideTextRec);
+    SDL_RenderCopy(SDL_Struct.renderer,changeSideButton, nullptr, &changeSideButtonRec);
+    SDL_RenderCopy(SDL_Struct.renderer,newGameText , nullptr, &newGameTextRec);
+    SDL_RenderCopy(SDL_Struct.renderer,newGameButton , nullptr, &newGameButtonRec);
+    SDL_RenderCopy(SDL_Struct.renderer,saveGameText , nullptr, &saveGameTextRec);
+    SDL_RenderCopy(SDL_Struct.renderer,saveGameButton , nullptr, &saveGameButtonRec);
+    SDL_RenderCopy(SDL_Struct.renderer,restoreGameText , nullptr, &restoreGameTextRec);
+    SDL_RenderCopy(SDL_Struct.renderer,restoreGameButton , nullptr, &restoreGameButtonRec);
+    SDL_RenderCopy(SDL_Struct.renderer,recallMoveText , nullptr, &recallMoveTextRec);
+    SDL_RenderCopy(SDL_Struct.renderer,recallMoveButton , nullptr, &recallMoveButtonRec);
+    SDL_RenderCopy(SDL_Struct.renderer,serverPortInputText, nullptr, &serverPortInputBoxRec);
     SDL_RenderPresent(SDL_Struct.renderer);
 /*    SDL_DestroyTexture(serverText);
     SDL_DestroyTexture(clientText);

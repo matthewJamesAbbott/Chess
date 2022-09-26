@@ -401,21 +401,21 @@ void Game::loadGame(std::string fileName){
 bool Game::engineMove(){
     int *moveArray;
     int computerSide = WHITE;
-    if(this->playerSide == WHITE) // check which side for computer to play
-        computerSide = BLACK;
+//    if(this->playerSide == WHITE) // check which side for computer to play
+//        computerSide = BLACK;
 
     /*
      * send object gameBoard and colour of computers pieces to MoveCalculator.checkMateTest
      * if test passes print success and exit function returning false
      *
      */
-
+/*
     if(calc.checkMateTest(gameBoard,computerSide)){
 
         std::cout << "Check Mate You Win" << std::endl;
         return false;
     }
-
+*/
     /*
      * resolve computers move and store it in an array of integers
      * input string representations of piece and empty to correct places in the 2D array board

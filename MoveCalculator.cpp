@@ -263,6 +263,12 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
      * take input of piece and find possible moves from switch
      *
      */
+    if (moveBoard.returnSquare(x,y).find("Black") != std::string::npos){
+        side = BLACK;
+    }
+    else{
+        side = WHITE;
+    }
     std::string opponentColour;
     if (side == BLACK)
         opponentColour = "White";
@@ -478,39 +484,39 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
             return list;
         
         case 5: // Kings Moves
-            if (side == 0)
+            if (side != std::string::npos)
                 kingNumericStart = 7;
             if(x < 7 && moveBoard.returnSquare(x+1,y) == "Empty")
                 list->addNode(x+1, y, this->evaluatePiece(x+1, y, moveBoard, side));
-            else if(x < 7 &&(moveBoard.returnSquare(x+1,y).find(opponentColour) == 0))
+            else if(x < 7 &&(moveBoard.returnSquare(x+1,y).find(opponentColour) != std::string::npos))
                 list->addNode(x+1,y, evaluatePiece(x+1,y, moveBoard, side));
             if(x > 0 && moveBoard.returnSquare(x-1,y) == "Empty")
                 list->addNode(x-1,y, evaluatePiece(x-1, y, moveBoard, side));
-            else if(x > 0 && (moveBoard.returnSquare(x-1,y).find(opponentColour) == 0))
+            else if(x > 0 && (moveBoard.returnSquare(x-1,y).find(opponentColour) != std::string::npos))
                 list->addNode(x-1,y, this->evaluatePiece(x-1,y, moveBoard, side));
             if(y < 7 && moveBoard.returnSquare(x,y+1) == "Empty")
                 list->addNode(x,y+1, this->evaluatePiece(x,y+1, moveBoard, side));
-            else if(y < 7 && (moveBoard.returnSquare(x,y+1).find(opponentColour) == 0))
+            else if(y < 7 && (moveBoard.returnSquare(x,y+1).find(opponentColour) != std::string::npos))
                 list->addNode(x,y+1, this->evaluatePiece(x,y+1, moveBoard, side));
             if(y > 0 && moveBoard.returnSquare(x,y-1) == "Empty")
                 list->addNode(x,y-1, this->evaluatePiece(x,y-1, moveBoard, side));
-            else if(y > 0 && (moveBoard.returnSquare(x,y-1).find(opponentColour) == 0))
+            else if(y > 0 && (moveBoard.returnSquare(x,y-1).find(opponentColour) != std::string::npos))
                 list->addNode(x,y-1, this->evaluatePiece(x,y-1, moveBoard, side));
             if(x < 7 && y < 7 && moveBoard.returnSquare(x+1,y+1) == "Empty")
                 list->addNode(x+1,y+1, this->evaluatePiece(x+1,y+1, moveBoard, side));
-            else if(x < 7 && y < 7 && (moveBoard.returnSquare(x+1,y+1).find(opponentColour) == 0))
+            else if(x < 7 && y < 7 && (moveBoard.returnSquare(x+1,y+1).find(opponentColour) != std::string::npos))
                 list->addNode(x+1,y+1, this->evaluatePiece(x+1,y+1, moveBoard, side));
             if(x < 7 && y > 0 && moveBoard.returnSquare(x+1,y-1) == "Empty")
                 list->addNode(x+1,y-1, this->evaluatePiece(x+1,y-1, moveBoard, side));
-            else if(x < 7 && y > 0 && (moveBoard.returnSquare(x+1,y-1).find(opponentColour) == 0))
+            else if(x < 7 && y > 0 && (moveBoard.returnSquare(x+1,y-1).find(opponentColour) != std::string::npos))
                 list->addNode(x+1,y-1, this->evaluatePiece(x+1,y-1, moveBoard, side));
             if(x > 0 && y < 7 && moveBoard.returnSquare(x-1,y+1) == "Empty")
                 list->addNode(x-1,y+1, this->evaluatePiece(x-1,y+1, moveBoard, side));
-            else if(x > 0 && y < 7 && (moveBoard.returnSquare(x-1,y+1).find(opponentColour) == 0))
+            else if(x > 0 && y < 7 && (moveBoard.returnSquare(x-1,y+1).find(opponentColour) != std::string::npos))
                 list->addNode(x-1,y+1, this->evaluatePiece(x-1,y+1, moveBoard, side));
             if(x > 0 && y > 0 && moveBoard.returnSquare(x-1,y-1) == "Empty")
                 list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard, side));
-            else if(x > 0 && y > 0 && (moveBoard.returnSquare(x-1,y-1).find(opponentColour) == 0))
+            else if(x > 0 && y > 0 && (moveBoard.returnSquare(x-1,y-1).find(opponentColour) != std::string::npos))
                 list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard, side));
 //            if (this->castleCheck(side) && moveBoard.returnSquare(kingNumericStart,1) == "Empty" && moveBoard.returnSquare(kingNumericStart,2) == "Empty")
 //                list->addNode(x,y-2,side);
@@ -523,9 +529,9 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                 if (x == 1 && moveBoard.returnSquare(x + 1, y) == "Empty" &&
                     moveBoard.returnSquare(x + 2, y) == "Empty")
                     list->addNode(x + 2, y, this->evaluatePiece(x + 2, y, moveBoard, WHITE));
-                if (x != 7 && y != 7 && (moveBoard.returnSquare(x + 1, y + 1).find("Black") == 0))
+                if (x != 7 && y != 7 && (moveBoard.returnSquare(x + 1, y + 1).find("Black") != std::string::npos))
                     list->addNode(x + 1, y + 1, this->evaluatePiece(x + 1, y + 1, moveBoard, WHITE));
-                if (x != 7 && y != 0 && (moveBoard.returnSquare(x + 1, y - 1).find("Black") == 0))
+                if (x != 7 && y != 0 && (moveBoard.returnSquare(x + 1, y - 1).find("Black") != std::string::npos))
                     list->addNode(x + 1, y - 1, this->evaluatePiece(x + 1, y - 1, moveBoard, WHITE));
             }
             return list;

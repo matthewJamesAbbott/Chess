@@ -103,13 +103,13 @@ void Engine::moveVector(TreeNode *localRoot, int base)
 void Engine::secondGuess(TreeNode *localRoot){
     if(localRoot != nullptr){
         secondGuess(localRoot->leftTreeNode);
-//        if(localRoot->rank >= 0){
+        if(localRoot->rank >= 0){
             returnVector.insert(returnVector.begin(), localRoot->x);
             returnVector.insert(returnVector.begin(), localRoot->y);
             returnVector.insert(returnVector.begin(), localRoot->xa);
             returnVector.insert(returnVector.begin(), localRoot->ya);
 
-//        }
+        }
         secondGuess(localRoot->rightTreeNode);
     }
 }
@@ -143,17 +143,17 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
      *
      */
     std::string compSideColour;
-    std::string compKing;
+    std::string compKing;/*
     if(computerSide == BLACK){
         playerSide = WHITE;
 	compSideColour = "Black";
     compKing = "Black King";
     }
-    else{
+    else{*/
         playerSide = BLACK;
 	compSideColour = "White";
     compKing = "White King";
-    }
+//    }
 
     /*
      * test all squares for the computer colour and when found calculate all possible moves for piece 
@@ -202,7 +202,7 @@ int *Engine::resolveMove(Board gameBoard, int computerSide){
     int choice = 0;
     if(returnVector.size() >= 4){
         int test = returnVector.size() / 4;
-        srand(time(NULL));
+        srand(time(nullptr));
         choice = rand() % test;
         choice = choice * 4;
     }
