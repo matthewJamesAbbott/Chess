@@ -34,7 +34,7 @@ int main(int argc, char *argv[]){
     bool clearSwitch = true; // turns clear screen on and off for terminal
     experimental::filesystem::create_directory("gamesave");
     if(argc == 1){ // no arguements straight to XWindows client.
-        chess.clientServerToggle = SOLO;
+        chess.clientServerToggle = GUI;
     }
     else{ // otherwise collect arguements
         for (int i = 0; i < argc; i++){
@@ -881,6 +881,8 @@ int main(int argc, char *argv[]){
             SDL_WaitEvent(&event);
 
             switch (event.type) {
+                case SDL_KEYDOWN:
+                    cout << "key pressed" << endl;    
                 case SDL_MOUSEBUTTONDOWN:
                     if(event.motion.y > 679 && event.motion.x < 85){
                         if(optionToggle == 0){
@@ -1042,7 +1044,7 @@ int main(int argc, char *argv[]){
 
                     }
                     break;
-                   
+                  /* 
                 case SDL_TEXTINPUT:
                     if(textAreaToggle == 1){
                         
@@ -1061,7 +1063,7 @@ int main(int argc, char *argv[]){
                     }
                     else if(textAreaToggle == 3){
 
-                    }
+                    }*/
                 case SDL_QUIT:
                     quit = true;
                     break;
@@ -1072,5 +1074,4 @@ int main(int argc, char *argv[]){
     SDL_Quit();
     }
     return 0;
-    
 }
