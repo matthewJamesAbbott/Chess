@@ -41,7 +41,7 @@ void LinkedList::addNode(int x, int y, int squareRank){
      *
      */
 
-    else{ 
+    else{
         Node* temp = head;
         while (temp->next != nullptr){
             temp = temp->next;
@@ -64,15 +64,15 @@ std::vector<int> LinkedList::returnVector(){
         moveVector.push_back(temp->y);
         temp = temp->next;
     }
-    
-    return moveVector;
-    
 
-    
+    return moveVector;
+
+
+
 }
 
 /*
- * serialise possibleSquares list into vector moveVector with piece weights included 
+ * serialise possibleSquares list into vector moveVector with piece weights included
  *
  */
 
@@ -89,7 +89,7 @@ std::vector<int> LinkedList::returnWeightedVector(){
 }
 
 LinkedList::~LinkedList(){
-    
+
     Node *temp;
     while (head){
         temp = head;
@@ -222,6 +222,51 @@ int MoveCalculator::enPassantCheck(int side){
     return 10;
 }
 
+const std::vector<std::pair<int, int>> knightsMoveOffsets = {
+    {2, 1}, {2, -1}, {1, 2}, {1, -2},
+    {-2, 1}, {-2, -1}, {-1, 2}, {-1, -2}
+};
+
+const std::vector<std::pair<int, int>> rooksMoveOffsetsA = {
+    {1, 0}, {2, 0}, {3, 0}, {4, 0}, {5, 0}, {6, 0}, {7, 0}, {8, 0}};
+const std::vector<std::pair<int, int>> rooksMoveOffsetsB = {
+    {-1, 0}, {-2, 0}, {-3, 0}, {-4, 0}, {-5, 0}, {-6, 0}, {-7, 0}, {-8, 0}};
+const std::vector<std::pair<int, int>> rooksMoveOffsetsC = {
+    {0, 1}, {0, 2}, {0, 3}, {0, 4}, {0, 5}, {0, 6}, {0, 7}, {0, 8}};
+const std::vector<std::pair<int, int>> rooksMoveOffsetsD = {
+    {0, -1}, {0, -2}, {0, -3}, {0, -4}, {0, -5}, {0, -6}, {0, -7}, {0, -8}};
+
+const std::vector<std::pair<int, int>> bishopsMoveOffsetsA = {
+    {1, 1}, {2, 2}, {3, 3}, {4, 4}, {5, 5}, {6, 6}, {7, 7}, {8, 8}};
+const std::vector<std::pair<int, int>> bishopsMoveOffsetsB = {
+    {-1, 1}, {-2, 2}, {-3, 3}, {-4, 4}, {-5, 5}, {-6, 6}, {-7, 7}, {-8, 8}};
+const std::vector<std::pair<int, int>> bishopsMoveOffsetsC = {
+    {1, -1}, {2, -2}, {3, -3}, {4, -4}, {5, -5}, {6, -6}, {7, -7}, {8, -8}};
+const std::vector<std::pair<int, int>> bishopsMoveOffsetsD = {
+    {-1, -1}, {-2, -2}, {-3, -3}, {-4, -4}, {-5, -5}, {-6, -6}, {-7, -7}, {-8, -8}};
+
+const std::vector<std::pair<int, int>> queensMoveOffsetsA = {
+    {1, 1}, {2, 2}, {3, 3}, {4, 4}, {5, 5}, {6, 6}, {7, 7}, {8, 8}};
+const std::vector<std::pair<int, int>> queensMoveOffsetsB = {
+    {-1, 1}, {-2, 2}, {-3, 3}, {-4, 4}, {-5, 5}, {-6, 6}, {-7, 7}, {-8, 8}};
+const std::vector<std::pair<int, int>> queensMoveOffsetsC = {
+    {1, -1}, {2, -2}, {3, -3}, {4, -4}, {5, -5}, {6, -6}, {7, -7}, {8, -8}};
+const std::vector<std::pair<int, int>> queensMoveOffsetsD = {
+    {-1, -1}, {-2, -2}, {-3, -3}, {-4, -4}, {-5, -5}, {-6, -6}, {-7, -7}, {-8, -8}};
+const std::vector<std::pair<int, int>> queensMoveOffsetsE = {
+    {1, 0}, {2, 0}, {3, 0}, {4, 0}, {5, 0}, {6, 0}, {7, 0}, {8, 0}};
+const std::vector<std::pair<int, int>> queensMoveOffsetsF = {
+    {-1, 0}, {-2, 0}, {-3, 0}, {-4, 0}, {-5, 0}, {-6, 0}, {-7, 0}, {-8, 0}};
+const std::vector<std::pair<int, int>> queensMoveOffsetsG = {
+    {0, 1}, {0, 2}, {0, 3}, {0, 4}, {0, 5}, {0, 6}, {0, 7}, {0, 8}};
+const std::vector<std::pair<int, int>> queensMoveOffsetsH = {
+    {0, -1}, {0, -2}, {0, -3}, {0, -4}, {0, -5}, {0, -6}, {0, -7}, {0, -8}
+};
+
+const std::vector<std::pair<int, int>> kingsMoveOffsets = {
+    {1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {1, 0}, {-1, 0}, {0, 1}, {0, -1}
+};
+
 /*
  * calculate all possible moves for a piece at co-ordiantes passed to function
  * save co-ordinates in Linkedlist and return the list on completion
@@ -272,252 +317,77 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
     std::string opponentColour;
     if (side == BLACK)
         opponentColour = "White";
-    else 
+    else
         opponentColour = "Black";
 
             int kingNumericStart = 0;
     auto* list = new LinkedList();
+
+    // Lambda function for processing moves
+    auto processMove = [&](int x, int y, const std::vector<std::pair<int, int>>& moveOffsets, const int side, const std::string& opponentColour) {
+        for (const auto& offset : moveOffsets) {
+            int newX = x + offset.first;
+            int newY = y + offset.second;
+            std::string squareContent = "no square";
+
+            if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8)
+                squareContent = moveBoard.returnSquare(newX, newY);
+
+            // Check move validity
+            if (squareContent == "Empty" ) {
+                list->addNode(newX, newY, evaluatePiece(newX, newY, moveBoard, side));
+            }
+            else if (squareContent.find(opponentColour) != 0 && squareContent != "Empty" && moveOffsets != knightsMoveOffsets) {
+                break;
+            }
+            else if (squareContent.find(opponentColour) == 0 && moveOffsets == knightsMoveOffsets) {
+                list->addNode(newX, newY, evaluatePiece(newX, newY, moveBoard, side));
+            }
+            else if (squareContent.find(opponentColour) == 0 && moveOffsets == kingsMoveOffsets) {
+                list->addNode(newX, newY, evaluatePiece(newX, newY, moveBoard, side));
+            }
+            else if (squareContent.find(opponentColour) == 0 && moveOffsets != knightsMoveOffsets && moveOffsets != kingsMoveOffsets) {
+                list->addNode(newX, newY, evaluatePiece(newX, newY, moveBoard, side));
+                break;
+            }
+        }
+    };
     switch(switchedPiece){
         case 1: // Rooks Moves
-            for(int i = x + 1; i < 8; i++){
-                if(moveBoard.returnSquare(i,y) == "Empty")
-                    list->addNode(i,y, this->evaluatePiece(i,y, moveBoard, side));
-                else if(moveBoard.returnSquare(i,y).find(opponentColour) == 0){
-                    list->addNode(i, y, this->evaluatePiece(i,y, moveBoard, side));
-                    break;
-                }
-                else if(moveBoard.returnSquare(i,y) != "Empty")
-                    break;
-            }
-            for(int i = x -1; i >= 0; i--){
-                if(moveBoard.returnSquare(i,y) == "Empty")
-                    list->addNode(i,y, this->evaluatePiece(i,y, moveBoard, side));
-                else if(moveBoard.returnSquare(i,y).find(opponentColour) == 0){
-                    list->addNode(i, y,this->evaluatePiece(i,y, moveBoard, side));
-                    break;
-                }
-                else if(moveBoard.returnSquare(i,y) != "Empty")
-                    break;
-            }
-            for(int i = y +1; i < 8; i++){
-                if(moveBoard.returnSquare(x,i) == "Empty")
-                    list->addNode(x,i, this->evaluatePiece(x,i, moveBoard, side));
-                else if(moveBoard.returnSquare(x,i).find(opponentColour) == 0){
-                    list->addNode(x,i, this->evaluatePiece(x,i, moveBoard, side));
-                    break;
-                }
-                else if(moveBoard.returnSquare(x,i) != "Empty")
-                    break;
-            }
-            for(int i = y -1; i >= 0; i--){
-                if(moveBoard.returnSquare(x,i) == "Empty")
-                    list->addNode(x,i, this->evaluatePiece(x,i, moveBoard, side));
-                else if(moveBoard.returnSquare(x,i).find(opponentColour) == 0){
-                    list->addNode(x, i, this->evaluatePiece(x,i, moveBoard, side));
-                    break;
-                }
-                else if(moveBoard.returnSquare(x,i) != "Empty")
-                    break;
-            }
+            processMove(x, y, rooksMoveOffsetsA, side, opponentColour);
+            processMove(x, y, rooksMoveOffsetsB, side, opponentColour);
+            processMove(x, y, rooksMoveOffsetsC, side, opponentColour);
+            processMove(x, y, rooksMoveOffsetsD, side, opponentColour);
             return list;
-            
+
         case 2: // Knights Moves
-            if(x < 6 && y < 7 && moveBoard.returnSquare(x+2, y+1) == "Empty")
-                list->addNode(x+2,y+1, this->evaluatePiece(x+2,y+1, moveBoard, side));
-            else if(x < 6 && y < 7 && (moveBoard.returnSquare(x+2,y+1).find(opponentColour) == 0))
-                list->addNode(x+2,y+1, this->evaluatePiece(x+2, y+1, moveBoard, side));
-            if(x < 6 && y > 0 && moveBoard.returnSquare(x+2, y-1) == "Empty")
-                list->addNode(x+2,y-1, this->evaluatePiece(x+2, y-1, moveBoard, side));
-            else if(x < 6 && y > 0 && (moveBoard.returnSquare(x+2,y-1).find(opponentColour) == 0))
-                list->addNode(x+2,y-1, this->evaluatePiece(x+2, y-1, moveBoard, side));
-            if(x < 7 && y < 6 && moveBoard.returnSquare(x+1, y+2) == "Empty")
-                list->addNode(x+1,y+2, this->evaluatePiece(x+1, y+2, moveBoard, side));
-            else if(x < 7 && y < 6 && (moveBoard.returnSquare(x+1,y+2).find(opponentColour) == 0))
-                list->addNode(x+1,y+2, this->evaluatePiece(x+1, y+2, moveBoard, side));
-            if(x < 7 && y > 1 && moveBoard.returnSquare(x+1, y-2) == "Empty")
-                list->addNode(x+1,y-2, this->evaluatePiece(x+1, y-2, moveBoard, side));
-            else if(x < 7 && y > 1 && (moveBoard.returnSquare(x+1,y-2).find(opponentColour) == 0))
-                list->addNode(x+1,y-2, this->evaluatePiece(x+1, y-2, moveBoard, side));
-            if(x > 1 && y < 7 && moveBoard.returnSquare(x-2, y+1) == "Empty")
-                list->addNode(x-2,y+1, this->evaluatePiece(x-2, y+1, moveBoard, side));
-            else if(x > 1 && y < 7 && (moveBoard.returnSquare(x-2,y+1).find(opponentColour) == 0))
-                list->addNode(x-2,y+1, this->evaluatePiece(x-2,y+1, moveBoard, side));
-            if(x > 1 && y > 0 && moveBoard.returnSquare(x-2, y-1) == "Empty")
-                list->addNode(x-2,y-1, this->evaluatePiece(x-2, y-1, moveBoard, side));
-            else if(x > 1 && y > 0 && (moveBoard.returnSquare(x-2,y-1).find(opponentColour) == 0))
-                list->addNode(x-2,y-1, this->evaluatePiece(x-2, y-1, moveBoard, side));
-            if(x > 0 && y < 6 && moveBoard.returnSquare(x-1, y+2) == "Empty")
-                list->addNode(x-1,y+2, this->evaluatePiece(x-1, y+2, moveBoard, side));
-            else if(x > 0 && y < 6 && (moveBoard.returnSquare(x-1,y+2).find(opponentColour) == 0))
-                list->addNode(x-1,y+2, this->evaluatePiece(x-1, y+2, moveBoard, side));
-            if(x > 0 && y > 1 && moveBoard.returnSquare(x-1, y-2) == "Empty")
-                list->addNode(x-1,y-2, this->evaluatePiece(x-2, y-2, moveBoard, side));
-            else if(x > 0 && y > 1 && (moveBoard.returnSquare(x-1,y-2).find(opponentColour) == 0))
-                list->addNode(x-1,y-2, this->evaluatePiece(x-1, y-2, moveBoard, side));
+            processMove(x, y, knightsMoveOffsets, side, opponentColour);
             return list;
 
         case 3: // Bishops Moves
-            for(int e = x+1, i = y+1;e < 8 && i < 8; e++, i++){
-                if(moveBoard.returnSquare(e,i) == "Empty")
-                    list->addNode(e,i, this->evaluatePiece(e, i, moveBoard, side));
-                else if (moveBoard.returnSquare(e,i).find(opponentColour) == 0){
-                    list->addNode(e,i, this->evaluatePiece(e, i, moveBoard, side));
-                    break;
-                }
-                else if(moveBoard.returnSquare(e,i) != "Empty")
-                    break;
-            }
-            for(int e = x+1, i = y-1;e < 8 && i >= 0; e++, i--){
-                if(moveBoard.returnSquare(e,i) == "Empty")
-                    list->addNode(e,i, this->evaluatePiece(e, i, moveBoard, side));
-                else if (moveBoard.returnSquare(e,i).find(opponentColour) == 0){
-                    list->addNode(e,i, this->evaluatePiece(e, i, moveBoard, side));
-                    break;
-                }
-                else if(moveBoard.returnSquare(e,i) != "Empty")
-                    break;
-            }
-            for(int e = x-1, i = y+1;e >= 0 && i < 8;e--, i++){
-                if(moveBoard.returnSquare(e,i) == "Empty")
-                    list->addNode(e,i, this->evaluatePiece(e, i, moveBoard, side));
-                else if (moveBoard.returnSquare(e,i).find(opponentColour) == 0){
-                    list->addNode(e,i, this->evaluatePiece(e, i, moveBoard, side));
-                    break;
-                }
-                else if(moveBoard.returnSquare(e,i) != "Empty")
-                    break;
-            }
-            for(int e = x-1, i = y-1;e >= 0 && i >= 0;e--, i--){
-                if(moveBoard.returnSquare(e,i) == "Empty")
-                    list->addNode(e,i, this->evaluatePiece(e, i, moveBoard, side));
-                else if (moveBoard.returnSquare(e,i).find(opponentColour) == 0){
-                    list->addNode(e,i, this->evaluatePiece(e, i, moveBoard, side));
-                    break;
-                }
-                else if(moveBoard.returnSquare(e,i) != "Empty")
-                    break;
-            }
+            processMove(x, y, bishopsMoveOffsetsA, side, opponentColour);
+            processMove(x, y, bishopsMoveOffsetsB, side, opponentColour);
+            processMove(x, y, bishopsMoveOffsetsC, side, opponentColour);
+            processMove(x, y, bishopsMoveOffsetsD, side, opponentColour);
             return list;
-            
-        case 4: // Queens Moves
-            for(int i = x + 1; i < 8; i++){
-                if(moveBoard.returnSquare(i,y) == "Empty")
-                    list->addNode(i,y, this->evaluatePiece(i, y, moveBoard, side));
-                else if(moveBoard.returnSquare(i,y).find(opponentColour) == 0){
-                    list->addNode(i, y, this->evaluatePiece(i, y, moveBoard, side));
-                    break;
-                }
-                else if(moveBoard.returnSquare(i,y) != "Empty")
-                    break;
-            }
-            for(int i = x -1; i >= 0; i--){
-                if(moveBoard.returnSquare(i,y) == "Empty")
-                    list->addNode(i,y, this->evaluatePiece(i,y, moveBoard, side));
-                else if(moveBoard.returnSquare(i,y).find(opponentColour) == 0){
-                    list->addNode(i, y, this->evaluatePiece(i, y, moveBoard, side));
-                    break;
-                }
-                else if(moveBoard.returnSquare(i,y) != "Empty")
-                    break;
-            }
 
-            for(int i = y +1; i < 8; i++){
-                if(moveBoard.returnSquare(x,i) == "Empty")
-                    list->addNode(x,i, this->evaluatePiece(x, i, moveBoard, side));
-                else if(moveBoard.returnSquare(x,i).find(opponentColour) == 0){
-                    list->addNode(x, i, this->evaluatePiece(x, i, moveBoard, side));
-                    break;
-                }
-                else if(moveBoard.returnSquare(x,i) != "Empty")
-                    break;
-            }
-            for(int i = y -1; i >= 0; i--){
-                if(moveBoard.returnSquare(x,i) == "Empty")
-                    list->addNode(x,i, this->evaluatePiece(x, i, moveBoard, side));
-                else if(moveBoard.returnSquare(x,i).find(opponentColour) == 0){
-                    list->addNode(x, i, this->evaluatePiece(x, i, moveBoard, side));
-                    break;
-                }
-                else if(moveBoard.returnSquare(x,i) != "Empty")
-                    break;
-            }
-            for(int e = x+1, i = y+1;e < 8 && i < 8; e++, i++){
-                if(moveBoard.returnSquare(e,i) == "Empty")
-                    list->addNode(e,i, this->evaluatePiece(e, i, moveBoard, side));
-                else if (moveBoard.returnSquare(e,i).find(opponentColour) == 0){
-                    list->addNode(e,i, this->evaluatePiece(e, i, moveBoard, side));
-                    break;
-                }
-                else if(moveBoard.returnSquare(e,i) != "Empty")
-                    break;
-            }
-            for(int e = x+1, i = y-1;e < 8 && i >= 0; e++, i--){
-                if(moveBoard.returnSquare(e,i) == "Empty")
-                    list->addNode(e,i, this->evaluatePiece(e, i, moveBoard, side));
-                else if (moveBoard.returnSquare(e,i).find(opponentColour) == 0){
-                    list->addNode(e,i, this->evaluatePiece(e, i, moveBoard, side));
-                    break;
-                }
-                else if(moveBoard.returnSquare(e,i) != "Empty")
-                    break;
-            }
-            for(int e = x-1, i = y+1;e >= 0 && i < 8;e--, i++){
-                if(moveBoard.returnSquare(e,i) == "Empty")
-                    list->addNode(e,i, this->evaluatePiece(e, i, moveBoard, side));
-                else if (moveBoard.returnSquare(e,i).find(opponentColour) == 0){
-                    list->addNode(e,i, this->evaluatePiece(e, i, moveBoard, side));
-                    break;
-                }
-                else if(moveBoard.returnSquare(e,i) != "Empty")
-                    break;
-            }
-            for(int e = x-1, i = y-1;e >= 0 && i >= 0;e--, i--){
-                if (moveBoard.returnSquare(e, i) == "Empty")
-                    list->addNode(e, i, this->evaluatePiece(e, i, moveBoard, side));
-                else if (moveBoard.returnSquare(e, i).find(opponentColour) == 0){
-                    list->addNode(e, i, this->evaluatePiece(e, i, moveBoard, side));
-                    break;
-                }
-                else if(moveBoard.returnSquare(e,i) != "Empty")
-                    break;
-            }
+        case 4: // Queens Moves
+            processMove(x, y, queensMoveOffsetsA, side, opponentColour);
+            processMove(x, y, queensMoveOffsetsB, side, opponentColour);
+            processMove(x, y, queensMoveOffsetsC, side, opponentColour);
+            processMove(x, y, queensMoveOffsetsD, side, opponentColour);
+            processMove(x, y, queensMoveOffsetsE, side, opponentColour);
+            processMove(x, y, queensMoveOffsetsF, side, opponentColour);
+            processMove(x, y, queensMoveOffsetsG, side, opponentColour);
+            processMove(x, y, queensMoveOffsetsH, side, opponentColour);
             return list;
-        
+
         case 5: // Kings Moves
             if (side != std::string::npos)
                 kingNumericStart = 7;
-            if(x < 7 && moveBoard.returnSquare(x+1,y) == "Empty")
-                list->addNode(x+1, y, this->evaluatePiece(x+1, y, moveBoard, side));
-            else if(x < 7 &&(moveBoard.returnSquare(x+1,y).find(opponentColour) != std::string::npos))
-                list->addNode(x+1,y, evaluatePiece(x+1,y, moveBoard, side));
-            if(x > 0 && moveBoard.returnSquare(x-1,y) == "Empty")
-                list->addNode(x-1,y, evaluatePiece(x-1, y, moveBoard, side));
-            else if(x > 0 && (moveBoard.returnSquare(x-1,y).find(opponentColour) != std::string::npos))
-                list->addNode(x-1,y, this->evaluatePiece(x-1,y, moveBoard, side));
-            if(y < 7 && moveBoard.returnSquare(x,y+1) == "Empty")
-                list->addNode(x,y+1, this->evaluatePiece(x,y+1, moveBoard, side));
-            else if(y < 7 && (moveBoard.returnSquare(x,y+1).find(opponentColour) != std::string::npos))
-                list->addNode(x,y+1, this->evaluatePiece(x,y+1, moveBoard, side));
-            if(y > 0 && moveBoard.returnSquare(x,y-1) == "Empty")
-                list->addNode(x,y-1, this->evaluatePiece(x,y-1, moveBoard, side));
-            else if(y > 0 && (moveBoard.returnSquare(x,y-1).find(opponentColour) != std::string::npos))
-                list->addNode(x,y-1, this->evaluatePiece(x,y-1, moveBoard, side));
-            if(x < 7 && y < 7 && moveBoard.returnSquare(x+1,y+1) == "Empty")
-                list->addNode(x+1,y+1, this->evaluatePiece(x+1,y+1, moveBoard, side));
-            else if(x < 7 && y < 7 && (moveBoard.returnSquare(x+1,y+1).find(opponentColour) != std::string::npos))
-                list->addNode(x+1,y+1, this->evaluatePiece(x+1,y+1, moveBoard, side));
-            if(x < 7 && y > 0 && moveBoard.returnSquare(x+1,y-1) == "Empty")
-                list->addNode(x+1,y-1, this->evaluatePiece(x+1,y-1, moveBoard, side));
-            else if(x < 7 && y > 0 && (moveBoard.returnSquare(x+1,y-1).find(opponentColour) != std::string::npos))
-                list->addNode(x+1,y-1, this->evaluatePiece(x+1,y-1, moveBoard, side));
-            if(x > 0 && y < 7 && moveBoard.returnSquare(x-1,y+1) == "Empty")
-                list->addNode(x-1,y+1, this->evaluatePiece(x-1,y+1, moveBoard, side));
-            else if(x > 0 && y < 7 && (moveBoard.returnSquare(x-1,y+1).find(opponentColour) != std::string::npos))
-                list->addNode(x-1,y+1, this->evaluatePiece(x-1,y+1, moveBoard, side));
-            if(x > 0 && y > 0 && moveBoard.returnSquare(x-1,y-1) == "Empty")
-                list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard, side));
-            else if(x > 0 && y > 0 && (moveBoard.returnSquare(x-1,y-1).find(opponentColour) != std::string::npos))
-                list->addNode(x-1,y-1, this->evaluatePiece(x-1,y-1, moveBoard, side));
+
+            processMove(x, y, kingsMoveOffsets, side, opponentColour);
+
             if (this->castleCheck(side) && moveBoard.returnSquare(kingNumericStart,1) == "Empty" && moveBoard.returnSquare(kingNumericStart,2) == "Empty")
                 list->addNode(x,y-2,side);
             return list;
@@ -535,7 +405,7 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                     list->addNode(x + 1, y - 1, this->evaluatePiece(x + 1, y - 1, moveBoard, WHITE));
             }
             return list;
- 
+
         case 7: // Black Pawn Moves
             if(side == BLACK) {
                 if (x != 0 && moveBoard.returnSquare(x - 1, y) == "Empty")
@@ -551,11 +421,12 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                     list->addNode(x - 1, this->enPassantCheck(BLACK), 2);
             }
                 return list;
-            
+
        case 8: // Empty Square
             return nullptr;
-            
+
     }
+    return nullptr;
 }
 
 /*
