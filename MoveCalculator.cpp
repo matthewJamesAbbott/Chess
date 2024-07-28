@@ -9,7 +9,6 @@
 #include <fstream>
 #include <string>
 
-
 #define PAWN 2
 #define KNIGHT 3
 #define BISHOP 4
@@ -24,7 +23,6 @@
  * add node to list returned from possibleSquares2Darray function
  *
  */
-
 void LinkedList::addNode(int x, int y, int squareRank){
     auto* newnode = new Node(); // create new node on heap
     newnode->x = x; // store squares numeric co-ordinate in list
@@ -40,7 +38,6 @@ void LinkedList::addNode(int x, int y, int squareRank){
      * then step through list and insert node when next is nullptr
      *
      */
-
     else{
         Node* temp = head;
         while (temp->next != nullptr){
@@ -54,9 +51,7 @@ void LinkedList::addNode(int x, int y, int squareRank){
  * serialise possibleSquares list into vector moveVector
  *
  */
-
 std::vector<int> LinkedList::returnVector(){
-
     std::vector<int> moveVector;
     Node* temp = head;
     while (temp != nullptr){
@@ -64,18 +59,13 @@ std::vector<int> LinkedList::returnVector(){
         moveVector.push_back(temp->y);
         temp = temp->next;
     }
-
     return moveVector;
-
-
-
 }
 
 /*
  * serialise possibleSquares list into vector moveVector with piece weights included
  *
  */
-
 std::vector<int> LinkedList::returnWeightedVector(){
     Node* temp = head;
     std::vector<int> moveVector;
@@ -89,7 +79,6 @@ std::vector<int> LinkedList::returnWeightedVector(){
 }
 
 LinkedList::~LinkedList(){
-
     Node *temp;
     while (head){
         temp = head;
@@ -104,7 +93,6 @@ MoveCalculator::MoveCalculator() = default; // default constructor for MoveCalcu
  * evaluate square on moveBoard for pieces rank
  *
  */
-
 int MoveCalculator::evaluatePiece(int x, int y, Board moveBoard, int side){
     if(side == WHITE) {
         if (moveBoard.returnSquare(x, y) == "Black Pawn") {
@@ -158,7 +146,6 @@ int MoveCalculator::evaluatePiece(int x, int y, Board moveBoard, int side){
  * else return true to allow castle move to continue
  *
  */
-
 bool MoveCalculator::castleCheck(int side){
     std::ifstream fileHandle;
     std::string line;
@@ -187,7 +174,6 @@ bool MoveCalculator::castleCheck(int side){
  * return alpha co-ordinate on success and 10 on failure
  *
  */
-
 int MoveCalculator::enPassantCheck(int side){
     std::ifstream fileHandle;
     std::string line;
@@ -210,7 +196,6 @@ int MoveCalculator::enPassantCheck(int side){
         int y = line.at(3) - 48;
         int xa = line.at(5) - 48;
         int ya = line.at(7) - 48;
-
         if (side == BLACK && x == 1 && xa == 3 && y == ya){
             return y;
 
@@ -222,11 +207,19 @@ int MoveCalculator::enPassantCheck(int side){
     return 10;
 }
 
+/*
+ * Vector of x and y move pairs for knight
+ *
+ */
 const std::vector<std::pair<int, int>> knightsMoveOffsets = {
     {2, 1}, {2, -1}, {1, 2}, {1, -2},
     {-2, 1}, {-2, -1}, {-1, 2}, {-1, -2}
 };
 
+/*
+ * Vector of x and y move pairs for rook
+ *
+ */
 const std::vector<std::pair<int, int>> rooksMoveOffsetsA = {
     {1, 0}, {2, 0}, {3, 0}, {4, 0}, {5, 0}, {6, 0}, {7, 0}, {8, 0}};
 const std::vector<std::pair<int, int>> rooksMoveOffsetsB = {
@@ -236,6 +229,10 @@ const std::vector<std::pair<int, int>> rooksMoveOffsetsC = {
 const std::vector<std::pair<int, int>> rooksMoveOffsetsD = {
     {0, -1}, {0, -2}, {0, -3}, {0, -4}, {0, -5}, {0, -6}, {0, -7}, {0, -8}};
 
+/*
+ * Vector of x and y move pairs for bishop
+ *
+ */
 const std::vector<std::pair<int, int>> bishopsMoveOffsetsA = {
     {1, 1}, {2, 2}, {3, 3}, {4, 4}, {5, 5}, {6, 6}, {7, 7}, {8, 8}};
 const std::vector<std::pair<int, int>> bishopsMoveOffsetsB = {
@@ -245,6 +242,10 @@ const std::vector<std::pair<int, int>> bishopsMoveOffsetsC = {
 const std::vector<std::pair<int, int>> bishopsMoveOffsetsD = {
     {-1, -1}, {-2, -2}, {-3, -3}, {-4, -4}, {-5, -5}, {-6, -6}, {-7, -7}, {-8, -8}};
 
+/*
+ * Vector of x and y move pairs for queen
+ *
+ */
 const std::vector<std::pair<int, int>> queensMoveOffsetsA = {
     {1, 1}, {2, 2}, {3, 3}, {4, 4}, {5, 5}, {6, 6}, {7, 7}, {8, 8}};
 const std::vector<std::pair<int, int>> queensMoveOffsetsB = {
@@ -263,6 +264,10 @@ const std::vector<std::pair<int, int>> queensMoveOffsetsH = {
     {0, -1}, {0, -2}, {0, -3}, {0, -4}, {0, -5}, {0, -6}, {0, -7}, {0, -8}
 };
 
+/*
+ * Vector of x and y move pairs for kings
+ *
+ */
 const std::vector<std::pair<int, int>> kingsMoveOffsets = {
     {1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {1, 0}, {-1, 0}, {0, 1}, {0, -1}
 };
@@ -272,7 +277,6 @@ const std::vector<std::pair<int, int>> kingsMoveOffsets = {
  * save co-ordinates in Linkedlist and return the list on completion
  *
  */
-
 LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard, int side){
 
     /*
@@ -282,9 +286,7 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
      * return list
      *
      */
-
     std::string piece = moveBoard.returnSquare(x,y);
-
     int switchedPiece = 0;
     if(piece.find("Rook") != std::string::npos)
         switchedPiece = 1;
@@ -319,25 +321,23 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
         opponentColour = "White";
     else
         opponentColour = "Black";
-
-            int kingNumericStart = 0;
+    int kingNumericStart = 0;
     auto* list = new LinkedList();
 
-    // Lambda function for processing moves
+    // lambda function for processing moves
     auto processMove = [&](int x, int y, const std::vector<std::pair<int, int>>& moveOffsets, const int side, const std::string& opponentColour) {
         for (const auto& offset : moveOffsets) {
             int newX = x + offset.first;
             int newY = y + offset.second;
             std::string squareContent = "no square";
-
             if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8)
                 squareContent = moveBoard.returnSquare(newX, newY);
 
-            // Check move validity
+            // check move validity
             if (squareContent == "Empty" ) {
                 list->addNode(newX, newY, evaluatePiece(newX, newY, moveBoard, side));
             }
-            else if (squareContent.find(opponentColour) != 0 && squareContent != "Empty" && moveOffsets != knightsMoveOffsets) {
+            else if (squareContent.find(opponentColour) != 0 && squareContent != "Empty" && moveOffsets != knightsMoveOffsets && moveOffsets != kingsMoveOffsets) {
                 break;
             }
             else if (squareContent.find(opponentColour) == 0 && moveOffsets == knightsMoveOffsets) {
@@ -352,26 +352,28 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
             }
         }
     };
+
+    // piece selection switch
     switch(switchedPiece){
-        case 1: // Rooks Moves
+        case 1: // rook
             processMove(x, y, rooksMoveOffsetsA, side, opponentColour);
             processMove(x, y, rooksMoveOffsetsB, side, opponentColour);
             processMove(x, y, rooksMoveOffsetsC, side, opponentColour);
             processMove(x, y, rooksMoveOffsetsD, side, opponentColour);
             return list;
 
-        case 2: // Knights Moves
+        case 2: // knight
             processMove(x, y, knightsMoveOffsets, side, opponentColour);
             return list;
 
-        case 3: // Bishops Moves
+        case 3: // bishop
             processMove(x, y, bishopsMoveOffsetsA, side, opponentColour);
             processMove(x, y, bishopsMoveOffsetsB, side, opponentColour);
             processMove(x, y, bishopsMoveOffsetsC, side, opponentColour);
             processMove(x, y, bishopsMoveOffsetsD, side, opponentColour);
             return list;
 
-        case 4: // Queens Moves
+        case 4: // queen
             processMove(x, y, queensMoveOffsetsA, side, opponentColour);
             processMove(x, y, queensMoveOffsetsB, side, opponentColour);
             processMove(x, y, queensMoveOffsetsC, side, opponentColour);
@@ -382,7 +384,7 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
             processMove(x, y, queensMoveOffsetsH, side, opponentColour);
             return list;
 
-        case 5: // Kings Moves
+        case 5: // king
             if (side != std::string::npos)
                 kingNumericStart = 7;
 
@@ -392,7 +394,7 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
                 list->addNode(x,y-2,side);
             return list;
 
-        case 6: // White Pawn Moves
+        case 6: // white pawn
             if(side == WHITE) {
                 if (x != 7 && moveBoard.returnSquare(x + 1, y) == "Empty")
                     list->addNode(x + 1, y, this->evaluatePiece(x + 1, y, moveBoard, WHITE));
@@ -406,7 +408,7 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
             }
             return list;
 
-        case 7: // Black Pawn Moves
+        case 7: // black pawn
             if(side == BLACK) {
                 if (x != 0 && moveBoard.returnSquare(x - 1, y) == "Empty")
                     list->addNode(x - 1, y, this->evaluatePiece(x - 1, y, moveBoard, BLACK));
@@ -422,7 +424,7 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
             }
                 return list;
 
-       case 8: // Empty Square
+       case 8: // empty square
             return nullptr;
 
     }
@@ -434,16 +436,15 @@ LinkedList *MoveCalculator::possibleSquares2DArray(int x, int y, Board moveBoard
  * return false if not in checkmate and continue game or return true and end game if in checkmate
  *
  */
-
 bool MoveCalculator::checkMateTest(Board gameBoard, int side){
     Board testBoard = gameBoard;
-    LinkedList *temp;
-    std::vector<int> returnedVector;
+    LinkedList *possibleMovesList;
+    std::vector<int> possibleMoves;
     int kingX;
     int kingY;
     std::string sideColour;
     std::string sideKing;
-    if (side == 0){
+    if (side == BLACK){
         sideColour = "Black";
         sideKing = "Black King";
     }
@@ -454,15 +455,15 @@ bool MoveCalculator::checkMateTest(Board gameBoard, int side){
         for (int e = 0; e < 8; e++){
             for (int i = 0; i < 8; i++){
                 if (gameBoard.returnSquare(e, i).find(sideColour) == 0){
-                    temp = possibleSquares2DArray(e, i, gameBoard, side);
-                    if (temp != nullptr){
-                        returnedVector = temp->returnVector();
-                        delete temp;
+                    possibleMovesList = possibleSquares2DArray(e, i, gameBoard, side);
+                    if (possibleMovesList != nullptr){
+                        possibleMoves = possibleMovesList->returnVector();
+                        delete possibleMovesList;
                     }
-                    for (int k = 0; k < returnedVector.size() / 2; k=k+2){
+                    for (int k = 0; k < possibleMoves.size() / 2; k=k+2){
                         testBoard = gameBoard;
-                        int a = returnedVector[k];
-                        int b = returnedVector[k + 1];
+                        int a = possibleMoves[k];
+                        int b = possibleMoves[k + 1];
                         testBoard.setSquare(a, b, testBoard.returnSquare(e, i));
                         testBoard.setSquare(e, i, "Empty");
                         for (int e2 = 0; e2 < 8; e2++){
@@ -487,14 +488,12 @@ bool MoveCalculator::checkMateTest(Board gameBoard, int side){
  * check if co-ordinates on moveBoard can be attacked by the oposition in the next turn
  * return true if co-ordinates can be attacked and false if they are not
  */
-
 bool MoveCalculator::checkCalculator(int x, int y, Board moveBoard, int side){
-    LinkedList *temp;
-    std::vector<int> moveVector;
-    std::vector<int> returnedVector;
+    LinkedList *possibleMovesList;
+    std::vector<int> move;
+    std::vector<int> possibleMoves;
     std::string opponentColour;
     int opponentSide;;
-
     if(side == BLACK){
         opponentSide = WHITE;
         opponentColour = "White";
@@ -506,25 +505,24 @@ bool MoveCalculator::checkCalculator(int x, int y, Board moveBoard, int side){
         for (int e = 0; e < 8; e++){
             for (int i = 0; i < 8; i++){
                 if (moveBoard.returnSquare(e, i).find(opponentColour) == 0){
-                    temp = possibleSquares2DArray(e, i, moveBoard, opponentSide);
-                    if (temp != nullptr){
-                        returnedVector = temp->returnVector();
-                        delete temp;
+                    possibleMovesList = possibleSquares2DArray(e, i, moveBoard, opponentSide);
+                    if (possibleMovesList != nullptr){
+                        possibleMoves = possibleMovesList->returnVector();
+                        delete possibleMovesList;
                     }
-                    moveVector.insert(moveVector.end(), returnedVector.begin(), returnedVector.end());
+                    move.insert(move.end(), possibleMoves.begin(), possibleMoves.end());
                 }
             }
         }
-    for(int k = 0; k < moveVector.size(); k=k+2){
-        int a = moveVector[k];
-        int b = moveVector[k+1];
-        if(x == a && y == b){
+    for(int k = 0; k < move.size(); k=k+2){
+        int moveX = move[k];
+        int moveY = move[k+1];
+        if(x == moveX && y == moveY){
             std::cout << "check baby !!!" << std::endl;
-            moveVector.clear();
+            move.clear();
             return true;
         }
     }
-    moveVector.clear();
+    move.clear();
     return false;
 }
-
