@@ -265,7 +265,7 @@ const std::vector<std::pair<int, int>> queensMoveOffsetsH = {
 };
 
 /*
- * Vector of x and y move pairs for kings
+ * Vector of x and y move pairs for king
  *
  */
 const std::vector<std::pair<int, int>> kingsMoveOffsets = {
