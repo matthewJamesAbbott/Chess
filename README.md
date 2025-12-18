@@ -101,7 +101,6 @@ The AI builds a decision tree of possible moves, rates possible captures, and se
 
 - Only tested on Linux x86_64, CMake builds.
 - External assets (images/fonts) must be in expected relative paths.
-- Some class internals are not yet fully documented.
 
 ---
 
